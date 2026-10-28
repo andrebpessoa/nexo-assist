@@ -100,8 +100,8 @@ T1 → T3 → T4 → T5
 
 **Done when**:
 
-- [ ] Eventos SSE lidos em pedaços; queda antes do `done` vira erro com texto parcial
-- [ ] Opções e listas respondidas travadas; rascunho no estado final
+- [x] Eventos SSE lidos em pedaços; queda antes do `done` vira erro com texto parcial
+- [x] Opções e listas respondidas travadas; rascunho no estado final
 
 **Tests**: unit
 **Gate**: quick

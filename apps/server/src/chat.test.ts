@@ -60,7 +60,7 @@ async function setup(turns: ScriptedTurn[] = []) {
 }
 
 interface Hist {
-	conversation: { id: string; state: string };
+	conversation: { id: string; state: string; pending: string | null };
 	messages: {
 		role: string;
 		blocks: {
@@ -187,6 +187,8 @@ describe("chat routes", () => {
 				text: "Meu notebook não liga desde hoje cedo",
 			}),
 		);
+		const held = await hist(call("/chat/history"));
+		expect(held.conversation.pending).toBe("ticket_draft");
 		await events(await call("/chat/send", { action: "confirm" }));
 		// A new app over the same database: what a restart leaves.
 		const restarted = routes();
@@ -198,6 +200,7 @@ describe("chat routes", () => {
 		expect(h.limit).toBe(30);
 		expect(h.firstName).toBe("Ana");
 		expect(h.conversation.state).toBe("agent");
+		expect(h.conversation.pending).toBeNull();
 		const drafts = h.messages.flatMap((m) =>
 			m.blocks.filter((b) => b.kind === "ticket_draft"),
 		);

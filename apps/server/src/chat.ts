@@ -97,7 +97,11 @@ export function createChatRoutes({
 	async function historyOf(agent: Agent, userId: string, firstName: string) {
 		const { conversation, messages } = await agent.history(userId);
 		return {
-			conversation: { id: conversation.id, state: conversation.state },
+			conversation: {
+				id: conversation.id,
+				state: conversation.state,
+				pending: conversation.pending?.kind ?? null,
+			},
 			messages: messages.map(view),
 			count: employeeCount(messages),
 			limit: MESSAGE_LIMIT,
