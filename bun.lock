@@ -88,6 +88,17 @@
         "vite": "^8.3.4",
       },
     },
+    "packages/agent": {
+      "name": "@nexo-assist/agent",
+      "dependencies": {
+        "@nexo-assist/tickets": "workspace:*",
+      },
+      "devDependencies": {
+        "@nexo-assist/config": "workspace:*",
+        "@types/bun": "^1.4.4",
+        "typescript": "catalog:",
+      },
+    },
     "packages/api": {
       "name": "@nexo-assist/api",
       "dependencies": {
@@ -489,6 +500,8 @@
     "@modelcontextprotocol/server": ["@modelcontextprotocol/server@2.4.0", "", { "dependencies": { "@modelcontextprotocol/core": "2.4.0", "zod": "^4.2.0" } }, "sha512-rgR9yxSaAJ+bcsi/XroT/S2AfPiIWloXAnrdfYSCms9ivVju0ishu/wW0J21Ho6+ZOR1r7RyeRbjiRuF87ix5Q=="],
 
     "@neon-rs/load": ["@neon-rs/load@0.0.4", "", {}, "sha512-kTPhdZyTQxB+2wpiRcFWrDcejc4JI6tkPuS7UZCG4l6Zvc5kU/gGQ/ozvHTh1XR5tS+UlfAfGuPajjzQjCiHCw=="],
+
+    "@nexo-assist/agent": ["@nexo-assist/agent@workspace:packages/agent"],
 
     "@nexo-assist/api": ["@nexo-assist/api@workspace:packages/api"],
 

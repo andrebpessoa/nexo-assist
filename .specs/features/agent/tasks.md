@@ -66,10 +66,10 @@ T5 → T6 → T7 → T8 → T9 → T10 → T11
 
 **Done when**:
 
-- [ ] Prioridade por impacto e urgência nos 4 níveis
-- [ ] "Não sei" vira "Só eu" com a nota
-- [ ] Equipe e prazo de contato por prioridade
-- [ ] Confirmação por texto e ação de duplicidade com a janela de 7 dias
+- [x] Prioridade por impacto e urgência nos 4 níveis
+- [x] "Não sei" vira "Só eu" com a nota
+- [x] Equipe e prazo de contato por prioridade
+- [x] Confirmação por texto e ação de duplicidade com a janela de 7 dias
 
 **Tests**: unit
 **Gate**: quick
