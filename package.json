@@ -29,6 +29,8 @@
     "dev:web": "turbo run dev:bare -F web --",
     "dev:server": "turbo run dev:bare -F hono --",
     "db:generate": "turbo run db:generate -F @nexo-assist/db --",
+    "db:seed": "bun scripts/db-seed.ts",
+    "db:seed": "bun scripts/db-seed.ts",
     "deploy": "turbo run deploy -F @nexo-assist/infra --",
     "destroy": "turbo run destroy -F @nexo-assist/infra --",
     "env:generate": "varlock codegen --path ./apps/web/ && varlock codegen --path ./apps/server/ && varlock codegen --path ./packages/db/",
