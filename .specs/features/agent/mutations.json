@@ -1,0 +1,23 @@
+[
+	{
+		"file": "packages/agent/src/rules/priority.ts",
+		"old": "if (facts.blocksWork && affected !== \"Só eu\") return \"Crítica\";",
+		"new": "if (facts.blocksWork && affected === \"Toda a empresa\") return \"Crítica\";",
+		"proof": "bun test packages/agent/src/rules/priority.test.ts -t \"priority from impact and urgency\"",
+		"label": "Crítica only when the whole company is stopped (team outage drops to Alta)"
+	},
+	{
+		"file": "packages/agent/src/engine.ts",
+		"old": "if (u.intent !== \"outro\" && u.confidence < CONFIDENCE_THRESHOLD)",
+		"new": "if (u.intent !== \"outro\" && u.confidence < 0)",
+		"proof": "bun test packages/agent/src/engine.transfer.test.ts -t \"low confidence\"",
+		"label": "low confidence acts instead of calling an analyst"
+	},
+	{
+		"file": "packages/agent/src/engine.ts",
+		"old": "if (conv.state !== \"agent\")",
+		"new": "if (conv.state === \"com_analista\")",
+		"proof": "bun test packages/agent/src/engine.transfer.test.ts -t \"silent while with analyst\"",
+		"label": "agent answers while the conversation waits for an analyst"
+	}
+]

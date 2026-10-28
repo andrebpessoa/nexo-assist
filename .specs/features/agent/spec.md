@@ -222,53 +222,53 @@ A cada mensagem do funcionário o agent decide o que fazer: responder pela centr
 
 | ID | Story | Phase | Status |
 | --- | --- | --- | --- |
-| AGT-01 | P1 - Decidir o que fazer a cada mensagem | Specify | Pending |
-| AGT-02 | P1 - Decidir o que fazer a cada mensagem | Specify | Pending |
-| AGT-03 | P1 - Decidir o que fazer a cada mensagem | Specify | Pending |
-| AGT-04 | P1 - Decidir o que fazer a cada mensagem | Specify | Pending |
-| AGT-05 | P1 - Decidir o que fazer a cada mensagem | Specify | Pending |
-| AGT-06 | P1 - Decidir o que fazer a cada mensagem | Specify | Pending |
-| AGT-07 | P1 - Decidir o que fazer a cada mensagem | Specify | Pending |
-| AGT-08 | P1 - Tirar dúvida pela central de ajuda | Specify | Pending |
-| AGT-09 | P1 - Tirar dúvida pela central de ajuda | Specify | Pending |
-| AGT-10 | P1 - Tirar dúvida pela central de ajuda | Specify | Pending |
-| AGT-11 | P1 - Tirar dúvida pela central de ajuda | Specify | Pending |
-| AGT-12 | P1 - Consultar status sem lembrar o número | Specify | Pending |
-| AGT-13 | P1 - Consultar status sem lembrar o número | Specify | Pending |
-| AGT-14 | P1 - Consultar status sem lembrar o número | Specify | Pending |
-| AGT-15 | P1 - Consultar status sem lembrar o número | Specify | Pending |
-| AGT-16 | P1 - Consultar status sem lembrar o número | Specify | Pending |
-| AGT-17 | P1 - Consultar status sem lembrar o número | Specify | Pending |
-| AGT-18 | P1 - Consultar status sem lembrar o número | Specify | Pending |
-| AGT-19 | P1 - Abrir chamado conversando, sem duplicar | Specify | Pending |
-| AGT-20 | P1 - Abrir chamado conversando, sem duplicar | Specify | Pending |
-| AGT-21 | P1 - Abrir chamado conversando, sem duplicar | Specify | Pending |
-| AGT-22 | P1 - Abrir chamado conversando, sem duplicar | Specify | Pending |
-| AGT-23 | P1 - Abrir chamado conversando, sem duplicar | Specify | Pending |
-| AGT-24 | P1 - Abrir chamado conversando, sem duplicar | Specify | Pending |
-| AGT-25 | P1 - Abrir chamado conversando, sem duplicar | Specify | Pending |
-| AGT-26 | P1 - Abrir chamado conversando, sem duplicar | Specify | Pending |
-| AGT-27 | P1 - Abrir chamado conversando, sem duplicar | Specify | Pending |
-| AGT-28 | P1 - Abrir chamado conversando, sem duplicar | Specify | Pending |
-| AGT-29 | P1 - Abrir chamado conversando, sem duplicar | Specify | Pending |
-| AGT-30 | P1 - Abrir chamado conversando, sem duplicar | Specify | Pending |
-| AGT-31 | P1 - Abrir chamado conversando, sem duplicar | Specify | Pending |
-| AGT-32 | P1 - Abrir chamado conversando, sem duplicar | Specify | Pending |
-| AGT-33 | P1 - Complementar um chamado aberto | Specify | Pending |
-| AGT-34 | P1 - Complementar um chamado aberto | Specify | Pending |
-| AGT-35 | P1 - Transferir para um analista | Specify | Pending |
-| AGT-36 | P1 - Transferir para um analista | Specify | Pending |
-| AGT-37 | P1 - Transferir para um analista | Specify | Pending |
-| AGT-38 | P1 - Transferir para um analista | Specify | Pending |
-| AGT-39 | P1 - Transferir para um analista | Specify | Pending |
-| AGT-40 | P1 - Transferir para um analista | Specify | Pending |
-| AGT-41 | P1 - Transferir para um analista | Specify | Pending |
-| AGT-42 | P1 - Escopo e falhas | Specify | Pending |
-| AGT-43 | P1 - Escopo e falhas | Specify | Pending |
-| AGT-44 | P1 - Escopo e falhas | Specify | Pending |
-| AGT-45 | P2 - Medir a qualidade das decisões | Specify | Pending |
-| AGT-46 | P2 - Medir a qualidade das decisões | Specify | Pending |
-| AGT-47 | P1 - Escopo e falhas | Specify | Pending |
+| AGT-01 | P1 - Decidir o que fazer a cada mensagem | Verify | Verified |
+| AGT-02 | P1 - Decidir o que fazer a cada mensagem | Verify | Verified |
+| AGT-03 | P1 - Decidir o que fazer a cada mensagem | Verify | Verified |
+| AGT-04 | P1 - Decidir o que fazer a cada mensagem | Verify | Verified |
+| AGT-05 | P1 - Decidir o que fazer a cada mensagem | Verify | Verified |
+| AGT-06 | P1 - Decidir o que fazer a cada mensagem | Verify | Verified |
+| AGT-07 | P1 - Decidir o que fazer a cada mensagem | Verify | Verified |
+| AGT-08 | P1 - Tirar dúvida pela central de ajuda | Verify | Verified |
+| AGT-09 | P1 - Tirar dúvida pela central de ajuda | Verify | Verified |
+| AGT-10 | P1 - Tirar dúvida pela central de ajuda | Verify | Verified |
+| AGT-11 | P1 - Tirar dúvida pela central de ajuda | Verify | Verified |
+| AGT-12 | P1 - Consultar status sem lembrar o número | Verify | Verified |
+| AGT-13 | P1 - Consultar status sem lembrar o número | Verify | Verified |
+| AGT-14 | P1 - Consultar status sem lembrar o número | Verify | Verified |
+| AGT-15 | P1 - Consultar status sem lembrar o número | Verify | Verified |
+| AGT-16 | P1 - Consultar status sem lembrar o número | Verify | Verified |
+| AGT-17 | P1 - Consultar status sem lembrar o número | Verify | Verified |
+| AGT-18 | P1 - Consultar status sem lembrar o número | Verify | Verified |
+| AGT-19 | P1 - Abrir chamado conversando, sem duplicar | Verify | Verified |
+| AGT-20 | P1 - Abrir chamado conversando, sem duplicar | Verify | Verified |
+| AGT-21 | P1 - Abrir chamado conversando, sem duplicar | Verify | Verified |
+| AGT-22 | P1 - Abrir chamado conversando, sem duplicar | Verify | Verified |
+| AGT-23 | P1 - Abrir chamado conversando, sem duplicar | Verify | Verified |
+| AGT-24 | P1 - Abrir chamado conversando, sem duplicar | Verify | Verified |
+| AGT-25 | P1 - Abrir chamado conversando, sem duplicar | Verify | Verified |
+| AGT-26 | P1 - Abrir chamado conversando, sem duplicar | Verify | Verified |
+| AGT-27 | P1 - Abrir chamado conversando, sem duplicar | Verify | Verified |
+| AGT-28 | P1 - Abrir chamado conversando, sem duplicar | Verify | Verified |
+| AGT-29 | P1 - Abrir chamado conversando, sem duplicar | Verify | Verified |
+| AGT-30 | P1 - Abrir chamado conversando, sem duplicar | Verify | Verified |
+| AGT-31 | P1 - Abrir chamado conversando, sem duplicar | Verify | Verified |
+| AGT-32 | P1 - Abrir chamado conversando, sem duplicar | Verify | Verified |
+| AGT-33 | P1 - Complementar um chamado aberto | Verify | Verified |
+| AGT-34 | P1 - Complementar um chamado aberto | Verify | Verified |
+| AGT-35 | P1 - Transferir para um analista | Verify | Verified |
+| AGT-36 | P1 - Transferir para um analista | Verify | Verified |
+| AGT-37 | P1 - Transferir para um analista | Verify | Verified |
+| AGT-38 | P1 - Transferir para um analista | Verify | Verified |
+| AGT-39 | P1 - Transferir para um analista | Verify | Verified |
+| AGT-40 | P1 - Transferir para um analista | Verify | Verified |
+| AGT-41 | P1 - Transferir para um analista | Verify | Verified |
+| AGT-42 | P1 - Escopo e falhas | Verify | Verified |
+| AGT-43 | P1 - Escopo e falhas | Verify | Verified |
+| AGT-44 | P1 - Escopo e falhas | Verify | Verified |
+| AGT-45 | P2 - Medir a qualidade das decisões | Verify | Verified |
+| AGT-46 | P2 - Medir a qualidade das decisões | Verify | Verified |
+| AGT-47 | P1 - Escopo e falhas | Verify | Verified |
 
 **Coverage:** 47 critérios, todos mapeados a uma história.
 

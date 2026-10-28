@@ -9,7 +9,7 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 ---
 
 **Design**: `.specs/features/agent/design.md`
-**Status**: In Progress
+**Status**: Done
 **Approved**: 2026-10-28 - user: "sim, faça a aplicação de todas as features, me avise se precisar de algo" (delegado por André em t152u; recomendações adotadas, AD-020)
 **Mutations**: 3
 **Build**: `bun run check-types; bun biome check apps packages; bun run test`
@@ -415,7 +415,7 @@ Proof: `bun test packages/agent/src/engine.failures.test.ts -t "rate limited"`
 
 ## Handoff
 
-**Settled mid-build:** -
+**Settled mid-build:** T10 - "Tentar de novo" depois de uma falha do modelo com rascunho pendente confirmava o rascunho; `retry` passou a confirmar só depois de falha de gravação (teste vermelho antes, verde depois).
 **Dispatched:** none (sem mecanismo de sub-agente; verificação self-verified, degradada)
-**Walked:** -
-**Deviations:** -
+**Walked:** - (sem interface nesta feature; o caminho do funcionário roda nas 22 conversas de `bun run eval`)
+**Deviations:** (1) T2 entrou sem `tsc` e foi corrigido em 8b66771; (2) T3 teve teste e código escritos juntos; (3) o motor foi escrito inteiro em T6 e T7 a T9 só acrescentaram testes, que passaram de primeira (mutações cobrem a sensibilidade); (4) `judge` é uma segunda chamada opcional ao modelo; (5) avaliação ao vivo não rodou por falta de `GOOGLE_GENERATIVE_AI_API_KEY`.
