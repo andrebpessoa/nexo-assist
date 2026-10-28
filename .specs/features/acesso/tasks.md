@@ -218,7 +218,7 @@ T3 → T4 → T5 → T6 → T7 → T8
 
 **Done when**:
 
-- [ ] As duas fotos existem no tamanho da captura
+- [x] As duas fotos existem no tamanho da captura
 
 **Tests**: walk
 **Gate**: build
