@@ -9,7 +9,7 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 ---
 
 **Design**: `.specs/features/transparencia/design.md`
-**Status**: In Progress
+**Status**: Done
 **Approved**: 2026-10-28 - user: "sim, faça a aplicação de todas as features, me avise se precisar de algo" (delegado por André em t152u; recomendações adotadas, AD-020)
 **Mutations**: 3
 **Build**: `bun run check-types; bun biome check apps packages; bun run test`
@@ -169,7 +169,7 @@ Proof: `bun test packages/agent/src/transparency.test.ts -t "conversation totals
 
 ## Handoff
 
-**Settled mid-build:** -
+**Settled mid-build:** T2 - "não conseguiu" de verbos em "-iu" ("transferiu", "reabriu") saía sem infinitivo; corrigido e coberto em "service down shows failed label".
 **Dispatched:** none (sem mecanismo de sub-agente; verificação self-verified, degradada)
-**Walked:** -
-**Deviations:** -
+**Walked:** - (sem rota nesta feature; a linha e o painel são percorridos nas telas da `chat-funcionario`)
+**Deviations:** (1) sem `screens.md`, telas conferidas na `chat-funcionario` e na `console-analista`; (2) chamadas ao modelo fora da linha de ações, só no gerúndio e no painel; (3) "calculou o prazo" também no prazo de contato da transferência; (4) TRN-14, TRN-17 e TRN-18 ligados à tela e ao Worker nas features seguintes; (5) em T2 e T3 o vermelho foi o módulo ausente.

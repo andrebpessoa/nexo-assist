@@ -184,10 +184,10 @@
 
 ## Handoff
 
-- **Fase**: `agent` validada e concluída (2026-10-28); ver `features/agent/validation.md`. `servico-de-chamados` e `acesso` concluídas antes.
-- **Concluído**: agent T1 a T11 em master (local, sem push). Provas de C1 a C47, 3 mutações mortas, avaliação roteirizada 22 conversas 100%, `validate_verification.py` com 0.
+- **Fase**: `transparencia` validada e concluída (2026-10-28); ver `features/transparencia/validation.md`. `servico-de-chamados`, `acesso` e `agent` concluídas antes.
+- **Concluído**: transparencia T1 a T3 em master (local, sem push). Provas de C1 a C18, 3 mutações mortas, `validate_verification.py` com 0.
 - **Em andamento**: nenhum.
-- **Próximo passo**: feature `transparencia` (4ª do ROADMAP), com aprovação delegada (AD-020). Falta `GOOGLE_GENERATIVE_AI_API_KEY` para a avaliação ao vivo.
+- **Próximo passo**: feature `chat-funcionario` (5ª do ROADMAP), com aprovação delegada (AD-020): provar o Mastra no Worker (plano B `ai` + `@ai-sdk/google`), ligar `deps.log` ao log do Worker e montar a linha e o painel na tela. Falta `GOOGLE_GENERATIVE_AI_API_KEY` para a avaliação ao vivo.
 - **Bloqueios**: nenhum. Pendente na `entrega` (DLV-08): o aviso `noNonNullAssertion` em `apps/web/src/env.public.ts`, os `env.ts` gerados que o Biome lê e o lint fora de `apps` e `packages`.
 - **Não commitado**: `features/*/proofs.md`, gerados por `check_proofs.py` no HEAD (commitá-los muda o HEAD).
 - **Branch**: master.

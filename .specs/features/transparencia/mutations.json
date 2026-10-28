@@ -1,0 +1,23 @@
+[
+	{
+		"file": "packages/agent/src/transparency.ts",
+		"old": "if (l && !out.some((o) => o.label === l.label)) out.push(l);",
+		"new": "if (l) out.push(l);",
+		"proof": "bun test packages/agent/src/transparency.test.ts -t \"labels only from executed steps\"",
+		"label": "a repeated step shows twice in the action line"
+	},
+	{
+		"file": "packages/agent/src/transparency.ts",
+		"old": "return pct >= 80 ? \"alta\" : pct >= 60 ? \"média\" : \"baixa\";",
+		"new": "return pct > 80 ? \"alta\" : pct >= 60 ? \"média\" : \"baixa\";",
+		"proof": "bun test packages/agent/src/transparency.test.ts -t \"confidence band\"",
+		"label": "80% falls into the medium band"
+	},
+	{
+		"file": "packages/agent/src/transparency.ts",
+		"old": "if (audience === \"analyst\" && d.usage && d.model !== undefined)",
+		"new": "if (d.usage && d.model !== undefined)",
+		"proof": "bun test packages/agent/src/transparency.test.ts -t \"employee panel\"",
+		"label": "the employee sees model, tokens and cost"
+	}
+]

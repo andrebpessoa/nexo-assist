@@ -128,24 +128,24 @@ O funcionário e o analista precisam entender cada resposta do agent: o que ele 
 
 | ID | Story | Phase | Status |
 | --- | --- | --- | --- |
-| TRN-01 | P1 - Ver as ações acima de cada resposta | Specify | Pending |
-| TRN-02 | P1 - Ver as ações acima de cada resposta | Specify | Pending |
-| TRN-03 | P1 - Ver as ações acima de cada resposta | Specify | Pending |
-| TRN-04 | P1 - Ver as ações acima de cada resposta | Specify | Pending |
-| TRN-05 | P1 - Ver as ações acima de cada resposta | Specify | Pending |
-| TRN-06 | P1 - Abrir o detalhe de uma decisão | Specify | Pending |
-| TRN-07 | P1 - Abrir o detalhe de uma decisão | Specify | Pending |
-| TRN-08 | P1 - Abrir o detalhe de uma decisão | Specify | Pending |
-| TRN-09 | P1 - Abrir o detalhe de uma decisão | Specify | Pending |
-| TRN-10 | P1 - Abrir o detalhe de uma decisão | Specify | Pending |
-| TRN-11 | P1 - Abrir o detalhe de uma decisão | Specify | Pending |
-| TRN-12 | P1 - Abrir o detalhe de uma decisão | Specify | Pending |
-| TRN-13 | P1 - Abrir o detalhe de uma decisão | Specify | Pending |
-| TRN-14 | P1 - Ver as decisões no console e no log | Specify | Pending |
-| TRN-15 | P1 - Ver as decisões no console e no log | Specify | Pending |
-| TRN-16 | P1 - Ver as decisões no console e no log | Specify | Pending |
-| TRN-17 | P1 - Ver as decisões no console e no log | Specify | Pending |
-| TRN-18 | P2 - Custo e tempo por resposta | Specify | Pending |
+| TRN-01 | P1 - Ver as ações acima de cada resposta | Verify | Verified |
+| TRN-02 | P1 - Ver as ações acima de cada resposta | Verify | Verified |
+| TRN-03 | P1 - Ver as ações acima de cada resposta | Verify | Verified |
+| TRN-04 | P1 - Ver as ações acima de cada resposta | Verify | Verified |
+| TRN-05 | P1 - Ver as ações acima de cada resposta | Verify | Verified |
+| TRN-06 | P1 - Abrir o detalhe de uma decisão | Verify | Verified |
+| TRN-07 | P1 - Abrir o detalhe de uma decisão | Verify | Verified |
+| TRN-08 | P1 - Abrir o detalhe de uma decisão | Verify | Verified |
+| TRN-09 | P1 - Abrir o detalhe de uma decisão | Verify | Verified |
+| TRN-10 | P1 - Abrir o detalhe de uma decisão | Verify | Verified |
+| TRN-11 | P1 - Abrir o detalhe de uma decisão | Verify | Verified |
+| TRN-12 | P1 - Abrir o detalhe de uma decisão | Verify | Verified |
+| TRN-13 | P1 - Abrir o detalhe de uma decisão | Verify | Verified |
+| TRN-14 | P1 - Ver as decisões no console e no log | Verify | Verified |
+| TRN-15 | P1 - Ver as decisões no console e no log | Verify | Verified |
+| TRN-16 | P1 - Ver as decisões no console e no log | Verify | Verified |
+| TRN-17 | P1 - Ver as decisões no console e no log | Verify | Verified |
+| TRN-18 | P2 - Custo e tempo por resposta | Verify | Verified |
 
 **Coverage:** 18 critérios, todos mapeados a uma história.
 
