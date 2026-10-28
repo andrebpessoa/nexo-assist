@@ -164,11 +164,11 @@ T1 → T2 → T3 → T4 → T5 → T6
 
 **Done when**:
 
-- [ ] Painel com os dois blocos e os totais
-- [ ] "Ver todos" e a seta expandem
-- [ ] X fecha e o botão do cabeçalho reabre
-- [ ] Falha mostra "Não foi possível carregar os chamados · Tentar de novo"
-- [ ] Lista e conversa se atualizam sozinhas
+- [x] Painel com os dois blocos e os totais
+- [x] "Ver todos" e a seta expandem
+- [x] X fecha e o botão do cabeçalho reabre
+- [x] Falha mostra "Não foi possível carregar os chamados · Tentar de novo"
+- [x] Lista e conversa se atualizam sozinhas
 
 **Tests**: component
 **Gate**: build

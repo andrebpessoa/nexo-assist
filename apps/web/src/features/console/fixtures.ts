@@ -137,3 +137,87 @@ export function anaConversation(
 		],
 	};
 }
+
+import type { TicketDetailJson, TicketJson, TicketsPanelData } from "./api";
+
+export const ticket = (over: Partial<TicketJson> = {}): TicketJson => ({
+	number: "INC-20311",
+	title: "Notebook lento após atualização",
+	type: "INC",
+	category: "Hardware",
+	priority: "Média",
+	status: "Aguardando analista",
+	openedAt: "2026-10-23T13:00:00.000Z",
+	updatedAt: "2026-10-28T13:05:00.000Z",
+	deadlineAt: "2026-10-26T13:00:00.000Z",
+	vencido: true,
+	...over,
+});
+
+export const detail = (
+	over: Partial<TicketDetailJson> = {},
+): TicketDetailJson => ({
+	...ticket(),
+	description: "Depois da atualização o notebook demora 10 minutos para ligar.",
+	notes: [
+		{
+			author: "Ana Souza",
+			body: "Já reiniciei duas vezes.",
+			at: "2026-10-24T12:00:00.000Z",
+		},
+	],
+	events: [
+		{ kind: "criado", actor: "Ana Souza", at: "2026-10-23T13:00:00.000Z" },
+		{
+			kind: "transferido",
+			actor: "Nexo Assist",
+			team: "Suporte N2",
+			at: "2026-10-28T13:05:00.000Z",
+		},
+	],
+	...over,
+});
+
+export const panel = (
+	over: Partial<TicketsPanelData> = {},
+): TicketsPanelData => ({
+	current: detail(),
+	tickets: [
+		ticket(),
+		ticket({
+			number: "REQ-10442",
+			title: "Acesso à pasta Financeiro/2026",
+			type: "REQ",
+			status: "Em andamento",
+			category: "Acesso",
+		}),
+		ticket({
+			number: "INC-20519",
+			title: "Impressora do 3º andar",
+			status: "Aberto",
+			category: "Impressora",
+		}),
+		ticket({
+			number: "INC-19870",
+			title: "VPN caindo",
+			status: "Resolvido",
+			category: "Rede",
+		}),
+		ticket({
+			number: "REQ-10002",
+			title: "Licença do Excel",
+			type: "REQ",
+			status: "Fechado",
+			category: "Software",
+		}),
+		ticket({
+			number: "INC-18000",
+			title: "Mouse quebrado",
+			status: "Resolvido",
+			category: "Hardware",
+		}),
+	],
+	open: 3,
+	closed: 3,
+	...over,
+});

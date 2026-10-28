@@ -1,5 +1,5 @@
 import type { ConsoleFilter } from "@nexo-assist/agent/console";
-import { MessageSquare, Search } from "lucide-react";
+import { LogOut, MessageSquare, Search } from "lucide-react";
 import { useState } from "react";
 
 import { NexoMark } from "@/features/brand/nexo-logo";
@@ -247,10 +247,12 @@ export function Rail({
 	badge,
 	available,
 	initials: who,
+	onSignOut,
 }: {
 	badge: number;
 	available: boolean;
 	initials: string;
+	onSignOut?: () => void;
 }) {
 	return (
 		<nav
@@ -270,7 +272,17 @@ export function Rail({
 					</span>
 				)}
 			</span>
-			<span className="relative mt-auto">
+			{onSignOut && (
+				<button
+					type="button"
+					aria-label="Sair"
+					onClick={onSignOut}
+					className="text-ink-3 hover:text-ink mt-auto rounded-[8px] p-1.5"
+				>
+					<LogOut className="size-4" />
+				</button>
+			)}
+			<span className={`relative ${onSignOut ? "" : "mt-auto"}`}>
 				<span className="bg-cta-soft text-cta inline-flex size-8 items-center justify-center rounded-full text-[11px] font-semibold">
 					{who}
 				</span>
