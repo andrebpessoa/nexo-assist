@@ -76,6 +76,7 @@ export async function applySeed(
 			department: person.department,
 			os: person.os,
 			team: person.team,
+			passwordChangedAt: person.passwordChangedAt,
 		};
 		statements.push(
 			db

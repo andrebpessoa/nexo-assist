@@ -1,5 +1,6 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 
+import type { Role } from "./access";
 import type { Context } from "./context";
 
 export const t = initTRPC.context<Context>().create();
@@ -23,3 +24,19 @@ export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
 		},
 	});
 });
+
+/** UNAUTHORIZED without a session, FORBIDDEN for any other role (AUTH-15). */
+const roleProcedure = (role: Role) =>
+	protectedProcedure.use(({ ctx, next }) => {
+		if (ctx.role !== role) {
+			throw new TRPCError({
+				code: "FORBIDDEN",
+				message: "Esta área não é do seu perfil.",
+			});
+		}
+		return next({ ctx: { ...ctx, role } });
+	});
+
+export const employeeProcedure = roleProcedure("employee");
+
+export const analystProcedure = roleProcedure("analyst");

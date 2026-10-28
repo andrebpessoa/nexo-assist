@@ -97,15 +97,15 @@ T3 → T4 → T5 → T6 → T7 → T8
 #### T2: Papéis no tRPC e `me`
 
 **What**: `role` no contexto, `employeeProcedure`, `analystProcedure` e a query `me`.
-**Where**: `packages/api/src/index.ts`, `packages/api/src/context.ts`, `packages/api/src/access.ts`, `packages/api/src/routers/index.ts`, `apps/server/src/context.ts`
+**Where**: `packages/api/src/index.ts`, `packages/api/src/context.ts`, `packages/api/src/access.ts`, `packages/api/src/routers/index.ts`, `apps/server/src/context.ts`, `packages/tickets/src/seed/build.ts`, `packages/tickets/src/seed/apply.ts`
 **Depends on**: T1
 **Reuses**: tabela `profile` (AD-015)
 **Requirement**: AUTH-15, AUTH-18, AUTH-19
 
 **Done when**:
 
-- [ ] Sem sessão: `UNAUTHORIZED`; funcionário em procedimento de analista: `FORBIDDEN`, e o inverso
-- [ ] `me` devolve nome, e-mail, papel, iniciais e dias desde a troca de senha
+- [x] Sem sessão: `UNAUTHORIZED`; funcionário em procedimento de analista: `FORBIDDEN`, e o inverso
+- [x] `me` devolve nome, e-mail, papel, iniciais e dias desde a troca de senha
 
 **Tests**: integration
 **Gate**: full
@@ -294,7 +294,7 @@ Proof: `bun --cwd apps/web test src/features/profile/profile-page.test.tsx -t "r
 
 ## Handoff
 
-**Settled mid-build:** none
+**Settled mid-build:** T2 - o seed não preenchia `profile.passwordChangedAt`, que AUTH-19 lê; o seed passou a gravar a data (Ana 42 dias, como a captura) e T2 ganhou os dois arquivos do seed.
 **Dispatched:** none (sem mecanismo de sub-agente; verificação self-verified, degradada)
 **Walked:** -
 **Deviations:** -

@@ -16,6 +16,8 @@ export interface SeedUser {
 	department: string | null;
 	os: string | null;
 	team: Team | null;
+	/** Shown in "Meu perfil" as "Alterada há N dias" (AUTH-19). */
+	passwordChangedAt: Date;
 }
 
 export interface SeedTicket {
@@ -61,12 +63,14 @@ const DIEGO = "diego.alves@nexo.com.br";
 const MARINA = "marina.teixeira@nexo.com.br";
 const RAFAEL = "rafael.lima@nexo.com.br";
 
+type SeedPerson = Omit<SeedUser, "passwordChangedAt">;
+
 const employee = (
 	name: string,
 	email: string,
 	department: string,
 	os: string,
-): SeedUser => ({
+): SeedPerson => ({
 	name,
 	email,
 	role: "employee",
@@ -74,7 +78,7 @@ const employee = (
 	os,
 	team: null,
 });
-const analyst = (name: string, email: string, team: Team): SeedUser => ({
+const analyst = (name: string, email: string, team: Team): SeedPerson => ({
 	name,
 	email,
 	role: "analyst",
@@ -83,7 +87,7 @@ const analyst = (name: string, email: string, team: Team): SeedUser => ({
 	team,
 });
 
-const USERS: SeedUser[] = [
+const USERS: SeedPerson[] = [
 	employee("Ana Souza", ANA, "Financeiro", "Windows 11"),
 	employee("Bruno Costa", BRUNO, "Comercial", "Windows 10"),
 	employee("Carla Mendes", CARLA, "Recursos Humanos", "macOS"),
@@ -92,6 +96,17 @@ const USERS: SeedUser[] = [
 	analyst("Marina Teixeira", MARINA, "Suporte N1"),
 	analyst("Rafael Lima", RAFAEL, "Suporte N2"),
 ];
+
+/** Days since each user's last password change; Ana's 42 matches the prototype capture. */
+const PASSWORD_AGE_DAYS: Record<string, number> = {
+	[ANA]: 42,
+	[BRUNO]: 15,
+	[CARLA]: 88,
+	[DIEGO]: 3,
+	"elisa.rocha@nexo.com.br": 61,
+	[MARINA]: 27,
+	[RAFAEL]: 9,
+};
 
 const ARTICLES: Article[] = [
 	{
@@ -418,7 +433,12 @@ export function buildSeed(now: Date): SeedData {
 		}),
 	);
 	return {
-		users: USERS.map((person) => ({ ...person })),
+		users: USERS.map((person) => ({
+			...person,
+			passwordChangedAt: new Date(
+				now.getTime() - (PASSWORD_AGE_DAYS[person.email] ?? 30) * DAY,
+			),
+		})),
 		articles: ARTICLES.map((a) => ({ ...a })),
 		tickets,
 	};
