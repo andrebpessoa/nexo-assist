@@ -181,8 +181,8 @@ T3 → T4 → T5 → T6 → T7 → T8
 
 **Done when**:
 
-- [ ] Nome, e-mail, "Gerenciado pela TI", "Alterada há N dias" e a confirmação simulada
-- [ ] "Sair" chama o encerramento de sessão
+- [x] Nome, e-mail, "Gerenciado pela TI", "Alterada há N dias" e a confirmação simulada
+- [x] "Sair" chama o encerramento de sessão
 
 **Tests**: component
 **Gate**: quick
