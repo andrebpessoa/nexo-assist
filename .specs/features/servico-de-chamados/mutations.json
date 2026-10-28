@@ -1,0 +1,17 @@
+[
+  {"file": "packages/tickets/src/service.ts",
+   "old": "if (actor.kind === \"employee\" && row.requesterId !== actor.userId)",
+   "new": "if (actor.kind === \"analyst\" && row.requesterId !== actor.userId)",
+   "proof": "bun test packages/tickets/src/service.test.ts -t \"not found for other requester\"",
+   "label": "privacy filter applied to analyst instead of employee"},
+  {"file": "packages/tickets/src/rules/transitions.ts",
+   "old": "<= REOPEN_WINDOW_MS;",
+   "new": "<= REOPEN_WINDOW_MS + 60_000;",
+   "proof": "bun test packages/tickets/src/rules/transitions.test.ts -t \"reopen not allowed\"",
+   "label": "reopen window shifted by one minute"},
+  {"file": "packages/tickets/src/rules/sla.ts",
+   "old": "now <= deadline",
+   "new": "now < deadline",
+   "proof": "bun test packages/tickets/src/rules/sla.test.ts -t \"overdue\"",
+   "label": "overdue at exactly the deadline (<= -> <)"}
+]
