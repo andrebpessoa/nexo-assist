@@ -1,6 +1,11 @@
 import { beforeEach, describe, expect, test } from "bun:test";
 import type { Database } from "@nexo-assist/db";
-import { profile, ticketCounter, user } from "@nexo-assist/db/schema/index";
+import {
+	kbArticle,
+	profile,
+	ticketCounter,
+	user,
+} from "@nexo-assist/db/schema/index";
 
 import { createTicketRepository } from "./repository";
 import { createTicketService } from "./service";
@@ -477,6 +482,36 @@ describe("transfer and assume", () => {
 				}),
 			),
 		).toBe("TICKET_CLOSED");
+	});
+});
+
+describe("search articles", () => {
+	test("search articles in the database: vpn 809 first, empty without relevance", async () => {
+		await db.insert(kbArticle).values([
+			{
+				slug: "horario-service-desk",
+				title: "Horário do service desk",
+				body: "De segunda a sexta, das 8h às 18h. Chamados críticos têm plantão 24 horas.",
+				appliesWhen: "Sempre",
+				keywords: ["horário", "plantão"],
+			},
+			{
+				slug: "vpn-erro-809",
+				title: "VPN com erro 809",
+				body: "Reinstale o cliente de VPN pelo portal de softwares e reinicie o computador.",
+				appliesWhen: "Só Windows 10; no Windows 11, abra um chamado.",
+				keywords: ["vpn", "809"],
+			},
+		]);
+		const found = value(await service.searchArticles("VPN dando erro 809"));
+		expect(found[0]).toEqual({
+			slug: "vpn-erro-809",
+			title: "VPN com erro 809",
+			body: "Reinstale o cliente de VPN pelo portal de softwares e reinicie o computador.",
+			appliesWhen: "Só Windows 10; no Windows 11, abra um chamado.",
+			keywords: ["vpn", "809"],
+		});
+		expect(value(await service.searchArticles("receita de bolo"))).toEqual([]);
 	});
 });
 
