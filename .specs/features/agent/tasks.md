@@ -240,8 +240,8 @@ T5 → T6 → T7 → T8 → T9 → T10 → T11
 
 **Done when**:
 
-- [ ] Rascunho mantido e Tentar de novo cria um só
-- [ ] Mensagem fixa no 429
+- [x] Rascunho mantido e Tentar de novo cria um só
+- [x] Mensagem fixa no 429
 
 **Tests**: integration
 **Gate**: full

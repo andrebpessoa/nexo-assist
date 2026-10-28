@@ -56,6 +56,9 @@ import {
 } from "./understand";
 import { buildWindow } from "./window";
 
+/** The rule of a failed create, update or reopen; only then does "Tentar de novo" confirm again. */
+const WRITE_FAILED_RULE = "Falha ao gravar - rascunho mantido";
+
 /** Below this the agent does not act and calls an analyst (AD-007, AGT-38). */
 export const CONFIDENCE_THRESHOLD = 60;
 
@@ -1003,7 +1006,7 @@ export function createAgent(deps: AgentDeps) {
 				options("Quer tentar de novo?", [COPY.retryOption]),
 			],
 			action: "falha",
-			rule: "Falha ao gravar - rascunho mantido",
+			rule: WRITE_FAILED_RULE,
 			reason: message,
 		};
 	}
@@ -1182,7 +1185,13 @@ export function createAgent(deps: AgentDeps) {
 
 	async function retry(turn: Turn): Promise<Outcome> {
 		const p = turn.conv.pending;
-		if (p && ["ticket_draft", "update_draft", "reopen_draft"].includes(p.kind))
+		const lastAgent = turn.history.filter((m) => m.role === "agent").at(-1);
+		const writeFailed = lastAgent?.decision?.rule === WRITE_FAILED_RULE;
+		if (
+			writeFailed &&
+			p &&
+			["ticket_draft", "update_draft", "reopen_draft"].includes(p.kind)
+		)
 			return confirm(turn);
 		const last = turn.history.filter((m) => m.role === "employee").at(-1);
 		turn.text = last?.text ?? "";
