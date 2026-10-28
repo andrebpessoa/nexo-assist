@@ -121,10 +121,10 @@ T1 → T2 → T3 → T4 → T5 → T6
 
 **Done when**:
 
-- [ ] Rótulos e hora de cada item
-- [ ] Filtros e busca (nome, número, sem acento)
-- [ ] Badge some com "Disponível" desligado
-- [ ] Esqueletos enquanto carrega
+- [x] Rótulos e hora de cada item
+- [x] Filtros e busca (nome, número, sem acento)
+- [x] Badge some com "Disponível" desligado
+- [x] Esqueletos enquanto carrega
 
 **Tests**: unit + component
 **Gate**: quick
