@@ -6,7 +6,8 @@
 		"./*": "./src/*.ts"
 	},
 	"scripts": {
-		"check-types": "tsc --noEmit"
+		"check-types": "tsc --noEmit",
+		"test": "bun test"
 	},
 	"dependencies": {
 		"@better-auth/core": "1.7.12",
@@ -17,7 +18,10 @@
 		"zod": "catalog:"
 	},
 	"devDependencies": {
+		"@libsql/client": "0.18.0",
 		"@nexo-assist/config": "workspace:*",
+		"@nexo-assist/tickets": "workspace:*",
+		"@types/bun": "^1.4.4",
 		"typescript": "catalog:"
 	}
 }

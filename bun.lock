@@ -105,7 +105,10 @@
         "zod": "catalog:",
       },
       "devDependencies": {
+        "@libsql/client": "0.18.0",
         "@nexo-assist/config": "workspace:*",
+        "@nexo-assist/tickets": "workspace:*",
+        "@types/bun": "^1.4.4",
         "typescript": "catalog:",
       },
     },

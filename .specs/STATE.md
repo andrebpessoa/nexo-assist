@@ -173,6 +173,15 @@
 - **Date**: 2026-10-28
 - **Status**: active (AD-019)
 
+### AD-020
+
+- **Decision**: As aprovações de `acesso`, `agent`, `transparencia`, `chat-funcionario`, `console-analista` e `entrega` estão delegadas: cada uma é registrada como "delegado por André em t152u" e adota a opção recomendada. A pausa vem a cada 2 features ou quando faltar algo que só o André dá (chave, conta, decisão que mude o produto).
+- **Reason**: André, 2026-10-28 (t152u): "sim, faça a aplicação de todas as features, me avise se precisar de algo".
+- **Trade-off**: Menos portões humanos; cada escolha fica escrita no design, nos ADs e no relatório de checkpoint para ele revisar.
+- **Scope**: acesso, agent, transparencia, chat-funcionario, console-analista, entrega.
+- **Date**: 2026-10-28
+- **Status**: active (AD-020)
+
 ## Handoff
 
 - **Fase**: `servico-de-chamados` validada e concluída (2026-10-28); ver `features/servico-de-chamados/validation.md`.
