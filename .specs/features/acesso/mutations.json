@@ -1,0 +1,23 @@
+[
+	{
+		"file": "packages/auth/src/seed-login.ts",
+		"old": "const dontRememberMe = ctx.body.rememberMe === false;",
+		"new": "const dontRememberMe = ctx.body.rememberMe === true;",
+		"proof": "bun test packages/auth/src/seed-login.test.ts -t \"remember me\"",
+		"label": "remember me inverted (30-day cookie only when unchecked)"
+	},
+	{
+		"file": "apps/web/src/lib/access.ts",
+		"old": "return isAreaOf(role, pathname) ? null : homeFor(role);",
+		"new": "return isAreaOf(role, pathname) || pathname.startsWith(\"/console\") ? null : homeFor(role);",
+		"proof": "bun --cwd apps/web test src/lib/access.test.ts -t \"role areas\"",
+		"label": "console open to every signed-in role"
+	},
+	{
+		"file": "packages/api/src/index.ts",
+		"old": "if (ctx.role !== role) {",
+		"new": "if (ctx.role === null) {",
+		"proof": "bun test packages/api/src/access.test.ts -t \"role procedures\"",
+		"label": "role procedures accept any role with a profile"
+	}
+]

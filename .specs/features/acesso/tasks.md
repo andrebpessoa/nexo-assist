@@ -9,7 +9,7 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 ---
 
 **Design**: inline (Medium) - seção `## Design` abaixo
-**Status**: In Progress
+**Status**: Done
 **Approved**: 2026-10-28 - user: "sim, faça a aplicação de todas as features, me avise se precisar de algo" (delegado por André em t152u; recomendações adotadas, AD-020)
 **Mutations**: 3
 **Build**: `bun run check-types; bun biome check apps packages; bun run test`
@@ -297,7 +297,7 @@ Proof: `bun --cwd apps/web test src/features/profile/profile-page.test.tsx -t "r
 **Settled mid-build:** T2 - o seed não preenchia `profile.passwordChangedAt`, que AUTH-19 lê; o seed passou a gravar a data (Ana 42 dias, como a captura) e T2 ganhou os dois arquivos do seed.
 **Dispatched:** none (sem mecanismo de sub-agente; verificação self-verified, degradada)
 **Walked:** T7 - dev local no box (alchemy dev, server 3100 e web 3101, Chrome 1440x900, script Playwright): sem sessão `/atendimento` → `/login?redirect=%2Fatendimento`; e-mail fora do seed mostra a mensagem; Ana entra e volta a `/atendimento` com cookie de 30 dias; Meu perfil mostra "Alterada há 42 dias" e o redefinir simulado; Ana em `/console` e em `/login` → `/atendimento`; Sair → `/login`; `/perfil` depois de sair → `/login?redirect=%2Fperfil`; `RAFAEL.LIMA@...` sem lembrar → `/console` com cookie de sessão; Rafael em `/atendimento` → `/console`. 14 de 14 passos.
-**Deviations:** -
+**Deviations:** (1) T2 incluiu o seed (`build.ts`, `apply.ts`) para gravar `passwordChangedAt`; (2) os `env.ts` gerados e ignorados pelo git ficam fora do Build só depois de formatados (`bun install` os recria; correção de raiz na `entrega`); (3) o walk usa um script Playwright local no box, não o MCP; (4) `alchemy.run.ts` foi trocado para 3100/3101 só durante o walk, sem commit.
 
 ---
 

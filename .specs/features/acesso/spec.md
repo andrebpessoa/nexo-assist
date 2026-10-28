@@ -122,26 +122,26 @@ Remaining dimensions N/A for this scope.
 
 | ID | Story | Phase | Status |
 | --- | --- | --- | --- |
-| AUTH-01 | P1 - Entrar com o e-mail corporativo | Specify | Pending |
-| AUTH-02 | P1 - Entrar com o e-mail corporativo | Specify | Pending |
-| AUTH-03 | P1 - Entrar com o e-mail corporativo | Specify | Pending |
-| AUTH-04 | P1 - Entrar com o e-mail corporativo | Specify | Pending |
-| AUTH-05 | P1 - Entrar com o e-mail corporativo | Specify | Pending |
-| AUTH-06 | P1 - Entrar com o e-mail corporativo | Specify | Pending |
-| AUTH-07 | P1 - Entrar com o e-mail corporativo | Specify | Pending |
-| AUTH-08 | P1 - Entrar com o e-mail corporativo | Specify | Pending |
-| AUTH-09 | P1 - Entrar com o e-mail corporativo | Specify | Pending |
-| AUTH-10 | P1 - Entrar com o e-mail corporativo | Specify | Pending |
-| AUTH-11 | P1 - Entrar com o e-mail corporativo | Specify | Pending |
-| AUTH-12 | P1 - Entrar com o e-mail corporativo | Specify | Pending |
-| AUTH-13 | P1 - Entrar com o e-mail corporativo | Specify | Pending |
-| AUTH-14 | P1 - Separar funcionário e analista | Specify | Pending |
-| AUTH-15 | P1 - Separar funcionário e analista | Specify | Pending |
-| AUTH-16 | P1 - Separar funcionário e analista | Specify | Pending |
-| AUTH-17 | P2 - Ver Meu perfil | Specify | Pending |
-| AUTH-18 | P2 - Ver Meu perfil | Specify | Pending |
-| AUTH-19 | P2 - Ver Meu perfil | Specify | Pending |
-| AUTH-20 | P2 - Ver Meu perfil | Specify | Pending |
+| AUTH-01 | P1 - Entrar com o e-mail corporativo | Verify | Verified |
+| AUTH-02 | P1 - Entrar com o e-mail corporativo | Verify | Verified |
+| AUTH-03 | P1 - Entrar com o e-mail corporativo | Verify | Verified |
+| AUTH-04 | P1 - Entrar com o e-mail corporativo | Verify | Verified |
+| AUTH-05 | P1 - Entrar com o e-mail corporativo | Verify | Verified |
+| AUTH-06 | P1 - Entrar com o e-mail corporativo | Verify | Verified |
+| AUTH-07 | P1 - Entrar com o e-mail corporativo | Verify | Verified |
+| AUTH-08 | P1 - Entrar com o e-mail corporativo | Verify | Verified |
+| AUTH-09 | P1 - Entrar com o e-mail corporativo | Verify | Verified |
+| AUTH-10 | P1 - Entrar com o e-mail corporativo | Verify | Verified |
+| AUTH-11 | P1 - Entrar com o e-mail corporativo | Verify | Verified |
+| AUTH-12 | P1 - Entrar com o e-mail corporativo | Verify | Verified |
+| AUTH-13 | P1 - Entrar com o e-mail corporativo | Verify | Verified |
+| AUTH-14 | P1 - Separar funcionário e analista | Verify | Verified |
+| AUTH-15 | P1 - Separar funcionário e analista | Verify | Verified |
+| AUTH-16 | P1 - Separar funcionário e analista | Verify | Verified |
+| AUTH-17 | P2 - Ver Meu perfil | Verify | Verified |
+| AUTH-18 | P2 - Ver Meu perfil | Verify | Verified |
+| AUTH-19 | P2 - Ver Meu perfil | Verify | Verified |
+| AUTH-20 | P2 - Ver Meu perfil | Verify | Verified |
 
 **Coverage:** 20 critérios, todos mapeados a uma história.
 

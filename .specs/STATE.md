@@ -184,10 +184,10 @@
 
 ## Handoff
 
-- **Fase**: `servico-de-chamados` validada e concluída (2026-10-28); ver `features/servico-de-chamados/validation.md`.
-- **Concluído**: T1 a T28 e os ajustes 4e06e69, 35f1e1a, 0e7c681, d01c86a, 8a6e2d2, 7682075 e eb0a8e5 em master (local, sem push). Provas 36 de 36, 3 mutações mortas, `validate_verification.py` com 0.
+- **Fase**: `acesso` validada e concluída (2026-10-28); ver `features/acesso/validation.md`. `servico-de-chamados` concluída antes.
+- **Concluído**: acesso T1 a T8 em master (local, sem push). Provas 25 de 25, 3 mutações mortas, `validate_verification.py` com 0.
 - **Em andamento**: nenhum.
-- **Próximo passo**: feature `acesso` (2ª do ROADMAP), quando o André mandar começar.
-- **Bloqueios**: nenhum. Pendente na `entrega` (DLV-08): o aviso `noNonNullAssertion` em `apps/web/src/env.public.ts` e o lint fora de `apps` e `packages`.
-- **Não commitado**: `features/servico-de-chamados/proofs.md`, gerado por `check_proofs.py` no HEAD (commitá-lo muda o HEAD).
+- **Próximo passo**: feature `agent` (3ª do ROADMAP), com aprovação delegada (AD-020).
+- **Bloqueios**: nenhum. Pendente na `entrega` (DLV-08): o aviso `noNonNullAssertion` em `apps/web/src/env.public.ts`, os `env.ts` gerados que o Biome lê e o lint fora de `apps` e `packages`.
+- **Não commitado**: `features/*/proofs.md`, gerados por `check_proofs.py` no HEAD (commitá-los muda o HEAD).
 - **Branch**: master.
