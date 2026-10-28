@@ -1,7 +1,7 @@
 {
 	"extends": "@nexo-assist/config/tsconfig.base.json",
 	"compilerOptions": {
-		"noEmit": true
-	},
-	"exclude": ["node_modules", "**/*.test.ts"]
+		"noEmit": true,
+		"types": ["node", "@cloudflare/workers-types", "bun"]
+	}
 }
