@@ -63,7 +63,9 @@ export async function withModelLimits<T>(
 	opts: { sleep: Sleep; timer?: Sleep },
 ): Promise<ModelOutcome<T>> {
 	const timer = opts.timer ?? realSleep;
-	const deadline = timer(MODEL_TIMEOUT_MS).then(() => TIMED_OUT);
+	const deadline = timer(MODEL_TIMEOUT_MS).then(
+		(): typeof TIMED_OUT => TIMED_OUT,
+	);
 	let attempts = 0;
 	const run = async (): Promise<ModelOutcome<T>> => {
 		for (;;) {
