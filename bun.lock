@@ -25,6 +25,7 @@
         "@nexo-assist/api": "workspace:*",
         "@nexo-assist/auth": "workspace:*",
         "@nexo-assist/db": "workspace:*",
+        "@nexo-assist/tickets": "workspace:*",
         "@trpc/server": "catalog:",
         "better-auth": "catalog:",
         "hono": "^4.13.7",

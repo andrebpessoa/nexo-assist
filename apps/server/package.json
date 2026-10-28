@@ -5,6 +5,7 @@
   "scripts": {
     "build": "tsdown",
     "check-types": "tsc --noEmit",
+    "test": "bun test",
     "compile": "bun build --compile --no-compile-autoload-dotenv --minify --sourcemap --bytecode ./src/index.ts --outfile server",
     "env:generate": "varlock codegen"
   },
@@ -13,6 +14,7 @@
     "@nexo-assist/api": "workspace:*",
     "@nexo-assist/auth": "workspace:*",
     "@nexo-assist/db": "workspace:*",
+    "@nexo-assist/tickets": "workspace:*",
     "@trpc/server": "catalog:",
     "better-auth": "catalog:",
     "hono": "^4.13.7",
