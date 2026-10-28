@@ -5,8 +5,9 @@ import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 
 import { createContext } from "./context";
+import { createDevRoutes } from "./dev-seed";
 import { ENV } from "./env.server";
-import { createAuth } from "./services";
+import { createAuth, getDb } from "./services";
 
 const app = new Hono();
 
@@ -33,6 +34,9 @@ app.use(
     },
   }),
 );
+
+// Local dev only: every route is 404 unless DEV_SEED_ENABLED=true (TKT-28, TKT-33).
+app.route("/", createDevRoutes({ enabled: ENV.DEV_SEED_ENABLED === "true", getDb, env: ENV }));
 
 app.get("/", (c) => {
   return c.text("OK");
