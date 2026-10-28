@@ -96,10 +96,13 @@ export function AppSidebar({
 export function AppShell({
 	sidebar,
 	here,
+	aside,
 	children,
 }: {
 	sidebar: ReactNode;
 	here: string;
+	/** Right end of the top bar, e.g. the assistant badge (CHAT-01). */
+	aside?: ReactNode;
 	children: ReactNode;
 }) {
 	return (
@@ -112,6 +115,7 @@ export function AppShell({
 						›
 					</span>
 					<span className="text-ink font-medium">{here}</span>
+					{aside && <div className="ml-auto">{aside}</div>}
 				</header>
 				<main className="min-h-0 flex-1 overflow-y-auto">{children}</main>
 			</div>

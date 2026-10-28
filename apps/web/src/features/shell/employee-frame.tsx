@@ -9,10 +9,12 @@ import { AppShell, AppSidebar, type EmployeePage } from "./app-sidebar";
 export function EmployeeFrame({
 	active,
 	here,
+	aside,
 	children,
 }: {
 	active: EmployeePage;
 	here: string;
+	aside?: ReactNode;
 	children: ReactNode;
 }) {
 	const router = useRouter();
@@ -21,6 +23,7 @@ export function EmployeeFrame({
 	return (
 		<AppShell
 			here={here}
+			aside={aside}
 			sidebar={
 				<AppSidebar
 					me={me}
