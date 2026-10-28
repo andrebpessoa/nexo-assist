@@ -78,10 +78,10 @@ T1 → T2 → T3 → T4 → T5 → T6
 
 **Done when**:
 
-- [ ] Rótulo de cada estado, incluindo "pediu ajuda" com a confiança e "contato em" sem chamado
-- [ ] Contadores de "Para você", "Com o agent" e "Minhas" batem com as conversas
-- [ ] Aguardando primeiro pelo prazo; depois pela última mensagem
-- [ ] Não lidas contam só mensagens do funcionário depois de `read_seq`
+- [x] Rótulo de cada estado, incluindo "pediu ajuda" com a confiança e "contato em" sem chamado
+- [x] Contadores de "Para você", "Com o agent" e "Minhas" batem com as conversas
+- [x] Aguardando primeiro pelo prazo; depois pela última mensagem
+- [x] Não lidas contam só mensagens do funcionário depois de `read_seq`
 
 **Tests**: unit
 **Gate**: quick
