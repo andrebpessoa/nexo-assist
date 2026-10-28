@@ -1,7 +1,7 @@
 # Serviço de chamados validation
 
 **Data**: 2026-10-28
-**HEAD**: commit `docs(specs): fecha a validação de servico-de-chamados` (master, só local, sem push); código em eb0a8e5
+**HEAD**: o registrado em `proofs.md` (master, só local, sem push); código em eb0a8e5
 **Resultado**: CONCLUÍDA - `check_proofs.py --mutations` com 36 de 36 linhas `pass` e 3 de 3 mutações mortas; `validate_verification.py` sai com 0 (só o aviso de auto-verificação).
 
 ## O que passou
