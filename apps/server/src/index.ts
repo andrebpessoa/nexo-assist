@@ -6,6 +6,8 @@ import { logger } from "hono/logger";
 
 import { createChatRoutes } from "./chat";
 import { createChatResolver } from "./chat-agent";
+import { createConsoleRoutes } from "./console";
+import { createConsoleResolver } from "./console-access";
 import { createContext } from "./context";
 import { createDevRoutes } from "./dev-seed";
 import { ENV } from "./env.server";
@@ -43,6 +45,18 @@ app.route(
 	"/",
 	createChatRoutes({
 		resolve: createChatResolver({
+			getDb,
+			getSession: async (db, headers) =>
+				(await createAuth(db)).api.getSession({ headers }),
+			env: ENV,
+		}),
+	}),
+);
+
+app.route(
+	"/",
+	createConsoleRoutes({
+		resolve: createConsoleResolver({
 			getDb,
 			getSession: async (db, headers) =>
 				(await createAuth(db)).api.getSession({ headers }),

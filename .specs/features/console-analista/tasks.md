@@ -99,11 +99,11 @@ T1 → T2 → T3 → T4 → T5 → T6
 
 **Done when**:
 
-- [ ] Funcionário recebe 403 e sem sessão 401
-- [ ] Assumir muda conversa e chamado ("Em atendimento", evento "assumido")
-- [ ] Resposta do analista aparece no histórico do funcionário com nome e equipe
-- [ ] Devolver faz o agent responder à próxima mensagem do funcionário
-- [ ] Falha do serviço ao assumir mantém o estado anterior
+- [x] Funcionário recebe 403 e sem sessão 401
+- [x] Assumir muda conversa e chamado ("Em atendimento", evento "assumido")
+- [x] Resposta do analista aparece no histórico do funcionário com nome e equipe
+- [x] Devolver faz o agent responder à próxima mensagem do funcionário
+- [x] Falha do serviço ao assumir mantém o estado anterior
 
 **Tests**: integration
 **Gate**: full
