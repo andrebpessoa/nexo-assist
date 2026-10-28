@@ -134,7 +134,7 @@ export function anaConversation(
 				"2026-10-28T13:05:01.000Z",
 			),
 			...extra,
-		],
+		].map((m, i) => ({ ...m, seq: i + 1 })),
 	};
 }
 
