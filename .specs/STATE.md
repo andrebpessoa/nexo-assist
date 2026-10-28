@@ -182,6 +182,15 @@
 - **Date**: 2026-10-28
 - **Status**: active (AD-020)
 
+### AD-021
+
+- **Decision**: O entendimento roda com Mastra dentro do Worker (plano A); o plano B (`ai` + `@ai-sdk/google`) fica sem uso. O chat usa SSE do Hono (`/chat/send`) e polling do histórico a cada 2 s.
+- **Reason**: Prova de 2026-10-28 no `alchemy dev` (workerd 1.20261012.1, `nodejs_compat`): rota temporária montou o `createMastraUnderstander` e chamou o Google, que respondeu "API key not valid"; o pacote roda no Worker.
+- **Trade-off**: O Worker fica maior (Mastra ~1,6 MB gzip); o texto sai palavra a palavra depois da decisão, não token a token do modelo.
+- **Scope**: chat-funcionario, console-analista, entrega.
+- **Date**: 2026-10-28
+- **Status**: active (AD-021)
+
 ## Handoff
 
 - **Fase**: `transparencia` validada e concluída (2026-10-28); ver `features/transparencia/validation.md`. `servico-de-chamados`, `acesso` e `agent` concluídas antes.
