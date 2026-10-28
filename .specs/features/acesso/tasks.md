@@ -125,8 +125,8 @@ T3 → T4 → T5 → T6 → T7 → T8
 
 **Done when**:
 
-- [ ] `bun --cwd apps/web test` roda testes `.tsx` com DOM
-- [ ] `resolveAccess` leva quem não tem sessão a `/login?redirect=...`, cada papel à sua área e quem já entrou para fora de `/login`
+- [x] `bun --cwd apps/web test` roda testes `.tsx` com DOM
+- [x] `resolveAccess` leva quem não tem sessão a `/login?redirect=...`, cada papel à sua área e quem já entrou para fora de `/login`
 
 **Tests**: unit
 **Gate**: quick
