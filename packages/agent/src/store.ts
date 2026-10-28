@@ -4,7 +4,7 @@ import {
 	conversationMessage,
 } from "@nexo-assist/db/schema/index";
 import type { Clock } from "@nexo-assist/tickets";
-import { asc, desc, eq, max } from "drizzle-orm";
+import { and, asc, desc, eq, max, ne } from "drizzle-orm";
 
 import type {
 	Block,
@@ -34,7 +34,7 @@ export interface StoredMessage {
 export type NewMessage = Omit<StoredMessage, "seq" | "createdAt">;
 
 export interface ConversationStore {
-	/** The user's latest conversation, or a new one. */
+	/** The user's latest conversation that is not closed, or a new one. */
 	open(userId: string): Promise<Conversation>;
 	get(id: string): Promise<Conversation | null>;
 	append(id: string, message: NewMessage): Promise<StoredMessage>;
@@ -75,7 +75,12 @@ export function createConversationStore({
 			const [row] = await db
 				.select()
 				.from(conversation)
-				.where(eq(conversation.userId, userId))
+				.where(
+					and(
+						eq(conversation.userId, userId),
+						ne(conversation.state, "encerrada"),
+					),
+				)
 				.orderBy(desc(conversation.createdAt))
 				.limit(1);
 			if (row) return toConversation(row);

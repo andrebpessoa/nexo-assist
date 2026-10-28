@@ -19,7 +19,7 @@ export const conversation = sqliteTable(
 			.notNull()
 			.references(() => user.id, { onDelete: "cascade" }),
 		state: text("state", {
-			enum: ["agent", "aguardando_analista", "com_analista"],
+			enum: ["agent", "aguardando_analista", "com_analista", "encerrada"],
 		}).notNull(),
 		pending: text("pending", { mode: "json" }),
 		summary: text("summary"),

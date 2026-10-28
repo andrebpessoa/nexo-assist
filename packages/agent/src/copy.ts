@@ -101,6 +101,7 @@ export const COPY = {
 	],
 	offerOptions: ["Abrir um chamado", "Não, obrigado"],
 	retryOption: "Tentar de novo",
+	closed: "Atendimento encerrado",
 	okNoThanks: "Tudo bem. Se precisar de mais alguma coisa, é só escrever.",
 	modelFailed:
 		"Não consegui entender sua mensagem agora. Ela continua aqui; toque em Tentar de novo.",

@@ -23,7 +23,8 @@ export type Intent = (typeof INTENTS)[number];
 export type ConversationState =
 	| "agent"
 	| "aguardando_analista"
-	| "com_analista";
+	| "com_analista"
+	| "encerrada";
 export type MessageRole = "employee" | "agent" | "analyst" | "system";
 
 export type AgentAction =
@@ -132,6 +133,8 @@ export type Block =
 			kind: "ticket_draft";
 			draft: TicketDraft;
 			status: "Aguardando confirmação" | "Criado" | "Cancelado";
+			/** The ticket number once created (CHAT-18). */
+			number?: string;
 			editable?: boolean;
 	  }
 	| {

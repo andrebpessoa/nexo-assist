@@ -58,10 +58,10 @@ T1 → T3 → T4 → T5
 
 **Done when**:
 
-- [ ] Contagem só de mensagens do funcionário com texto
-- [ ] `admit` recusa vazio, longo e a 31ª
-- [ ] `analyst` transfere sem chamar o modelo
-- [ ] `close` encerra e `open` abre outra conversa
+- [x] Contagem só de mensagens do funcionário com texto
+- [x] `admit` recusa vazio, longo e a 31ª
+- [x] `analyst` transfere sem chamar o modelo
+- [x] `close` encerra e `open` abre outra conversa
 
 **Tests**: unit + integration
 **Gate**: quick

@@ -69,6 +69,8 @@ export type AgentInput =
 	| { action: "confirm" }
 	| { action: "cancel" }
 	| { action: "retry" }
+	/** At the message limit: straight to an analyst, no model call (CHAT-23). */
+	| { action: "analyst" }
 	| { action: "edit"; edits?: Partial<TicketDraft> }
 	| { action: "option"; value: string }
 	| { action: "select"; number: string };
@@ -838,7 +840,7 @@ export function createAgent(deps: AgentDeps) {
 				const t = created.value;
 				const done: Outcome = {
 					blocks: [
-						{ kind: "ticket_draft", draft, status: "Criado" },
+						{ kind: "ticket_draft", draft, status: "Criado", number: t.number },
 						text(
 							`Pronto: abri o chamado ${t.number} com prioridade ${t.priority}. Prazo de resposta: até ${when(t.deadlineAt)}.`,
 						),
@@ -1509,6 +1511,14 @@ export function createAgent(deps: AgentDeps) {
 			else if (input.action === "cancel") outcome = cancel(turn);
 			else if (input.action === "edit") outcome = edit(turn, input.edits);
 			else if (input.action === "retry") outcome = await retry(turn);
+			else if (input.action === "analyst")
+				outcome = await transfer(turn, {
+					reason: "Pediu um analista no limite de mensagens.",
+					number: null,
+					priority: null,
+					vencido: false,
+					trigger: "pedido",
+				});
 			else if (input.action === "select")
 				outcome = await select(turn, input.number);
 			else
@@ -1539,6 +1549,16 @@ export function createAgent(deps: AgentDeps) {
 		async history(userId: string) {
 			const conv = await store.open(userId);
 			return { conversation: conv, messages: await store.messages(conv.id) };
+		},
+		/** Ends the conversation; the next `open` starts a new one (CHAT-29). */
+		async close(conversationId: string) {
+			await store.update(conversationId, { state: "encerrada", pending: null });
+			await store.append(conversationId, {
+				role: "system",
+				text: COPY.closed,
+				blocks: [text(COPY.closed)],
+				decision: null,
+			});
 		},
 		/** An analyst took the conversation (console). */
 		async assume(conversationId: string) {
