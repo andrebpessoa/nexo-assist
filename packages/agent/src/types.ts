@@ -138,9 +138,11 @@ export type Pending =
 	  }
 	| {
 			kind: "collect";
-			field: "affected" | "type" | "category" | "blocksWork" | "description";
+			field: "affected" | "type" | "category" | "blocksWork";
 			partial: Partial<TicketDraft>;
+			citing?: string;
 	  }
-	| { kind: "retry"; text: string };
+	| { kind: "offer_ticket"; text: string }
+	| { kind: "collect_note"; number: string };
 
 export type AffectedOption = Affected | "Não sei";

@@ -164,8 +164,8 @@ T5 → T6 → T7 → T8 → T9 → T10 → T11
 
 **Done when**:
 
-- [ ] Registro de decisão em cada resposta
-- [ ] Textos só de modelos e ferramentas
+- [x] Registro de decisão em cada resposta
+- [x] Textos só de modelos e ferramentas
 
 **Tests**: integration
 **Gate**: full
