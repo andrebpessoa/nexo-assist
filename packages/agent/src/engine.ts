@@ -1418,13 +1418,20 @@ export function createAgent(deps: AgentDeps) {
 			...(outcome.transfer ? { transfer: outcome.transfer } : {}),
 			...(outcome.incomplete ? { incomplete: true } : {}),
 		};
-		deps.log?.(JSON.stringify(decisionLog(turn.conv.id, decision)));
-		await store.append(turn.conv.id, {
+		const stored = await store.append(turn.conv.id, {
 			role: "agent",
 			text: blocksText(outcome.blocks),
 			blocks: outcome.blocks,
 			decision,
 		});
+		deps.log?.(
+			JSON.stringify(
+				decisionLog(
+					{ conversationId: turn.conv.id, messageSeq: stored.seq },
+					decision,
+				),
+			),
+		);
 		const patch: Parameters<ConversationStore["update"]>[1] = {};
 		if (outcome.pending !== undefined) patch.pending = outcome.pending;
 		if (outcome.state) patch.state = outcome.state;

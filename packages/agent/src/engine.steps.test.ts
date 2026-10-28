@@ -169,6 +169,7 @@ describe("decision steps", () => {
 		expect(entry).toMatchObject({
 			event: "agent.decision",
 			conversationId: h.turn.conversationId,
+			messageSeq: 2,
 			intent: "abrir_chamado",
 			confidence: 90,
 			action: "rascunho_chamado",

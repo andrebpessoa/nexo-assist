@@ -78,10 +78,10 @@ T1 → T2 → T3
 
 **Done when**:
 
-- [ ] Rótulo só de passo gravado, na ordem, sem repetir
-- [ ] Painel com entendido, feito, confiança com faixa, porquê em até 3 frases, passos e transferência
-- [ ] Funcionário vê só o tempo; analista vê modelo, tokens e custo
-- [ ] Rótulo de ajuda e totais da conversa
+- [x] Rótulo só de passo gravado, na ordem, sem repetir
+- [x] Painel com entendido, feito, confiança com faixa, porquê em até 3 frases, passos e transferência
+- [x] Funcionário vê só o tempo; analista vê modelo, tokens e custo
+- [x] Rótulo de ajuda e totais da conversa
 
 **Tests**: unit
 **Gate**: quick
