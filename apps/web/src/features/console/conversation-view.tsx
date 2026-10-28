@@ -66,7 +66,19 @@ function lines(m: ConsoleMessage, all: ConsoleMessage[]): string[] {
 		}
 		return [m.text];
 	}
-	return m.blocks.flatMap(blockLines);
+	return m.blocks.flatMap((b, i) => {
+		const next = m.blocks[i + 1];
+		// The engine may repeat the question as text; the next block already carries it.
+		if (
+			b.kind === "text" &&
+			(next?.kind === "options" || next?.kind === "ticket_list") &&
+			b.text.endsWith(next.question)
+		) {
+			const rest = b.text.slice(0, -next.question.length).trim();
+			return rest ? [rest] : [];
+		}
+		return blockLines(b);
+	});
 }
 
 function blockLines(b: Block): string[] {
@@ -108,7 +120,46 @@ function titleOf(number: string, all: ConsoleMessage[]): string | null {
 	return null;
 }
 
-function Bubble({
+function SystemLine({
+	text,
+	at,
+	query,
+}: {
+	text: string;
+	at: string;
+	query: string;
+}) {
+	return (
+		<p className="text-ink-3 my-1 text-center text-[11px]">
+			<span className="bg-desk rounded-full px-3 py-1">
+				<Highlight text={`${text} · ${hhmm(at)}`} query={query} />
+			</span>
+		</p>
+	);
+}
+
+/** An agent message that transferred is followed by the system line "Transferida para <equipe>" (CON-13). */
+function Bubble(props: {
+	m: ConsoleMessage;
+	all: ConsoleMessage[];
+	query: string;
+	onDecision: (d: DecisionRecord) => void;
+}) {
+	const transfer = props.m.blocks.find((b) => b.kind === "transfer");
+	if (transfer?.kind !== "transfer") return <MessageBubble {...props} />;
+	return (
+		<>
+			<MessageBubble {...props} />
+			<SystemLine
+				text={`Transferida para ${transfer.team}`}
+				at={props.m.createdAt}
+				query={props.query}
+			/>
+		</>
+	);
+}
+
+function MessageBubble({
 	m,
 	all,
 	query,
@@ -123,13 +174,7 @@ function Bubble({
 		<span className="text-ink-3 text-[10px]">{hhmm(m.createdAt)}</span>
 	);
 	if (m.role === "system")
-		return (
-			<p className="text-ink-3 my-1 text-center text-[11px]">
-				<span className="bg-desk rounded-full px-3 py-1">
-					<Highlight text={`${m.text} · ${hhmm(m.createdAt)}`} query={query} />
-				</span>
-			</p>
-		);
+		return <SystemLine text={m.text} at={m.createdAt} query={query} />;
 	const text = lines(m, all);
 	const list = m.blocks.find((b) => b.kind === "ticket_list");
 	const body = (

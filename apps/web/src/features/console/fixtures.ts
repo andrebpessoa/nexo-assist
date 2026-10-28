@@ -126,12 +126,22 @@ export function anaConversation(
 				"agent",
 				"Encaminhei para o Suporte N2. Um analista vai falar com você em até 2 h úteis.",
 				"2026-10-28T13:05:00.000Z",
-				{ decision: transferDecision },
-			),
-			message(
-				"system",
-				"Transferida para Suporte N2",
-				"2026-10-28T13:05:01.000Z",
+				{
+					decision: transferDecision,
+					// As the engine writes it: a transfer block, no system message.
+					blocks: [
+						{
+							kind: "transfer",
+							team: "Suporte N2",
+							contactBy: "2026-10-28T15:05:00.000Z",
+							summary: "Problema: Notebook lento. Motivo: prazo vencido",
+						},
+						{
+							kind: "text",
+							text: "Encaminhei para o Suporte N2. Um analista vai falar com você em até 2 h úteis.",
+						},
+					],
+				},
 			),
 			...extra,
 		].map((m, i) => ({ ...m, seq: i + 1 })),

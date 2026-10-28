@@ -131,6 +131,7 @@ Os analistas do Suporte N1 e N2 precisam ver as conversas que dependem deles, in
 
 1. WHILE a lista ou a conversa carrega o sistema SHALL mostrar esqueletos no lugar. [PDF] `CON-31`
 2. WHEN a aplicação reinicia THEN o sistema SHALL manter o estado de cada conversa, o responsável e o histórico. [PDF] `CON-32`
+3. WHEN uma mensagem do agent traz a pergunta no texto e nas opções THEN o console SHALL mostrar a pergunta uma vez só. [Proposta] `CON-33` (achado da caminhada de 2026-10-28)
 
 **Independent Test**: Assumir, reiniciar o servidor e abrir o console: a conversa continua "Você está atendendo".
 
@@ -193,8 +194,9 @@ Os analistas do Suporte N1 e N2 precisam ver as conversas que dependem deles, in
 | CON-30 | P1 - Assumir, responder, devolver e encerrar | Specify | Pending |
 | CON-31 | P1 - Carregar e persistir | Specify | Pending |
 | CON-32 | P1 - Carregar e persistir | Specify | Pending |
+| CON-33 | P1 - Carregar e persistir | Execute | Pending |
 
-**Coverage:** 32 critérios, todos mapeados a uma história.
+**Coverage:** 33 critérios, todos mapeados a uma história.
 
 ## Sources
 

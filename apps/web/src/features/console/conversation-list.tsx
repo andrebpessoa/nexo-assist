@@ -99,9 +99,9 @@ function Row({
 					<Avatar name={item.name} />
 					<span className="absolute right-0 bottom-0 size-2.5 rounded-full border-2 border-white bg-emerald-500" />
 				</span>
-				<span className="grid min-w-0 flex-1 gap-0.5">
+				<span className="grid min-w-0 flex-1 grid-cols-[minmax(0,1fr)] gap-0.5">
 					<span className="flex items-baseline justify-between gap-2">
-						<span className="text-ink truncate text-[14px] font-semibold">
+						<span className="text-ink min-w-0 truncate text-[14px] font-semibold">
 							{item.name}
 						</span>
 						<span
@@ -111,7 +111,7 @@ function Row({
 						</span>
 					</span>
 					<span className="flex items-center justify-between gap-2">
-						<span className="text-ink-2 truncate text-[12px]">
+						<span className="text-ink-2 min-w-0 truncate text-[12px]">
 							{previewText(item)}
 						</span>
 						{item.unread > 0 && (
@@ -159,7 +159,7 @@ export function ConversationList({
 	return (
 		<section
 			aria-label="Lista de conversas"
-			className="border-rule bg-paper flex h-full w-[340px] shrink-0 flex-col border-r"
+			className="border-rule bg-paper flex h-full w-[380px] shrink-0 flex-col border-r"
 		>
 			<header className="flex items-center justify-between px-4 pt-4 pb-3">
 				<h1 className="text-ink text-[20px] font-semibold">Conversas</h1>
@@ -198,7 +198,7 @@ export function ConversationList({
 							role="tab"
 							aria-selected={active}
 							onClick={() => setFilter(f.id)}
-							className={`rounded-full px-2.5 py-1 text-[12px] ${active ? "bg-cta-soft text-cta font-medium" : "bg-desk text-ink-2"}`}
+							className={`rounded-full px-2.5 py-1 text-[12px] whitespace-nowrap ${active ? "bg-cta-soft text-cta font-medium" : "bg-desk text-ink-2"}`}
 						>
 							{f.label}
 							{f.id !== "todas" && (

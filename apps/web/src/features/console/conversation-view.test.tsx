@@ -291,4 +291,37 @@ describe("ConversationView", () => {
 		);
 		expect(onShowTickets).toHaveBeenCalled();
 	});
+
+	test("a question the agent also wrote as text shows once", () => {
+		const question = "Quer que eu chame um analista?";
+		setup(
+			anaConversation({}, [
+				message(
+					"agent",
+					`Está sem atualização há 6 dias. ${question}`,
+					"2026-10-28T13:06:00.000Z",
+					{
+						blocks: [
+							{
+								kind: "text",
+								text: `Está sem atualização há 6 dias. ${question}`,
+							},
+							{
+								kind: "options",
+								question,
+								options: ["Falar com um analista", "Não, obrigado"],
+							},
+						],
+					},
+				),
+			]),
+		);
+		const log = screen.getByRole("log");
+		expect(within(log).getAllByText(question, { exact: false })).toHaveLength(
+			1,
+		);
+		expect(
+			within(log).getByText("Está sem atualização há 6 dias."),
+		).toBeTruthy();
+	});
 });
