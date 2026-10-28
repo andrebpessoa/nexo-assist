@@ -44,11 +44,27 @@ export type AgentAction =
 	| "descartar"
 	| "falha";
 
+/** One step of a reply: a service tool, a model call or a rule run in code (TRN-11). */
 export interface ToolCall {
 	name: string;
 	ok: boolean;
 	attempts: number;
+	/** Absent on records saved before transparencia: read as "service". */
+	kind?: "service" | "model" | "rule";
+	/** The ticket the step was about, e.g. "INC-20311". */
+	target?: string;
+	request?: string;
+	result?: string;
+	/** The error code when `ok` is false. */
+	error?: string;
+	durationMs?: number;
 }
+
+export type TransferTrigger =
+	| "pedido"
+	| "critica"
+	| "vencido"
+	| "confianca_baixa";
 
 export interface Usage {
 	inputTokens: number;
@@ -66,6 +82,13 @@ export interface DecisionRecord {
 	reason: string;
 	tools: ToolCall[];
 	usage?: Usage;
+	/** Time from the message to the reply. */
+	latencyMs?: number;
+	/** The model id, when the model was called. */
+	model?: string | null;
+	transfer?: { trigger: TransferTrigger; summary: string };
+	/** The reply stopped midway (model failed or timed out). */
+	incomplete?: boolean;
 }
 
 /** Dates as ISO strings: blocks are stored as JSON and drawn as they were. */

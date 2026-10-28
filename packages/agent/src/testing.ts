@@ -6,7 +6,7 @@ import { buildSeed } from "@nexo-assist/tickets/seed/build";
 import { createTicketService } from "@nexo-assist/tickets/service";
 import { createTestDb } from "@nexo-assist/tickets/testing/db";
 
-import { createAgent } from "./engine";
+import { type AgentDeps, createAgent } from "./engine";
 import { createProfileReader } from "./profile";
 import type { Sleep } from "./retry";
 import { createConversationStore } from "./store";
@@ -42,6 +42,9 @@ export interface HarnessOptions {
 	now?: Date;
 	/** A real model instead of the scripted one (`bun run eval --live`). */
 	understander?: Understander;
+	onStep?: AgentDeps["onStep"];
+	log?: AgentDeps["log"];
+	modelId?: string;
 }
 
 /** An agent over the seeded database with a scripted model, a fixed clock and instant waits. */
@@ -66,6 +69,9 @@ export async function agentHarness(options: HarnessOptions = {}) {
 		},
 		timer: options.timer ?? (() => new Promise<void>(() => {})),
 		newKey: () => `key-${++key}`,
+		onStep: options.onStep,
+		log: options.log,
+		modelId: options.modelId,
 	});
 	const ana = ids.ana as string;
 	return { db, ids, ana, agent, understander, store, service, sleeps };
@@ -76,5 +82,7 @@ export function said(blocks: Block[]): string {
 	return blocks.flatMap((b) => (b.kind === "text" ? [b.text] : [])).join("\n");
 }
 
-export const toolNames = (d: { tools: { name: string }[] } | null) =>
-	(d?.tools ?? []).map((t) => t.name);
+/** Service and model calls; rule steps run in code are left out. */
+export const toolNames = (
+	d: { tools: { name: string; kind?: string }[] } | null,
+) => (d?.tools ?? []).filter((t) => t.kind !== "rule").map((t) => t.name);

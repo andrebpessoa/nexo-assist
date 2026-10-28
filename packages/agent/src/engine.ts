@@ -37,6 +37,7 @@ import {
 } from "./rules/priority";
 import { transferSummary } from "./rules/summary";
 import type { Conversation, ConversationStore, StoredMessage } from "./store";
+import { decisionLog } from "./transparency";
 import type {
 	AgentAction,
 	Block,
@@ -44,6 +45,7 @@ import type {
 	Pending,
 	TicketDraft,
 	ToolCall,
+	TransferTrigger,
 	Usage,
 } from "./types";
 import {
@@ -89,6 +91,19 @@ export interface AgentDeps {
 	/** The 30 s model deadline timer; tests pass one that never fires. */
 	timer?: Sleep;
 	newKey?: () => string;
+	/** Start and end of each step, for the progress line (TRN-04). */
+	onStep?: (event: StepEvent) => void;
+	/** One JSON line per decision, without message text (TRN-17). */
+	log?: (line: string) => void;
+	modelId?: string;
+}
+
+export interface StepEvent {
+	conversationId: string;
+	name: string;
+	target?: string;
+	phase: "start" | "end";
+	ok?: boolean;
 }
 
 interface Turn {
@@ -101,6 +116,8 @@ interface Turn {
 	tools: ToolCall[];
 	usage: Usage;
 	history: StoredMessage[];
+	startedAt: number;
+	modelCalled: boolean;
 }
 
 interface Outcome {
@@ -111,6 +128,8 @@ interface Outcome {
 	/** `undefined` keeps what was pending. */
 	pending?: Pending | null;
 	state?: Conversation["state"];
+	incomplete?: boolean;
+	transfer?: { trigger: TransferTrigger; summary: string };
 }
 
 class ModelUnavailable extends Error {
@@ -141,6 +160,43 @@ const TRIED_LABELS: Partial<Record<AgentAction, string>> = {
 
 type Field = "type" | "category" | "affected" | "blocksWork";
 
+function record(v: unknown): Record<string, unknown> | null {
+	return v && typeof v === "object" ? (v as Record<string, unknown>) : null;
+}
+
+/** A short, text-free summary of what a tool returned, for the panel. */
+function describe(value: unknown): string {
+	if (Array.isArray(value)) {
+		const ids = value
+			.slice(0, 3)
+			.map((x) => record(x)?.number ?? record(x)?.slug)
+			.filter((x): x is string => typeof x === "string");
+		return `${value.length} resultado(s)${ids.length ? `: ${ids.join(", ")}` : ""}`;
+	}
+	const r = record(value);
+	if (r && typeof r.number === "string")
+		return typeof r.status === "string"
+			? `${r.number} · ${r.status}`
+			: r.number;
+	return "ok";
+}
+
+function describeModel(value: unknown): string {
+	const r = record(value);
+	const u = record(r?.understanding);
+	if (u) return `${u.intent} · ${u.confidence}%`;
+	const j = record(r?.judgement);
+	if (j)
+		return `artigo: ${j.articleSlug ?? "nenhum"}${j.articleFits === false ? " (não serve)" : ""}; mesmo problema: ${j.sameProblemNumber ?? "nenhum"}`;
+	return "ok";
+}
+
+function defined<T extends object>(o: T): T {
+	return Object.fromEntries(
+		Object.entries(o).filter(([, v]) => v !== undefined),
+	) as T;
+}
+
 function blocksText(blocks: Block[]): string {
 	return blocks
 		.flatMap((b) =>
@@ -157,14 +213,64 @@ export function createAgent(deps: AgentDeps) {
 
 	// ---- tools -------------------------------------------------------------
 
+	function begin(turn: Turn, name: string, target?: string) {
+		deps.onStep?.(
+			defined({ conversationId: turn.conv.id, name, target, phase: "start" }),
+		);
+		return performance.now();
+	}
+
+	function end(turn: Turn, step: ToolCall, started: number) {
+		turn.tools.push(
+			defined({
+				...step,
+				durationMs: Math.round(performance.now() - started),
+			}),
+		);
+		deps.onStep?.(
+			defined({
+				conversationId: turn.conv.id,
+				name: step.name,
+				target: step.target,
+				phase: "end",
+				ok: step.ok,
+			}),
+		);
+	}
+
 	async function tool<T>(
 		turn: Turn,
 		name: string,
 		call: () => Promise<Result<T>>,
+		info: { target?: string; request?: string } = {},
 	): Promise<Result<T>> {
+		const started = begin(turn, name, info.target);
 		const { result, attempts } = await withTicketRetry(call, sleep);
-		turn.tools.push({ name, ok: result.ok, attempts });
+		end(
+			turn,
+			{
+				name,
+				kind: "service",
+				ok: result.ok,
+				attempts,
+				...info,
+				...(result.ok
+					? { result: describe(result.value) }
+					: { error: result.error.code }),
+			},
+			started,
+		);
 		return result;
+	}
+
+	/** A rule run in code; it shows in the action line like a tool (TRN-02). */
+	function rule(turn: Turn, name: string, request: string, result: string) {
+		const started = begin(turn, name);
+		end(
+			turn,
+			{ name, kind: "rule", ok: true, attempts: 1, request, result },
+			started,
+		);
 	}
 
 	async function model<T extends { usage?: Usage }>(
@@ -172,8 +278,22 @@ export function createAgent(deps: AgentDeps) {
 		name: string,
 		call: () => Promise<T>,
 	): Promise<T> {
+		const started = begin(turn, name);
 		const outcome = await withModelLimits(call, { sleep, timer: deps.timer });
-		turn.tools.push({ name, ok: outcome.ok, attempts: outcome.attempts });
+		end(
+			turn,
+			{
+				name,
+				kind: "model",
+				ok: outcome.ok,
+				attempts: outcome.attempts,
+				...(outcome.ok
+					? { result: describeModel(outcome.value) }
+					: { error: outcome.reason }),
+			},
+			started,
+		);
+		turn.modelCalled = true;
 		if (!outcome.ok) throw new ModelUnavailable(outcome.reason);
 		const usage = outcome.value.usage;
 		if (usage) {
@@ -216,8 +336,11 @@ export function createAgent(deps: AgentDeps) {
 	// ---- consulta ----------------------------------------------------------
 
 	async function showTicket(turn: Turn, number: string): Promise<Outcome> {
-		const got = await tool(turn, "chamados.consultar", () =>
-			tickets.get(turn.actor, number),
+		const got = await tool(
+			turn,
+			"chamados.consultar",
+			() => tickets.get(turn.actor, number),
+			{ target: number, request: number },
 		);
 		if (!got.ok) {
 			if (got.error.code === "NOT_FOUND")
@@ -231,6 +354,7 @@ export function createAgent(deps: AgentDeps) {
 			return serviceDown(turn, "consultar o chamado");
 		}
 		const t = got.value;
+		rule(turn, "regra.prazo", t.priority, t.vencido ? "vencido" : "no prazo");
 		const blocks: Block[] = [
 			{ kind: "ticket_card", ticket: toView(t) },
 			text(
@@ -261,8 +385,11 @@ export function createAgent(deps: AgentDeps) {
 	}
 
 	async function openTickets(turn: Turn) {
-		return tool(turn, "chamados.listar", () =>
-			tickets.list(turn.actor, { onlyOpen: true }),
+		return tool(
+			turn,
+			"chamados.listar",
+			() => tickets.list(turn.actor, { onlyOpen: true }),
+			{ request: "abertos" },
 		);
 	}
 
@@ -326,8 +453,11 @@ export function createAgent(deps: AgentDeps) {
 		number: string,
 		note: string | null,
 	): Promise<Outcome> {
-		const got = await tool(turn, "chamados.consultar", () =>
-			tickets.get(turn.actor, number),
+		const got = await tool(
+			turn,
+			"chamados.consultar",
+			() => tickets.get(turn.actor, number),
+			{ target: number, request: number },
 		);
 		if (!got.ok)
 			return got.error.code === "NOT_FOUND"
@@ -406,8 +536,11 @@ export function createAgent(deps: AgentDeps) {
 	// ---- central de ajuda e abertura ---------------------------------------
 
 	async function helpCenter(turn: Turn): Promise<Outcome> {
-		const found = await tool(turn, "central.buscar", () =>
-			tickets.searchArticles(turn.text),
+		const found = await tool(
+			turn,
+			"central.buscar",
+			() => tickets.searchArticles(turn.text),
+			{ request: turn.text },
 		);
 		if (!found.ok) return serviceDown(turn, "consultar a central de ajuda");
 		const articles = found.value;
@@ -547,6 +680,19 @@ export function createAgent(deps: AgentDeps) {
 		};
 	}
 
+	function draftSteps(turn: Turn, draft: TicketDraft, classified: boolean) {
+		if (classified) {
+			rule(
+				turn,
+				"regra.prioridade",
+				`afeta: ${draft.affected}; impede o trabalho: ${draft.blocksWork ? "sim" : "não"}`,
+				draft.priority,
+			);
+			rule(turn, "regra.sla", draft.priority, draft.deadlineAt);
+		}
+		rule(turn, "rascunho.montar", draft.type, draft.title);
+	}
+
 	function continueDraft(
 		turn: Turn,
 		partial: Partial<TicketDraft>,
@@ -563,6 +709,7 @@ export function createAgent(deps: AgentDeps) {
 				pending: { kind: "collect", field: missing, partial, citing },
 			};
 		const draft = buildDraft(partial, turn.now, citing);
+		draftSteps(turn, draft, true);
 		return {
 			blocks: [
 				...prefix,
@@ -592,13 +739,19 @@ export function createAgent(deps: AgentDeps) {
 		const prefix: Block[] = [];
 		let articles: Article[] = [];
 		if (!opts.skipHelpCenter) {
-			const found = await tool(turn, "central.buscar", () =>
-				tickets.searchArticles(opts.fromText ?? turn.text),
+			const found = await tool(
+				turn,
+				"central.buscar",
+				() => tickets.searchArticles(opts.fromText ?? turn.text),
+				{ request: opts.fromText ?? turn.text },
 			);
 			if (found.ok) articles = found.value;
 		}
-		const listed = await tool(turn, "chamados.listar", () =>
-			tickets.list(turn.actor),
+		const listed = await tool(
+			turn,
+			"chamados.listar",
+			() => tickets.list(turn.actor),
+			{ request: "todos" },
 		);
 		if (!listed.ok) return serviceDown(turn, "consultar seus chamados");
 		const j = await judge(turn, articles, listed.value);
@@ -674,8 +827,11 @@ export function createAgent(deps: AgentDeps) {
 		switch (pending.kind) {
 			case "ticket_draft": {
 				const { draft, idempotencyKey } = pending;
-				const created = await tool(turn, "chamados.criar", () =>
-					tickets.create(turn.actor, draft, idempotencyKey),
+				const created = await tool(
+					turn,
+					"chamados.criar",
+					() => tickets.create(turn.actor, draft, idempotencyKey),
+					{ request: draft.title },
 				);
 				if (!created.ok)
 					return writeFailed(turn, "criar o chamado", created.error.message);
@@ -698,6 +854,7 @@ export function createAgent(deps: AgentDeps) {
 					number: t.number,
 					priority: t.priority,
 					vencido: false,
+					trigger: "critica",
 				});
 				return {
 					...moved,
@@ -706,8 +863,11 @@ export function createAgent(deps: AgentDeps) {
 				};
 			}
 			case "update_draft": {
-				const added = await tool(turn, "chamados.complementar", () =>
-					tickets.addNote(turn.actor, pending.number, pending.note),
+				const added = await tool(
+					turn,
+					"chamados.complementar",
+					() => tickets.addNote(turn.actor, pending.number, pending.note),
+					{ target: pending.number, request: pending.number },
 				);
 				if (!added.ok) {
 					if (added.error.code === "TICKET_CLOSED")
@@ -750,8 +910,11 @@ export function createAgent(deps: AgentDeps) {
 				};
 			}
 			case "reopen_draft": {
-				const reopened = await tool(turn, "chamados.reabrir", () =>
-					tickets.reopen(turn.actor, pending.number, pending.reason),
+				const reopened = await tool(
+					turn,
+					"chamados.reabrir",
+					() => tickets.reopen(turn.actor, pending.number, pending.reason),
+					{ target: pending.number, request: pending.number },
 				);
 				if (!reopened.ok) {
 					if (reopened.error.code === "REOPEN_NOT_ALLOWED")
@@ -786,6 +949,7 @@ export function createAgent(deps: AgentDeps) {
 					turn,
 					pending.number,
 					"Prazo vencido; funcionário aceitou falar com um analista",
+					"vencido",
 				);
 			case "offer_ticket":
 				return startTicket(turn, {
@@ -873,6 +1037,7 @@ export function createAgent(deps: AgentDeps) {
 		const draft = changedFacts
 			? buildDraft(merged, turn.now, pending.citing)
 			: { ...base, ...edits };
+		draftSteps(turn, draft, changedFacts);
 		return {
 			blocks: [
 				text(`${COPY.draftIntro} ${draft.priorityReason}`),
@@ -916,6 +1081,7 @@ export function createAgent(deps: AgentDeps) {
 			number: string | null;
 			priority: Priority | null;
 			vencido: boolean;
+			trigger: TransferTrigger;
 		},
 	): Promise<Outcome> {
 		const priority = opts.priority ?? "Média";
@@ -928,11 +1094,16 @@ export function createAgent(deps: AgentDeps) {
 			priority: opts.priority,
 			reason: opts.reason,
 		});
+		rule(turn, "regra.prazo", priority, contactBy.toISOString());
 		const number = opts.number;
 		if (number)
-			await tool(turn, "chamados.transferir", () =>
-				tickets.transfer(turn.actor, number, { summary, team }),
+			await tool(
+				turn,
+				"chamados.transferir",
+				() => tickets.transfer(turn.actor, number, { summary, team }),
+				{ target: number, request: `${number} → ${team}` },
 			);
+		else rule(turn, "conversa.transferir", team, "aguardando_analista");
 		return {
 			blocks: [
 				{ kind: "transfer", team, contactBy: contactBy.toISOString(), summary },
@@ -945,6 +1116,7 @@ export function createAgent(deps: AgentDeps) {
 			reason: opts.reason,
 			pending: null,
 			state: "aguardando_analista",
+			transfer: { trigger: opts.trigger, summary },
 		};
 	}
 
@@ -952,6 +1124,7 @@ export function createAgent(deps: AgentDeps) {
 		turn: Turn,
 		number: string | null,
 		reason: string,
+		trigger: TransferTrigger,
 	): Promise<Outcome> {
 		if (!number)
 			return transfer(turn, {
@@ -959,9 +1132,13 @@ export function createAgent(deps: AgentDeps) {
 				number: null,
 				priority: null,
 				vencido: false,
+				trigger,
 			});
-		const got = await tool(turn, "chamados.consultar", () =>
-			tickets.get(turn.actor, number),
+		const got = await tool(
+			turn,
+			"chamados.consultar",
+			() => tickets.get(turn.actor, number),
+			{ target: number, request: number },
 		);
 		const t = got.ok ? got.value : null;
 		return transfer(turn, {
@@ -969,6 +1146,7 @@ export function createAgent(deps: AgentDeps) {
 			number: t ? number : null,
 			priority: t?.priority ?? null,
 			vencido: t?.vencido ?? false,
+			trigger,
 		});
 	}
 
@@ -1020,6 +1198,7 @@ export function createAgent(deps: AgentDeps) {
 				turn,
 				relatedTicket(turn),
 				`Agent pediu ajuda · confiança ${u.confidence}%`,
+				"confianca_baixa",
 			);
 		if (u.manipulation)
 			return {
@@ -1034,6 +1213,7 @@ export function createAgent(deps: AgentDeps) {
 				turn,
 				relatedTicket(turn),
 				"Funcionário pediu um analista",
+				"pedido",
 			);
 		switch (u.intent) {
 			case "fora_de_escopo":
@@ -1104,6 +1284,7 @@ export function createAgent(deps: AgentDeps) {
 						turn,
 						p.number,
 						"Prazo vencido; funcionário aceitou falar com um analista",
+						"vencido",
 					);
 				if (u.answer === "nao")
 					return declined("Funcionário não quis analista.");
@@ -1166,6 +1347,7 @@ export function createAgent(deps: AgentDeps) {
 					turn,
 					p.number,
 					"Prazo vencido; funcionário aceitou falar com um analista",
+					"vencido",
 				);
 			if (value === "Adicionar informação")
 				return complementTicket(turn, p.number, null);
@@ -1231,7 +1413,12 @@ export function createAgent(deps: AgentDeps) {
 				...turn.usage,
 				costUsd: Math.round(turn.usage.costUsd * 1e6) / 1e6,
 			},
+			latencyMs: Math.round(performance.now() - turn.startedAt),
+			model: turn.modelCalled ? (deps.modelId ?? null) : null,
+			...(outcome.transfer ? { transfer: outcome.transfer } : {}),
+			...(outcome.incomplete ? { incomplete: true } : {}),
 		};
+		deps.log?.(JSON.stringify(decisionLog(turn.conv.id, decision)));
 		await store.append(turn.conv.id, {
 			role: "agent",
 			text: blocksText(outcome.blocks),
@@ -1305,6 +1492,8 @@ export function createAgent(deps: AgentDeps) {
 			tools: [],
 			usage: { inputTokens: 0, outputTokens: 0, costUsd: 0 },
 			history: await store.messages(conv.id),
+			startedAt: performance.now(),
+			modelCalled: false,
 		};
 		try {
 			let outcome: Outcome | null;
@@ -1333,6 +1522,7 @@ export function createAgent(deps: AgentDeps) {
 					? "Limite de uso do modelo"
 					: "Modelo falhou ou passou de 30 s",
 				reason: error.why,
+				incomplete: true,
 			});
 		}
 	}

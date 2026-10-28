@@ -56,11 +56,11 @@ T1 → T2 → T3
 
 **Done when**:
 
-- [ ] Passos de regra (`regra.prioridade`, `regra.sla`, `rascunho.montar`, `regra.prazo`) gravados quando acontecem
-- [ ] Falha depois das tentativas grava `ok: false` e o erro
-- [ ] `onStep` emite início e fim de cada passo
-- [ ] Transferência grava gatilho e resumo; falha do modelo grava `incomplete`
-- [ ] Log JSON por decisão sem texto de mensagem
+- [x] Passos de regra (`regra.prioridade`, `regra.sla`, `rascunho.montar`, `regra.prazo`) gravados quando acontecem
+- [x] Falha depois das tentativas grava `ok: false` e o erro
+- [x] `onStep` emite início e fim de cada passo
+- [x] Transferência grava gatilho e resumo; falha do modelo grava `incomplete`
+- [x] Log JSON por decisão sem texto de mensagem
 
 **Tests**: integration
 **Gate**: quick
