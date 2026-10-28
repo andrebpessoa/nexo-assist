@@ -1,0 +1,16 @@
+{
+	"name": "@nexo-assist/tickets",
+	"type": "module",
+	"exports": {
+		".": "./src/index.ts",
+		"./*": "./src/*.ts"
+	},
+	"scripts": {
+		"check-types": "tsc --noEmit",
+		"test": "bun test"
+	},
+	"devDependencies": {
+		"@nexo-assist/config": "workspace:*",
+		"typescript": "catalog:"
+	}
+}

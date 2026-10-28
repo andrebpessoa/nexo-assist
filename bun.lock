@@ -141,6 +141,13 @@
         "varlock": "catalog:",
       },
     },
+    "packages/tickets": {
+      "name": "@nexo-assist/tickets",
+      "devDependencies": {
+        "@nexo-assist/config": "workspace:*",
+        "typescript": "catalog:",
+      },
+    },
     "packages/ui": {
       "name": "@nexo-assist/ui",
       "version": "0.0.0",
@@ -460,6 +467,8 @@
     "@nexo-assist/db": ["@nexo-assist/db@workspace:packages/db"],
 
     "@nexo-assist/infra": ["@nexo-assist/infra@workspace:packages/infra"],
+
+    "@nexo-assist/tickets": ["@nexo-assist/tickets@workspace:packages/tickets"],
 
     "@nexo-assist/ui": ["@nexo-assist/ui@workspace:packages/ui"],
 
