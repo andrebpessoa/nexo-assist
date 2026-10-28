@@ -202,8 +202,8 @@ T5 → T6 → T7 → T8 → T9 → T10 → T11
 
 **Done when**:
 
-- [ ] Duplicidade antes do rascunho
-- [ ] Nada sem Confirmar; uma vez só
+- [x] Duplicidade antes do rascunho
+- [x] Nada sem Confirmar; uma vez só
 
 **Tests**: integration
 **Gate**: full
