@@ -2,7 +2,7 @@
 	{
 		"file": "apps/web/src/features/chat/blocks.tsx",
 		"old": "setSent(true);",
-		"new": "",
+		"new": "setSent(false);",
 		"proof": "bun --cwd apps/web test src/features/chat/blocks.test.tsx -t \"confirm once\"",
 		"label": "the draft card sends the confirmation twice"
 	},
