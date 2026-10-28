@@ -1,0 +1,23 @@
+[
+	{
+		"file": "apps/web/src/features/chat/blocks.tsx",
+		"old": "setSent(true);",
+		"new": "",
+		"proof": "bun --cwd apps/web test src/features/chat/blocks.test.tsx -t \"confirm once\"",
+		"label": "the draft card sends the confirmation twice"
+	},
+	{
+		"file": "packages/agent/src/session.ts",
+		"old": "if (counts(input) && employeeCount(messages) >= MESSAGE_LIMIT) return \"limit\";",
+		"new": "if (counts(input) && employeeCount(messages) > MESSAGE_LIMIT) return \"limit\";",
+		"proof": "bun --cwd apps/server test src/chat.test.ts -t \"refuses the 31st message\"",
+		"label": "the server takes a 31st message"
+	},
+	{
+		"file": "apps/web/src/features/chat/composer.tsx",
+		"old": "const tooLong = text.length > MAX_CHARS;",
+		"new": "const tooLong = text.length >= MAX_CHARS;",
+		"proof": "bun --cwd apps/web test src/features/chat/composer.test.tsx -t \"max length\"",
+		"label": "exactly 2.000 characters is refused"
+	}
+]

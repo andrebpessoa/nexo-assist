@@ -176,39 +176,39 @@ O funcionário conversa com o Nexo Assist numa tela de chat. As respostas chegam
 
 | ID | Story | Phase | Status |
 | --- | --- | --- | --- |
-| CHAT-01 | P1 - Conversar com o agent | Specify | Pending |
-| CHAT-02 | P1 - Conversar com o agent | Specify | Pending |
-| CHAT-03 | P1 - Conversar com o agent | Specify | Pending |
-| CHAT-04 | P1 - Conversar com o agent | Specify | Pending |
-| CHAT-05 | P1 - Conversar com o agent | Specify | Pending |
-| CHAT-06 | P1 - Conversar com o agent | Specify | Pending |
-| CHAT-07 | P1 - Conversar com o agent | Specify | Pending |
-| CHAT-08 | P1 - Conversar com o agent | Specify | Pending |
-| CHAT-09 | P1 - Conversar com o agent | Specify | Pending |
-| CHAT-10 | P1 - Responder com opções e escolher chamados | Specify | Pending |
-| CHAT-11 | P1 - Responder com opções e escolher chamados | Specify | Pending |
-| CHAT-12 | P1 - Responder com opções e escolher chamados | Specify | Pending |
-| CHAT-13 | P1 - Responder com opções e escolher chamados | Specify | Pending |
-| CHAT-14 | P1 - Responder com opções e escolher chamados | Specify | Pending |
-| CHAT-15 | P1 - Responder com opções e escolher chamados | Specify | Pending |
-| CHAT-16 | P1 - Responder com opções e escolher chamados | Specify | Pending |
-| CHAT-17 | P1 - Conferir e confirmar o rascunho | Specify | Pending |
-| CHAT-18 | P1 - Conferir e confirmar o rascunho | Specify | Pending |
-| CHAT-19 | P1 - Conferir e confirmar o rascunho | Specify | Pending |
-| CHAT-20 | P1 - Conferir e confirmar o rascunho | Specify | Pending |
-| CHAT-21 | P1 - Conferir e confirmar o rascunho | Specify | Pending |
-| CHAT-22 | P1 - Limite de mensagens | Specify | Pending |
-| CHAT-23 | P1 - Limite de mensagens | Specify | Pending |
-| CHAT-24 | P1 - Limite de mensagens | Specify | Pending |
-| CHAT-25 | P1 - Voltar outro dia e acompanhar o analista | Specify | Pending |
-| CHAT-26 | P1 - Voltar outro dia e acompanhar o analista | Specify | Pending |
-| CHAT-27 | P1 - Voltar outro dia e acompanhar o analista | Specify | Pending |
-| CHAT-28 | P1 - Voltar outro dia e acompanhar o analista | Specify | Pending |
-| CHAT-29 | P1 - Voltar outro dia e acompanhar o analista | Specify | Pending |
-| CHAT-30 | P1 - Erros de rede e do agent | Specify | Pending |
-| CHAT-31 | P1 - Erros de rede e do agent | Specify | Pending |
-| CHAT-32 | P1 - Erros de rede e do agent | Specify | Pending |
-| CHAT-33 | P1 - Erros de rede e do agent | Specify | Pending |
+| CHAT-01 | P1 - Conversar com o agent | Verify | Verified |
+| CHAT-02 | P1 - Conversar com o agent | Verify | Verified |
+| CHAT-03 | P1 - Conversar com o agent | Verify | Verified |
+| CHAT-04 | P1 - Conversar com o agent | Verify | Verified |
+| CHAT-05 | P1 - Conversar com o agent | Verify | Verified |
+| CHAT-06 | P1 - Conversar com o agent | Verify | Verified |
+| CHAT-07 | P1 - Conversar com o agent | Verify | Verified |
+| CHAT-08 | P1 - Conversar com o agent | Verify | Verified |
+| CHAT-09 | P1 - Conversar com o agent | Verify | Verified |
+| CHAT-10 | P1 - Responder com opções e escolher chamados | Verify | Verified |
+| CHAT-11 | P1 - Responder com opções e escolher chamados | Verify | Verified |
+| CHAT-12 | P1 - Responder com opções e escolher chamados | Verify | Verified |
+| CHAT-13 | P1 - Responder com opções e escolher chamados | Verify | Verified |
+| CHAT-14 | P1 - Responder com opções e escolher chamados | Verify | Verified |
+| CHAT-15 | P1 - Responder com opções e escolher chamados | Verify | Verified |
+| CHAT-16 | P1 - Responder com opções e escolher chamados | Verify | Verified |
+| CHAT-17 | P1 - Conferir e confirmar o rascunho | Verify | Verified |
+| CHAT-18 | P1 - Conferir e confirmar o rascunho | Verify | Verified |
+| CHAT-19 | P1 - Conferir e confirmar o rascunho | Verify | Verified |
+| CHAT-20 | P1 - Conferir e confirmar o rascunho | Verify | Verified |
+| CHAT-21 | P1 - Conferir e confirmar o rascunho | Verify | Verified |
+| CHAT-22 | P1 - Limite de mensagens | Verify | Verified |
+| CHAT-23 | P1 - Limite de mensagens | Verify | Verified |
+| CHAT-24 | P1 - Limite de mensagens | Verify | Verified |
+| CHAT-25 | P1 - Voltar outro dia e acompanhar o analista | Verify | Verified |
+| CHAT-26 | P1 - Voltar outro dia e acompanhar o analista | Verify | Verified |
+| CHAT-27 | P1 - Voltar outro dia e acompanhar o analista | Verify | Verified |
+| CHAT-28 | P1 - Voltar outro dia e acompanhar o analista | Verify | Verified |
+| CHAT-29 | P1 - Voltar outro dia e acompanhar o analista | Verify | Verified |
+| CHAT-30 | P1 - Erros de rede e do agent | Verify | Verified |
+| CHAT-31 | P1 - Erros de rede e do agent | Verify | Verified |
+| CHAT-32 | P1 - Erros de rede e do agent | Verify | Verified |
+| CHAT-33 | P1 - Erros de rede e do agent | Verify | Verified |
 
 **Coverage:** 33 critérios, todos mapeados a uma história.
 

@@ -18,7 +18,7 @@
 ## Desvios registrados
 
 1. Aprovações de design e tarefas delegadas pelo André em t152u (AD-020).
-2. Sem `screens.md`: a feature não tem rota própria. `ActionLine` e `DecisionPanel` são conferidos nas telas da `chat-funcionario` e da `console-analista`.
+2. A feature não tem rota própria: `screens.md` confere a linha e o painel nas fotos da caminhada da `chat-funcionario` (02, 03 e o painel aberto). O console fica na `console-analista`.
 3. As chamadas ao modelo não aparecem na linha de ações (o catálogo do spec não tem rótulo para elas); aparecem no gerúndio ("entendendo sua mensagem…") e nos passos do painel.
 4. "calculou o prazo" também sai quando a transferência calcula o prazo de contato.
 5. TRN-14 e TRN-18 estão provados no apresentador e no componente; o clique no console e o total da conversa na tela ficam na `console-analista`. O log (TRN-17) sai por `deps.log`; ligar ao `console.log` do Worker fica na `chat-funcionario`.

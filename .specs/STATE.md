@@ -193,10 +193,10 @@
 
 ## Handoff
 
-- **Fase**: `transparencia` validada e concluída (2026-10-28); ver `features/transparencia/validation.md`. `servico-de-chamados`, `acesso` e `agent` concluídas antes.
-- **Concluído**: transparencia T1 a T3 em master (local, sem push). Provas de C1 a C18, 3 mutações mortas, `validate_verification.py` com 0.
+- **Fase**: `chat-funcionario` validada e concluída (2026-10-28); ver `features/chat-funcionario/validation.md`. `servico-de-chamados`, `acesso`, `agent` e `transparencia` concluídas antes (a `transparencia` ganhou `screens.md` com as fotos da caminhada do chat).
+- **Concluído**: chat-funcionario T1 a T5 em master (local, sem push). Provas de C1 a C33, 3 mutações mortas, `validate_verification.py` com 0 para `chat-funcionario` e `transparencia`.
 - **Em andamento**: nenhum.
-- **Próximo passo**: feature `chat-funcionario` (5ª do ROADMAP), com aprovação delegada (AD-020): provar o Mastra no Worker (plano B `ai` + `@ai-sdk/google`), ligar `deps.log` ao log do Worker e montar a linha e o painel na tela. Falta `GOOGLE_GENERATIVE_AI_API_KEY` para a avaliação ao vivo.
-- **Bloqueios**: nenhum. Pendente na `entrega` (DLV-08): o aviso `noNonNullAssertion` em `apps/web/src/env.public.ts`, os `env.ts` gerados que o Biome lê e o lint fora de `apps` e `packages`.
+- **Próximo passo**: feature `console-analista` (6ª do ROADMAP), com aprovação delegada (AD-020). A avaliação ao vivo do `agent` espera a `GOOGLE_GENERATIVE_AI_API_KEY` em `apps/server/.env`.
+- **Bloqueios**: nenhum. Pendente na `entrega` (DLV-08): o aviso `noNonNullAssertion` em `apps/web/src/env.public.ts` e o lint fora de `apps` e `packages`. Os `env.ts` gerados já não entram no Biome (afe77a9).
 - **Não commitado**: `features/*/proofs.md`, gerados por `check_proofs.py` no HEAD (commitá-los muda o HEAD).
 - **Branch**: master.
