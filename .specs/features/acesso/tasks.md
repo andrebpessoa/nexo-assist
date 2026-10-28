@@ -163,7 +163,7 @@ T3 → T4 → T5 → T6 → T7 → T8
 
 **Done when**:
 
-- [ ] Textos do protótipo; erro do e-mail fora do seed abaixo do campo; validação sem envio; botão desabilitado com indicador; erro genérico mantendo o digitado
+- [x] Textos do protótipo; erro do e-mail fora do seed abaixo do campo; validação sem envio; botão desabilitado com indicador; erro genérico mantendo o digitado
 
 **Tests**: component
 **Gate**: quick
