@@ -175,10 +175,10 @@
 
 ## Handoff
 
-- **Fase**: Execute de `servico-de-chamados` (tasks aprovadas em 2026-10-28: "Aprovo as 28 tasks de servico-de-chamados e as 4 recomendações (biome check só leitura, pedir aval antes de trocar a versão do alchemy, seed por rota de dev, corrigir dev:server na entrega); pode implementar").
-- **Concluído**: T1 a T28 commitadas em master (local, sem push), HEAD 4e06e69. Provas e mutações verdes; ver `features/servico-de-chamados/validation.md`.
-- **Em andamento**: nenhum.
-- **Próximo passo**: decisão do André sobre o Build (`bun biome check .` vermelho pela base); depois rodar de novo `check_proofs.py` e `validate_verification.py`.
-- **Bloqueios**: linha Build vermelha (lint da base); `@types/bun` e o commit de `.specs/` aguardam André.
-- **Não commitado**: `.specs/` (fora do git por decisão).
+- **Fase**: Validate de `servico-de-chamados` (tasks aprovadas em 2026-10-28; Build limitado a `apps` e `packages` pela AD-019).
+- **Concluído**: T1 a T28 commitadas em master (local, sem push). Depois: 4e06e69 (db:seed duplicado), 35f1e1a (`@types/bun`), 0e7c681 (`.specs/` versionada), d01c86a (AD-019), 8a6e2d2 (smoke só com `SERVER_URL`), 7682075 (formatação da base com o Biome). Testes, tipos e as 3 mutações verdes.
+- **Em andamento**: fechamento da validação.
+- **Próximo passo**: decisão do André sobre os 4 erros de a11y em `packages/ui` (`input-group.tsx`, `label.tsx`); depois rodar de novo `check_proofs.py --mutations` e `validate_verification.py`, fechar o achado e concluir `validation.md`. Em seguida, a feature `acesso` (2ª do ROADMAP).
+- **Bloqueios**: linha Build (`bun biome check apps packages`) vermelha só pelos 4 erros de a11y em `packages/ui`.
+- **Não commitado**: `features/servico-de-chamados/proofs.md`, gerado no HEAD atual (commitá-lo muda o HEAD).
 - **Branch**: master.
