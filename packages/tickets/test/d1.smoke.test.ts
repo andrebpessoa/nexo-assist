@@ -1,10 +1,13 @@
 import { describe, expect, test } from "bun:test";
 
+import { smokeTarget } from "./smoke-target";
+
 /**
- * Runs against the local dev server and its D1 (AD-014): `bun run dev` first. Skipped, with a
- * warning, when no nexo-assist dev server answers on SERVER_URL.
+ * Runs against the local dev server and its D1 (AD-014): `bun run dev` first, then
+ * `SERVER_URL=http://localhost:3000 bun test ...`. Skipped, with a warning, unless SERVER_URL is set
+ * and a nexo-assist dev server answers there (AD-019).
  */
-const SERVER_URL = process.env.SERVER_URL ?? "http://localhost:3000";
+const SERVER_URL = smokeTarget(process.env);
 const ANA = "ana.souza@nexo.com.br";
 
 async function serverIsUp() {
@@ -19,10 +22,12 @@ async function serverIsUp() {
 	}
 }
 
-const up = await serverIsUp();
+const up = SERVER_URL !== undefined && (await serverIsUp());
 if (!up) {
 	console.warn(
-		`d1 smoke skipped: no nexo-assist dev server at ${SERVER_URL} (run bun run dev with DEV_SEED_ENABLED=true)`,
+		SERVER_URL
+			? `d1 smoke skipped: no nexo-assist dev server at ${SERVER_URL} (run bun run dev)`
+			: "d1 smoke skipped: SERVER_URL is not set (run bun run dev and pass its URL)",
 	);
 }
 
