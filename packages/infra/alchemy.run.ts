@@ -30,7 +30,9 @@ export default Alchemy.Stack(
   "nexo-assist",
   {
     providers: Cloudflare.providers(),
-    state: Cloudflare.state(),
+    // `alchemy dev` sets ALCHEMY_DEV=true: local dev keeps its state in .alchemy/ and needs no
+    // Cloudflare login; deploy and destroy keep the Cloudflare state store (AD-016).
+    state: process.env.ALCHEMY_DEV === "true" ? Alchemy.localState() : Cloudflare.state(),
   },
   Effect.gen(function* () {
     const serverWorker = yield* server;
