@@ -4,6 +4,8 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 
+import { createChatRoutes } from "./chat";
+import { createChatResolver } from "./chat-agent";
 import { createContext } from "./context";
 import { createDevRoutes } from "./dev-seed";
 import { ENV } from "./env.server";
@@ -34,6 +36,18 @@ app.use(
 		createContext: (_opts, context) => {
 			return createContext({ context });
 		},
+	}),
+);
+
+app.route(
+	"/",
+	createChatRoutes({
+		resolve: createChatResolver({
+			getDb,
+			getSession: async (db, headers) =>
+				(await createAuth(db)).api.getSession({ headers }),
+			env: ENV,
+		}),
 	}),
 );
 

@@ -100,6 +100,12 @@ export interface AgentDeps {
 	modelId?: string;
 }
 
+/** Name and team shown on an analyst's message in the chat. */
+export interface AnalystAuthor {
+	name: string;
+	team: string;
+}
+
 export interface StepEvent {
 	conversationId: string;
 	name: string;
@@ -1561,14 +1567,28 @@ export function createAgent(deps: AgentDeps) {
 			});
 		},
 		/** An analyst took the conversation (console). */
-		async assume(conversationId: string) {
+		async assume(conversationId: string, by?: AnalystAuthor) {
 			await store.update(conversationId, { state: "com_analista" });
+			if (by)
+				await store.append(conversationId, {
+					role: "system",
+					text: `${by.name} assumiu`,
+					blocks: [text(`${by.name} assumiu`)],
+					decision: null,
+				});
 		},
-		async analystSays(conversationId: string, said: string) {
+		async analystSays(
+			conversationId: string,
+			said: string,
+			by?: AnalystAuthor,
+		) {
 			await store.append(conversationId, {
 				role: "analyst",
 				text: said,
-				blocks: [text(said)],
+				blocks: [
+					...(by ? [{ kind: "author" as const, ...by }] : []),
+					text(said),
+				],
 				decision: null,
 			});
 		},

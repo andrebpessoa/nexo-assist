@@ -22,6 +22,7 @@
       "name": "server",
       "dependencies": {
         "@hono/trpc-server": "^0.4.2",
+        "@nexo-assist/agent": "workspace:*",
         "@nexo-assist/api": "workspace:*",
         "@nexo-assist/auth": "workspace:*",
         "@nexo-assist/db": "workspace:*",

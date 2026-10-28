@@ -2,6 +2,7 @@ import * as Cloudflare from "@alchemy.run/cloudflare";
 import * as Alchemy from "alchemy";
 import * as Config from "effect/Config";
 import * as Effect from "effect/Effect";
+import * as Redacted from "effect/Redacted";
 import "varlock/auto-load";
 
 export const db = Cloudflare.D1.Database("database", {
@@ -27,6 +28,10 @@ export const server = Cloudflare.Worker("server", {
 		DEV_SEED_ENABLED: Config.String("DEV_SEED_ENABLED").pipe(
 			Config.withDefault("false"),
 		),
+		// Optional: without it the agent says the model is unavailable (chat-funcionario D-06).
+		GOOGLE_GENERATIVE_AI_API_KEY: Config.Redacted(
+			"GOOGLE_GENERATIVE_AI_API_KEY",
+		).pipe(Config.withDefault(Redacted.make(""))),
 	},
 	dev: {
 		port: 3000,

@@ -79,10 +79,10 @@ T1 → T3 → T4 → T5
 
 **Done when**:
 
-- [ ] SSE com passos, palavras e `done`
-- [ ] 401 sem sessão, 403 para analista, 400 vazio ou longo, 429 no limite
-- [ ] Histórico com contador, estado, prazo de contato e mensagens do analista
-- [ ] `/chat/new` encerra e abre outra
+- [x] SSE com passos, palavras e `done`
+- [x] 401 sem sessão, 403 para analista, 400 vazio ou longo, 429 no limite
+- [x] Histórico com contador, estado, prazo de contato e mensagens do analista
+- [x] `/chat/new` encerra e abre outra
 
 **Tests**: integration
 **Gate**: full

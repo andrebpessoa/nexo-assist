@@ -144,7 +144,9 @@ export type Block =
 			status: "Aguardando confirmação" | "Anexado" | "Cancelado";
 	  }
 	| { kind: "reopen_draft"; number: string; reason: string }
-	| { kind: "transfer"; team: Team; contactBy: string; summary: string };
+	| { kind: "transfer"; team: Team; contactBy: string; summary: string }
+	/** First block of an analyst message: who wrote it (CHAT-28). */
+	| { kind: "author"; name: string; team: string };
 
 /** What waits for the employee's next step; at most one at a time (AGT-32). */
 export type Pending =
