@@ -43,7 +43,7 @@ export function AppSidebar({
 		onNavigate(to);
 	};
 	return (
-		<aside className="border-rule bg-paper flex h-svh w-[208px] shrink-0 flex-col border-r px-3 py-5">
+		<aside className="border-rule bg-paper flex h-svh w-[232px] shrink-0 flex-col border-r px-3 py-5">
 			<div className="px-2">
 				<NexoLogo />
 			</div>

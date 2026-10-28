@@ -252,17 +252,17 @@ function Showcase() {
 	return (
 		<aside className="bg-showcase hidden min-h-svh flex-col px-11 py-8 text-white lg:flex">
 			<NexoLogo tone="light" />
-			<div className="mt-auto max-w-[480px]">
+			<div className="mt-auto max-w-[660px]">
 				<p className="text-[11px] text-white/60">Service desk de TI da Nexo</p>
-				<h2 className="font-display mt-3 text-[40px] leading-[1.15]">
+				<h2 className="font-display mt-3 max-w-[640px] text-[46px] leading-[1.15]">
 					Seu problema de TI, resolvido em uma conversa.
 				</h2>
-				<p className="mt-4 text-sm leading-relaxed text-white/70">
+				<p className="mt-4 max-w-[540px] text-sm leading-relaxed text-white/70">
 					Descreva o que está acontecendo. O assistente consulta seus chamados,
 					busca na central de ajuda e chama um analista quando precisa.
 				</p>
 			</div>
-			<div className="mx-auto mt-8 w-full max-w-[360px] rounded-[14px] border border-white/10 bg-white/5 p-3 text-xs">
+			<div className="mx-auto mt-8 w-full max-w-[500px] rounded-[14px] border border-white/10 bg-white/5 p-3 text-xs">
 				<p className="text-ink ml-auto w-fit rounded-[10px] bg-white px-3 py-2">
 					Meu notebook não conecta na VPN. Erro 809.
 				</p>

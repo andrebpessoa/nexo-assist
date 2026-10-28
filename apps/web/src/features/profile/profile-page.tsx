@@ -18,7 +18,7 @@ export function passwordAgeLabel(days: number | null) {
 export function ProfilePage({ me }: { me: ProfileData }) {
 	const [resetSent, setResetSent] = useState(false);
 	return (
-		<div className="mx-auto w-full max-w-[540px] px-6 py-12">
+		<div className="mx-auto w-full max-w-[648px] px-6 py-12">
 			<h1 className="text-ink text-[22px] font-semibold">Meu perfil</h1>
 			<p className="text-ink-3 mt-1 text-[13px]">
 				Seus dados de acesso ao service desk de TI.

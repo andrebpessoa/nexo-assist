@@ -200,7 +200,7 @@ T3 → T4 → T5 → T6 → T7 → T8
 
 **Done when**:
 
-- [ ] Walk: Ana entra e abre `/atendimento`; Rafael abre `/console`; Ana em `/console` volta a `/atendimento`; Sair abre `/login`
+- [x] Walk: Ana entra e abre `/atendimento`; Rafael abre `/console`; Ana em `/console` volta a `/atendimento`; Sair abre `/login`
 
 **Tests**: walk
 **Gate**: build
@@ -296,7 +296,7 @@ Proof: `bun --cwd apps/web test src/features/profile/profile-page.test.tsx -t "r
 
 **Settled mid-build:** T2 - o seed não preenchia `profile.passwordChangedAt`, que AUTH-19 lê; o seed passou a gravar a data (Ana 42 dias, como a captura) e T2 ganhou os dois arquivos do seed.
 **Dispatched:** none (sem mecanismo de sub-agente; verificação self-verified, degradada)
-**Walked:** -
+**Walked:** T7 - dev local no box (alchemy dev, server 3100 e web 3101, Chrome 1440x900, script Playwright): sem sessão `/atendimento` → `/login?redirect=%2Fatendimento`; e-mail fora do seed mostra a mensagem; Ana entra e volta a `/atendimento` com cookie de 30 dias; Meu perfil mostra "Alterada há 42 dias" e o redefinir simulado; Ana em `/console` e em `/login` → `/atendimento`; Sair → `/login`; `/perfil` depois de sair → `/login?redirect=%2Fperfil`; `RAFAEL.LIMA@...` sem lembrar → `/console` com cookie de sessão; Rafael em `/atendimento` → `/console`. 14 de 14 passos.
 **Deviations:** -
 
 ---
