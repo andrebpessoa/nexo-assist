@@ -293,11 +293,18 @@ export function ChatScreen({
 			const live = active && !busy;
 			if (block.kind === "author") return;
 			if (block.kind === "text") {
-				bubble.push(
-					<p key={key} className="whitespace-pre-wrap">
-						{block.text}
-					</p>,
-				);
+				const next = items[i + 1]?.block;
+				// The engine may repeat the question as text; the options already carry it.
+				const text =
+					next?.kind === "options" && block.text.endsWith(next.question)
+						? block.text.slice(0, -next.question.length).trim()
+						: block.text;
+				if (text)
+					bubble.push(
+						<p key={key} className="whitespace-pre-wrap">
+							{text}
+						</p>,
+					);
 				return;
 			}
 			if (block.kind === "options") {
@@ -435,148 +442,155 @@ export function ChatScreen({
 
 	const waitingAnalyst = hist?.conversation.state === "aguardando_analista";
 	const body = (
-		<div className="flex h-full min-h-0 flex-col">
-			{waitingAnalyst && (
-				<div className="border-rule flex items-center justify-center gap-2 border-b bg-amber-50 px-6 py-2 text-[12px] text-amber-900">
-					<span className="size-1.5 rounded-full bg-amber-500" />
-					{hist?.contactBy
-						? `Aguardando um analista · contato até ${hhmm(hist.contactBy)}`
-						: "Aguardando um analista"}
-				</div>
-			)}
-			<div
-				ref={log}
-				role="log"
-				aria-label="Conversa"
-				onScroll={(e) => {
-					const el = e.currentTarget;
-					atBottom.current =
-						el.scrollHeight - el.scrollTop - el.clientHeight < 48;
-					if (atBottom.current) setUnseen(false);
-				}}
-				className="relative min-h-0 flex-1 overflow-x-hidden overflow-y-auto px-6 py-8"
-			>
-				<div className="mx-auto grid w-full max-w-[760px] min-w-0 gap-4">
-					{!hist ? (
-						<Skeletons />
-					) : (
-						<>
-							{hist.messages.length === 0 && !out && (
-								<div className="grid gap-1.5">
-									<span className="text-ink text-[11px] font-semibold">
-										Nexo Assist
-									</span>
-									<Bubble>
-										<p>
-											Olá, {hist.firstName}! Sou o Nexo Assist. Posso abrir um
-											chamado, contar como estão os seus ou ajudar com uma
-											dúvida de TI.
-										</p>
-									</Bubble>
-								</div>
-							)}
-							{folded.map(({ message, items }, idx) => {
-								const isLast = idx === folded.length - 1;
-								if (message.role === "employee") {
-									const t = message.blocks.find((b) => b.kind === "text");
-									return t && t.kind === "text" ? (
-										<EmployeeBubble
-											key={message.seq}
-											text={shownText(t.text)}
-										/>
-									) : null;
-								}
-								if (message.role === "system")
-									return (
-										<p
-											key={message.seq}
-											className="text-ink-3 text-center text-[11px]"
-										>
-											{message.blocks
-												.map((b) => (b.kind === "text" ? b.text : ""))
-												.join(" ")}
-										</p>
-									);
-								const author = message.blocks.find((b) => b.kind === "author");
-								return (
-									<div key={message.seq} className="grid min-w-0 gap-1.5">
-										{message.role === "analyst" && author?.kind === "author" ? (
-											<span className="text-ink text-[11px] font-semibold">
-												{author.name} · {author.team}
-											</span>
-										) : message.decision ? (
-											<ActionLine
-												decision={message.decision}
-												onOpen={() => setPanel(message.decision)}
-											/>
-										) : (
-											<span className="text-ink text-[11px] font-semibold">
-												Nexo Assist
-											</span>
-										)}
-										{renderItems(message, items, isLast)}
+		<div className="flex h-full min-h-0">
+			<div className="flex min-w-0 flex-1 flex-col">
+				{waitingAnalyst && (
+					<div className="border-rule flex items-center justify-center gap-2 border-b bg-amber-50 px-6 py-2 text-[12px] text-amber-900">
+						<span className="size-1.5 rounded-full bg-amber-500" />
+						{hist?.contactBy
+							? `Aguardando um analista · contato até ${hhmm(hist.contactBy)}`
+							: "Aguardando um analista"}
+					</div>
+				)}
+				<div
+					ref={log}
+					role="log"
+					aria-label="Conversa"
+					onScroll={(e) => {
+						const el = e.currentTarget;
+						atBottom.current =
+							el.scrollHeight - el.scrollTop - el.clientHeight < 48;
+						if (atBottom.current) setUnseen(false);
+					}}
+					className="relative min-h-0 flex-1 overflow-x-hidden overflow-y-auto px-6 py-8"
+				>
+					<div className="mx-auto grid w-full max-w-[760px] min-w-0 gap-4">
+						{!hist ? (
+							<Skeletons />
+						) : (
+							<>
+								{hist.messages.length === 0 && !out && (
+									<div className="grid gap-1.5">
+										<span className="text-ink text-[11px] font-semibold">
+											Nexo Assist
+										</span>
+										<Bubble>
+											<p>
+												Olá, {hist.firstName}! Sou o Nexo Assist. Posso abrir um
+												chamado, contar como estão os seus ou ajudar com uma
+												dúvida de TI.
+											</p>
+										</Bubble>
 									</div>
-								);
-							})}
-							{out?.said != null && (
-								<EmployeeBubble text={out.said}>
-									{out.failed && (
+								)}
+								{folded.map(({ message, items }, idx) => {
+									const isLast = idx === folded.length - 1;
+									if (message.role === "employee") {
+										const t = message.blocks.find((b) => b.kind === "text");
+										return t && t.kind === "text" ? (
+											<EmployeeBubble
+												key={message.seq}
+												text={shownText(t.text)}
+											/>
+										) : null;
+									}
+									if (message.role === "system")
+										return (
+											<p
+												key={message.seq}
+												className="text-ink-3 text-center text-[11px]"
+											>
+												{message.blocks
+													.map((b) => (b.kind === "text" ? b.text : ""))
+													.join(" ")}
+											</p>
+										);
+									const author = message.blocks.find(
+										(b) => b.kind === "author",
+									);
+									return (
+										<div key={message.seq} className="grid min-w-0 gap-1.5">
+											{message.role === "analyst" &&
+											author?.kind === "author" ? (
+												<span className="text-ink text-[11px] font-semibold">
+													{author.name} · {author.team}
+												</span>
+											) : message.decision ? (
+												<ActionLine
+													decision={message.decision}
+													onOpen={() => setPanel(message.decision)}
+												/>
+											) : (
+												<span className="text-ink text-[11px] font-semibold">
+													Nexo Assist
+												</span>
+											)}
+											{renderItems(message, items, isLast)}
+										</div>
+									);
+								})}
+								{out?.said != null && (
+									<EmployeeBubble text={out.said}>
+										{out.failed && (
+											<RetryLine
+												label="Não enviada"
+												onRetry={() => void retry(out.input)}
+											/>
+										)}
+									</EmployeeBubble>
+								)}
+								{out && !out.said && out.failed && (
+									<div className="flex justify-end">
 										<RetryLine
 											label="Não enviada"
 											onRetry={() => void retry(out.input)}
 										/>
-									)}
-								</EmployeeBubble>
-							)}
-							{out && !out.said && out.failed && (
-								<div className="flex justify-end">
-									<RetryLine
-										label="Não enviada"
-										onRetry={() => void retry(out.input)}
-									/>
-								</div>
-							)}
-							{live && (
-								<div className="grid gap-1.5">
-									<ActionLine decision={null} progress={live.steps} />
-									{live.text && (
-										<Bubble>
-											<p className="whitespace-pre-wrap">{live.text}</p>
-										</Bubble>
-									)}
-									{live.interrupted && out && (
-										<RetryLine
-											label="Resposta interrompida"
-											onRetry={() => void retry(out.input)}
-										/>
-									)}
-								</div>
-							)}
-						</>
+									</div>
+								)}
+								{live && (
+									<div className="grid gap-1.5">
+										<ActionLine decision={null} progress={live.steps} />
+										{live.text && (
+											<Bubble>
+												<p className="whitespace-pre-wrap">{live.text}</p>
+											</Bubble>
+										)}
+										{live.interrupted && out && (
+											<RetryLine
+												label="Resposta interrompida"
+												onRetry={() => void retry(out.input)}
+											/>
+										)}
+									</div>
+								)}
+							</>
+						)}
+					</div>
+				</div>
+				{unseen && (
+					<div className="relative">
+						<button
+							type="button"
+							onClick={toBottom}
+							className="bg-ink absolute -top-12 left-1/2 -translate-x-1/2 rounded-full px-3 py-1.5 text-[12px] text-white shadow"
+						>
+							Novas mensagens
+						</button>
+					</div>
+				)}
+				<div className="mx-auto w-full max-w-[760px] px-6 pb-4">
+					{notice && (
+						<p className="mb-1.5 text-[12px] text-red-700">{notice}</p>
 					)}
+					<Composer
+						count={hist?.count ?? 0}
+						limit={hist?.limit ?? 30}
+						busy={busy || !hist}
+						onSend={(text) => void run({ text })}
+						onAnalyst={() => void run({ action: "analyst" })}
+						onNewConversation={() => void newConversation()}
+					/>
 				</div>
-			</div>
-			{unseen && (
-				<div className="relative">
-					<button
-						type="button"
-						onClick={toBottom}
-						className="bg-ink absolute -top-12 left-1/2 -translate-x-1/2 rounded-full px-3 py-1.5 text-[12px] text-white shadow"
-					>
-						Novas mensagens
-					</button>
-				</div>
-			)}
-			<div className="mx-auto w-full max-w-[760px] px-6 pb-4">
-				{notice && <p className="mb-1.5 text-[12px] text-red-700">{notice}</p>}
-				<Composer
-					count={hist?.count ?? 0}
-					limit={hist?.limit ?? 30}
-					busy={busy || !hist}
-					onSend={(text) => void run({ text })}
-					onAnalyst={() => void run({ action: "analyst" })}
-					onNewConversation={() => void newConversation()}
-				/>
 			</div>
 			{panel && (
 				<DecisionPanel

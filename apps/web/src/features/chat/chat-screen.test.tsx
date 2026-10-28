@@ -412,6 +412,84 @@ describe("ChatScreen", () => {
 		expect(f.api.send.mock.calls[0]?.[0]).toEqual({ action: "confirm" });
 	});
 
+	test("question is not repeated above its options", async () => {
+		const q = "Quem está sendo afetado?";
+		const f = fake(
+			history({
+				messages: [
+					say(1, "VPN"),
+					msg(
+						2,
+						"agent",
+						{ kind: "text", text: q },
+						{ kind: "options", question: q, options: ["Só eu", "Não sei"] },
+					),
+				],
+				count: 1,
+			}),
+		);
+		render(<ChatScreen api={f.api} pollMs={60_000} />);
+		expect(await screen.findAllByText(q)).toHaveLength(1);
+	});
+
+	test("question at the end of the text moves to the options", async () => {
+		const q = "Quer que eu chame um analista?";
+		const f = fake(
+			history({
+				messages: [
+					say(1, "Status"),
+					msg(
+						2,
+						"agent",
+						{ kind: "text", text: `Está sem atualização há 5 dias. ${q}` },
+						{
+							kind: "options",
+							question: q,
+							options: ["Falar com um analista"],
+						},
+					),
+				],
+				count: 1,
+			}),
+		);
+		render(<ChatScreen api={f.api} pollMs={60_000} />);
+		expect(
+			await screen.findByText("Está sem atualização há 5 dias."),
+		).toBeTruthy();
+		expect(screen.getAllByText(q)).toHaveLength(1);
+	});
+
+	test("action line opens the panel beside the conversation", async () => {
+		const decision = {
+			intent: "abrir_chamado" as const,
+			confidence: 88,
+			extracted: {},
+			action: "rascunho_chamado" as const,
+			rule: "Anexo A",
+			reason: "Alta.",
+			tools: [{ name: "regra.prioridade", ok: true, attempts: 1 }],
+		};
+		const f = fake(
+			history({
+				messages: [
+					say(1, "VPN"),
+					{ ...msg(2, "agent", { kind: "text", text: "Confira" }), decision },
+				],
+				count: 1,
+			}),
+		);
+		render(<ChatScreen api={f.api} pollMs={60_000} />);
+		await userEvent.click(
+			await screen.findByRole("button", { name: /Nexo Assist/ }),
+		);
+		const panel = screen.getByRole("dialog", {
+			name: "Por que o Nexo fez isso",
+		});
+		expect(panel.parentElement).toBe(
+			screen.getByRole("log").parentElement?.parentElement ?? null,
+		);
+	});
+
 	test("ticket pick shows number and title", async () => {
 		const f = fake(
 			history({

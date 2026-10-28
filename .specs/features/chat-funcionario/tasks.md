@@ -138,8 +138,8 @@ T1 → T3 → T4 → T5
 
 **Done when**:
 
-- [ ] Telas 02 e 03 percorridas em 1440x900
-- [ ] Erros de envio e de streaming com "Tentar de novo"
+- [x] Telas 02 e 03 percorridas em 1440x900
+- [x] Erros de envio e de streaming com "Tentar de novo"
 
 **Tests**: component
 **Gate**: build
