@@ -126,8 +126,8 @@ T5 → T6 → T7 → T8 → T9 → T10 → T11
 
 **Done when**:
 
-- [ ] Últimas 20 mais resumo
-- [ ] Custo estimado por uso
+- [x] Últimas 20 mais resumo
+- [x] Custo estimado por uso
 
 **Tests**: unit
 **Gate**: quick
