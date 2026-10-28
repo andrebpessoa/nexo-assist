@@ -87,9 +87,9 @@ T5 → T6 → T7 → T8 → T9 → T10 → T11
 
 **Done when**:
 
-- [ ] 3 novas tentativas com 500, 1000 e 2000 ms
-- [ ] 429 espera e tenta uma vez
-- [ ] corte em 30 s
+- [x] 3 novas tentativas com 500, 1000 e 2000 ms
+- [x] 429 espera e tenta uma vez
+- [x] corte em 30 s
 
 **Tests**: unit
 **Gate**: quick
