@@ -119,8 +119,8 @@ T1 → T3 → T4 → T5
 
 **Done when**:
 
-- [ ] Cada controle desenhado com teste
-- [ ] Confirmar manda uma vez só
+- [x] Cada controle desenhado com teste
+- [x] Confirmar manda uma vez só
 
 **Tests**: component
 **Gate**: quick
