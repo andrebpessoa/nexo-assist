@@ -398,6 +398,88 @@ describe("create, add note and reopen", () => {
 	});
 });
 
+describe("transfer and assume", () => {
+	test("transfer records event with summary, team and time, in Aguardando analista", async () => {
+		const created = await createAt("2026-10-26T09:00:00");
+		now = at("2026-10-27T10:05:00");
+		const transferred = value(
+			await service.transfer(ana, created.number, {
+				summary: "Notebook lento após update.",
+				team: "Suporte N2",
+			}),
+		);
+		expect(transferred.status).toBe("Aguardando analista");
+		expect(transferred.events.at(-1)).toEqual({
+			kind: "transferido",
+			actor: "Ana Souza",
+			summary: "Notebook lento após update.",
+			team: "Suporte N2",
+			at: at("2026-10-27T10:05:00"),
+		});
+	});
+
+	test("team update resets deadline: a transfer restarts it from now", async () => {
+		const created = await createAt("2026-10-26T09:00:00");
+		now = at("2026-10-27T10:05:00");
+		const transferred = value(
+			await service.transfer(ana, created.number, {
+				summary: "Resumo",
+				team: "Suporte N1",
+			}),
+		);
+		expect(transferred.deadlineAt).toEqual(at("2026-10-30T10:05:00"));
+	});
+
+	test("transfer without summary is INVALID_TRANSFER and changes nothing", async () => {
+		const created = await createAt("2026-10-26T09:00:00");
+		const result = await service.transfer(ana, created.number, {
+			summary: " ",
+			team: "Suporte N2",
+		});
+		expect(errorCode(result)).toBe("INVALID_TRANSFER");
+		expect(
+			value(await service.get(ana, created.number)).events.map(
+				(event) => event.kind,
+			),
+		).toEqual(["criado"]);
+	});
+
+	test("assume puts the ticket Em atendimento and records Assumido por Rafael Lima", async () => {
+		const created = await createAt("2026-10-26T09:00:00");
+		now = at("2026-10-27T10:12:00");
+		const assumed = value(await service.assume(rafael, created.number));
+		expect(assumed.status).toBe("Em atendimento");
+		expect(assumed.events.at(-1)).toEqual({
+			kind: "assumido",
+			actor: "Rafael Lima",
+			team: "Suporte N2",
+			at: at("2026-10-27T10:12:00"),
+		});
+		expect(assumed.deadlineAt).toEqual(at("2026-10-30T10:12:00"));
+	});
+
+	test("assume or transfer a closed ticket is TICKET_CLOSED", async () => {
+		const created = await createAt("2026-10-26T09:00:00");
+		const repo = createTicketRepository(db);
+		const row = await repo.getByNumber(created.number);
+		await repo.applyChange(row?.id ?? "", {
+			status: "Fechado",
+			updatedAt: now,
+		});
+		expect(errorCode(await service.assume(rafael, created.number))).toBe(
+			"TICKET_CLOSED",
+		);
+		expect(
+			errorCode(
+				await service.transfer(ana, created.number, {
+					summary: "x",
+					team: "Suporte N1",
+				}),
+			),
+		).toBe("TICKET_CLOSED");
+	});
+});
+
 describe("unexpected failures", () => {
 	test("a database error becomes SERVICE_UNAVAILABLE", async () => {
 		const broken = createTicketService({
