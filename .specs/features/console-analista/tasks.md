@@ -142,11 +142,11 @@ T1 → T2 → T3 → T4 → T5 → T6
 
 **Done when**:
 
-- [ ] Aguardando: faixa, botões e campo desabilitado
-- [ ] Assumido: campo habilitado, "Devolver ao agent" e "Encerrar atendimento" no cabeçalho
-- [ ] Encerrar pede confirmação
-- [ ] `TAKEN` mostra "<nome> já assumiu esta conversa."
-- [ ] Lupa destaca os resultados; "⋮" habilita conforme o estado
+- [x] Aguardando: faixa, botões e campo desabilitado
+- [x] Assumido: campo habilitado, "Devolver ao agent" e "Encerrar atendimento" no cabeçalho
+- [x] Encerrar pede confirmação
+- [x] `TAKEN` mostra "<nome> já assumiu esta conversa."
+- [x] Lupa destaca os resultados; "⋮" habilita conforme o estado
 
 **Tests**: component
 **Gate**: quick
