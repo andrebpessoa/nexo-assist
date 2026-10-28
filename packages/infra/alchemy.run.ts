@@ -18,6 +18,9 @@ export const server = Cloudflare.Worker("server", {
     CORS_ORIGIN: Config.String("CORS_ORIGIN"),
     BETTER_AUTH_SECRET: Config.Redacted("BETTER_AUTH_SECRET"),
     BETTER_AUTH_URL: Cloudflare.Worker.URL,
+    TICKETS_FAILURE_RATE: Config.String("TICKETS_FAILURE_RATE").pipe(Config.withDefault("0.1")),
+    TICKETS_EXTRA_LATENCY_MS: Config.String("TICKETS_EXTRA_LATENCY_MS").pipe(Config.withDefault("0")),
+    DEV_SEED_ENABLED: Config.String("DEV_SEED_ENABLED").pipe(Config.withDefault("false")),
   },
   dev: {
     port: 3000,
