@@ -1572,8 +1572,8 @@ export function createAgent(deps: AgentDeps) {
 			if (by)
 				await store.append(conversationId, {
 					role: "system",
-					text: `${by.name} assumiu`,
-					blocks: [text(`${by.name} assumiu`)],
+					text: `${by.name} assumiu · agent pausado`,
+					blocks: [text(`${by.name} assumiu · agent pausado`)],
 					decision: null,
 				});
 		},

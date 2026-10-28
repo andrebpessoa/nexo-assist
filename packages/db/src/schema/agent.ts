@@ -23,6 +23,10 @@ export const conversation = sqliteTable(
 		}).notNull(),
 		pending: text("pending", { mode: "json" }),
 		summary: text("summary"),
+		/** The analyst who assumed it (console-analista D-03). */
+		assigneeId: text("assignee_id").references(() => user.id),
+		/** Last message seq the console has read; unread = employee messages after it. */
+		readSeq: integer("read_seq").notNull().default(0),
 		createdAt: timestamp("created_at").notNull(),
 		updatedAt: timestamp("updated_at").notNull(),
 	},

@@ -232,7 +232,7 @@ describe("chat routes", () => {
 		h = await hist(call("/chat/history"));
 		const [line, said] = h.messages.slice(-2);
 		expect(line?.role).toBe("system");
-		expect(line?.blocks[0]?.text).toBe("Rafael Lima assumiu");
+		expect(line?.blocks[0]?.text).toBe("Rafael Lima assumiu · agent pausado");
 		expect(said?.role).toBe("analyst");
 		expect(said?.blocks[0]).toEqual({
 			kind: "author",

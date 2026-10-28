@@ -2,9 +2,11 @@ import type { Database } from "@nexo-assist/db";
 import {
 	conversation,
 	conversationMessage,
+	profile,
+	user,
 } from "@nexo-assist/db/schema/index";
 import type { Clock } from "@nexo-assist/tickets";
-import { and, asc, desc, eq, max, ne } from "drizzle-orm";
+import { and, asc, desc, eq, inArray, max, ne } from "drizzle-orm";
 
 import type {
 	Block,
@@ -20,6 +22,8 @@ export interface Conversation {
 	state: ConversationState;
 	pending: Pending | null;
 	summary: string | null;
+	assigneeId: string | null;
+	readSeq: number;
 }
 
 export interface StoredMessage {
@@ -43,6 +47,22 @@ export interface ConversationStore {
 		patch: Partial<Pick<Conversation, "state" | "pending" | "summary">>,
 	): Promise<void>;
 	messages(id: string): Promise<StoredMessage[]>;
+	/** Moves the conversation only if it is still in one of `from`; false when someone else won. */
+	claim(
+		id: string,
+		from: readonly ConversationState[],
+		patch: { state: ConversationState; assigneeId: string | null },
+	): Promise<boolean>;
+	markRead(id: string, seq: number): Promise<void>;
+	/** Every conversation with the employee and the messages, for the console list. */
+	listAll(): Promise<ConsoleRow[]>;
+}
+
+export interface ConsoleRow {
+	conversation: Conversation;
+	employee: { name: string; department: string | null };
+	messages: StoredMessage[];
+	updatedAt: Date;
 }
 
 type Row = typeof conversation.$inferSelect;
@@ -52,6 +72,18 @@ const toConversation = (row: Row): Conversation => ({
 	state: row.state,
 	pending: (row.pending as Pending | null) ?? null,
 	summary: row.summary,
+	assigneeId: row.assigneeId,
+	readSeq: row.readSeq,
+});
+
+type MessageRow = typeof conversationMessage.$inferSelect;
+const toMessage = (row: MessageRow): StoredMessage => ({
+	seq: row.seq,
+	role: row.role,
+	text: row.text,
+	blocks: row.blocks as Block[],
+	decision: (row.decision as DecisionRecord | null) ?? null,
+	createdAt: row.createdAt,
 });
 
 export function createConversationStore({
@@ -95,7 +127,15 @@ export function createConversationStore({
 				createdAt: now,
 				updatedAt: now,
 			});
-			return { id, userId, state: "agent", pending: null, summary: null };
+			return {
+				id,
+				userId,
+				state: "agent",
+				pending: null,
+				summary: null,
+				assigneeId: null,
+				readSeq: 0,
+			};
 		},
 		get,
 		async append(id, message) {
@@ -133,13 +173,52 @@ export function createConversationStore({
 				.from(conversationMessage)
 				.where(eq(conversationMessage.conversationId, id))
 				.orderBy(asc(conversationMessage.seq));
-			return rows.map((row) => ({
-				seq: row.seq,
-				role: row.role,
-				text: row.text,
-				blocks: row.blocks as Block[],
-				decision: (row.decision as DecisionRecord | null) ?? null,
-				createdAt: row.createdAt,
+			return rows.map(toMessage);
+		},
+		async claim(id, from, patch) {
+			const won = await db
+				.update(conversation)
+				.set({ ...patch, updatedAt: clock.now() })
+				.where(
+					and(eq(conversation.id, id), inArray(conversation.state, [...from])),
+				)
+				.returning({ id: conversation.id });
+			return won.length === 1;
+		},
+		async markRead(id, seq) {
+			await db
+				.update(conversation)
+				.set({ readSeq: seq })
+				.where(eq(conversation.id, id));
+		},
+		async listAll() {
+			const rows = await db
+				.select({
+					conversation,
+					name: user.name,
+					department: profile.department,
+				})
+				.from(conversation)
+				.innerJoin(user, eq(user.id, conversation.userId))
+				.leftJoin(profile, eq(profile.userId, conversation.userId));
+			if (rows.length === 0) return [];
+			const messages = await db
+				.select()
+				.from(conversationMessage)
+				.where(
+					inArray(
+						conversationMessage.conversationId,
+						rows.map((r) => r.conversation.id),
+					),
+				)
+				.orderBy(asc(conversationMessage.seq));
+			return rows.map((r) => ({
+				conversation: toConversation(r.conversation),
+				employee: { name: r.name, department: r.department ?? null },
+				messages: messages
+					.filter((m) => m.conversationId === r.conversation.id)
+					.map(toMessage),
+				updatedAt: r.conversation.updatedAt,
 			}));
 		},
 	};

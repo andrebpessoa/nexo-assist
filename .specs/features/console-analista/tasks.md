@@ -57,10 +57,10 @@ T1 → T2 → T3 → T4 → T5 → T6
 
 **Done when**:
 
-- [ ] Cada transição válida tem teste e as inválidas devolvem `INVALID_TRANSITION`
-- [ ] Assumida por outro devolve `TAKEN`; assumir de novo a própria não muda nada
-- [ ] `claim` condicional: de dois pedidos, um ganha
-- [ ] Estado, responsável e histórico sobrevivem a um store novo sobre o mesmo banco
+- [x] Cada transição válida tem teste e as inválidas devolvem `INVALID_TRANSITION`
+- [x] Assumida por outro devolve `TAKEN`; assumir de novo a própria não muda nada
+- [x] `claim` condicional: de dois pedidos, um ganha
+- [x] Estado, responsável e histórico sobrevivem a um store novo sobre o mesmo banco
 
 **Tests**: unit + integration
 **Gate**: quick
