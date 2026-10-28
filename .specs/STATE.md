@@ -175,10 +175,10 @@
 
 ## Handoff
 
-- **Fase**: Validate de `servico-de-chamados` (tasks aprovadas em 2026-10-28; Build limitado a `apps` e `packages` pela AD-019).
-- **Concluído**: T1 a T28 commitadas em master (local, sem push). Depois: 4e06e69 (db:seed duplicado), 35f1e1a (`@types/bun`), 0e7c681 (`.specs/` versionada), d01c86a (AD-019), 8a6e2d2 (smoke só com `SERVER_URL`), 7682075 (formatação da base com o Biome). Testes, tipos e as 3 mutações verdes.
-- **Em andamento**: fechamento da validação.
-- **Próximo passo**: decisão do André sobre os 4 erros de a11y em `packages/ui` (`input-group.tsx`, `label.tsx`); depois rodar de novo `check_proofs.py --mutations` e `validate_verification.py`, fechar o achado e concluir `validation.md`. Em seguida, a feature `acesso` (2ª do ROADMAP).
-- **Bloqueios**: linha Build (`bun biome check apps packages`) vermelha só pelos 4 erros de a11y em `packages/ui`.
-- **Não commitado**: `features/servico-de-chamados/proofs.md`, gerado no HEAD atual (commitá-lo muda o HEAD).
+- **Fase**: `servico-de-chamados` validada e concluída (2026-10-28); ver `features/servico-de-chamados/validation.md`.
+- **Concluído**: T1 a T28 e os ajustes 4e06e69, 35f1e1a, 0e7c681, d01c86a, 8a6e2d2, 7682075 e eb0a8e5 em master (local, sem push). Provas 36 de 36, 3 mutações mortas, `validate_verification.py` com 0.
+- **Em andamento**: nenhum.
+- **Próximo passo**: feature `acesso` (2ª do ROADMAP), quando o André mandar começar.
+- **Bloqueios**: nenhum. Pendente na `entrega` (DLV-08): o aviso `noNonNullAssertion` em `apps/web/src/env.public.ts` e o lint fora de `apps` e `packages`.
+- **Não commitado**: `features/servico-de-chamados/proofs.md`, gerado por `check_proofs.py` no HEAD (commitá-lo muda o HEAD).
 - **Branch**: master.
