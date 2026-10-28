@@ -164,6 +164,15 @@
 - **Date**: 2026-10-28
 - **Status**: active (AD-018)
 
+### AD-019
+
+- **Decision**: Até a feature `entrega`, o Build de `servico-de-chamados` roda o Biome só em `apps` e `packages` (`bun biome check apps packages`); a correção do lint da base continua em `entrega` (DLV-08). O smoke do D1 só roda com `SERVER_URL` definido: sem ela, é pulado com aviso e não procura servidor em porta nenhuma.
+- **Reason**: André, 2026-10-28: "Limita o lint a apps e packages até a entrega e o smoke só roda com SERVER_URL definido".
+- **Trade-off**: Markdown e JSON de `.specs/` e `.cursor/` ficam fora do lint; o smoke não roda no `bun run test` sem `SERVER_URL`.
+- **Scope**: servico-de-chamados, entrega.
+- **Date**: 2026-10-28
+- **Status**: active (AD-019)
+
 ## Handoff
 
 - **Fase**: Execute de `servico-de-chamados` (tasks aprovadas em 2026-10-28: "Aprovo as 28 tasks de servico-de-chamados e as 4 recomendações (biome check só leitura, pedir aval antes de trocar a versão do alchemy, seed por rota de dev, corrigir dev:server na entrega); pode implementar").

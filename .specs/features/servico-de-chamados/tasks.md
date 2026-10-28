@@ -12,9 +12,9 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 **Status**: In Progress
 **Approved**: 2026-10-28 - user: "Aprovo as 28 tasks de servico-de-chamados e as 4 recomendações (biome check só leitura, pedir aval antes de trocar a versão do alchemy, seed por rota de dev, corrigir dev:server na entrega); pode implementar"
 **Mutations**: 3
-**Build**: `bun run check-types; bun biome check .; bun run test`
+**Build**: `bun run check-types; bun biome check apps packages; bun run test`
 
-> Nota de execução (2026-10-28): `bun biome check .` já falhava na base (128 erros em `packages/ui`, `packages/db/src/schema/auth.ts` e `apps/web`, mais Markdown/JSON de `.specs/` e `.cursor/`, que o biome 2.6 também formata), nenhum em código desta feature. Nas tarefas, o gate rodou `bun biome check` nos arquivos novos e `bun biome lint` nos alterados. A linha Build fica como aprovada; o Build de `proofs.md` segue vermelho até André decidir.
+> Nota (AD-019): o Biome do Build fica limitado a `apps` e `packages` até a `entrega`; a correção do lint da base é DLV-08, em `entrega`. O smoke do D1 só roda com `SERVER_URL` definido.
 
 > Commits locais, um por tarefa, sem `--no-verify` e sem push (AD-010). T1 a T3 vêm antes do domínio porque o dev local e a migração da base travam as tarefas de banco (AD-016, AD-018).
 
@@ -41,7 +41,7 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 | --- | --- | --- |
 | Quick | Tarefas só com testes de unidade | `bun test packages/tickets` |
 | Full | Tarefas com testes de integração | `bun run test` |
-| Build | Fim de fase, tarefas de config, schema ou walk | `bun run check-types && bun biome check . && bun run test` |
+| Build | Fim de fase, tarefas de config, schema ou walk | `bun run check-types && bun biome check apps packages && bun run test` |
 
 ---
 
