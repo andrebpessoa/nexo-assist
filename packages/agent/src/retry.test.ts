@@ -79,6 +79,19 @@ describe("retry", () => {
 		);
 		expect(still).toEqual({ ok: false, reason: "rate_limited", attempts: 2 });
 		expect(waits).toEqual([5000]);
+
+		waits.length = 0;
+		calls = 0;
+		const wrapped = new Error("agent stream", { cause: limited });
+		const unwrapped = await withModelLimits(
+			async () => {
+				calls++;
+				if (calls === 1) throw wrapped;
+				return "ok";
+			},
+			{ sleep, timer: never },
+		);
+		expect(unwrapped).toEqual({ ok: true, value: "ok", attempts: 2 });
 	});
 
 	test("model failure and timeout", async () => {

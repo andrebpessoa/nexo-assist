@@ -145,8 +145,8 @@ T5 → T6 → T7 → T8 → T9 → T10 → T11
 
 **Done when**:
 
-- [ ] Adaptador Mastra devolve entendimento válido com modelo falso
-- [ ] Roteirizado devolve a fila
+- [x] Adaptador Mastra devolve entendimento válido com modelo falso
+- [x] Roteirizado devolve a fila
 
 **Tests**: unit
 **Gate**: quick

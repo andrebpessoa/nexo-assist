@@ -42,14 +42,24 @@ interface ProviderError {
 	responseHeaders?: Record<string, string>;
 }
 
+/** Providers and Mastra wrap the HTTP error, so the 429 may sit a few `cause`s down. */
 function rateLimitWait(error: unknown): number | null {
-	if (!error || typeof error !== "object") return null;
-	const e = error as ProviderError;
-	if ((e.statusCode ?? e.status) !== 429) return null;
-	const seconds = Number(e.responseHeaders?.["retry-after"]);
-	return Number.isFinite(seconds) && seconds > 0
-		? seconds * 1000
-		: DEFAULT_RETRY_AFTER_MS;
+	let current: unknown = error;
+	for (
+		let depth = 0;
+		depth < 5 && current && typeof current === "object";
+		depth++
+	) {
+		const e = current as ProviderError & { cause?: unknown };
+		if ((e.statusCode ?? e.status) === 429) {
+			const seconds = Number(e.responseHeaders?.["retry-after"]);
+			return Number.isFinite(seconds) && seconds > 0
+				? seconds * 1000
+				: DEFAULT_RETRY_AFTER_MS;
+		}
+		current = e.cause;
+	}
+	return null;
 }
 
 const TIMED_OUT = Symbol("timeout");
