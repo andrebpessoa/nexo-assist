@@ -14,7 +14,8 @@
       "dependsOn": ["^check-types"]
     },
     "test": {
-      "cache": false
+      "cache": false,
+      "passThroughEnv": ["SERVER_URL"]
     },
     "dev": {
       "cache": false,
