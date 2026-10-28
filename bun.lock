@@ -143,7 +143,12 @@
     },
     "packages/tickets": {
       "name": "@nexo-assist/tickets",
+      "dependencies": {
+        "@nexo-assist/db": "workspace:*",
+        "drizzle-orm": "catalog:",
+      },
       "devDependencies": {
+        "@libsql/client": "0.18.0",
         "@nexo-assist/config": "workspace:*",
         "typescript": "catalog:",
       },

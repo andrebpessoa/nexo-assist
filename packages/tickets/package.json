@@ -9,7 +9,12 @@
 		"check-types": "tsc --noEmit",
 		"test": "bun test"
 	},
+	"dependencies": {
+		"@nexo-assist/db": "workspace:*",
+		"drizzle-orm": "catalog:"
+	},
 	"devDependencies": {
+		"@libsql/client": "0.18.0",
 		"@nexo-assist/config": "workspace:*",
 		"typescript": "catalog:"
 	}
