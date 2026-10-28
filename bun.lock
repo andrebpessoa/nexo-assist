@@ -91,9 +91,12 @@
     "packages/agent": {
       "name": "@nexo-assist/agent",
       "dependencies": {
+        "@nexo-assist/db": "workspace:*",
         "@nexo-assist/tickets": "workspace:*",
+        "drizzle-orm": "catalog:",
       },
       "devDependencies": {
+        "@libsql/client": "0.18.0",
         "@nexo-assist/config": "workspace:*",
         "@types/bun": "^1.4.4",
         "typescript": "catalog:",

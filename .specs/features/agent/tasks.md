@@ -107,8 +107,8 @@ T5 → T6 → T7 → T8 → T9 → T10 → T11
 
 **Done when**:
 
-- [ ] Mensagens, estado e rascunho gravados e lidos
-- [ ] Migração gerada
+- [x] Mensagens, estado e rascunho gravados e lidos
+- [x] Migração gerada
 
 **Tests**: integration
 **Gate**: full

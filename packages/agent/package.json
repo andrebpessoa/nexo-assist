@@ -10,11 +10,14 @@
 		"test": "bun test"
 	},
 	"dependencies": {
-		"@nexo-assist/tickets": "workspace:*"
+		"@nexo-assist/tickets": "workspace:*",
+		"@nexo-assist/db": "workspace:*",
+		"drizzle-orm": "catalog:"
 	},
 	"devDependencies": {
 		"@nexo-assist/config": "workspace:*",
 		"@types/bun": "^1.4.4",
-		"typescript": "catalog:"
+		"typescript": "catalog:",
+		"@libsql/client": "0.18.0"
 	}
 }
