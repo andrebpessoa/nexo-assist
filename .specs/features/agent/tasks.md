@@ -183,8 +183,8 @@ T5 → T6 → T7 → T8 → T9 → T10 → T11
 
 **Done when**:
 
-- [ ] Artigo serve, não serve, não existe
-- [ ] Lista, card, vencido, não encontrado, outra pessoa
+- [x] Artigo serve, não serve, não existe
+- [x] Lista, card, vencido, não encontrado, outra pessoa
 
 **Tests**: integration
 **Gate**: full
