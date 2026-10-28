@@ -1,34 +1,34 @@
 {
-  "name": "server",
-  "type": "module",
-  "main": "src/index.ts",
-  "scripts": {
-    "build": "tsdown",
-    "check-types": "tsc --noEmit",
-    "test": "bun test",
-    "compile": "bun build --compile --no-compile-autoload-dotenv --minify --sourcemap --bytecode ./src/index.ts --outfile server",
-    "env:generate": "varlock codegen"
-  },
-  "dependencies": {
-    "@hono/trpc-server": "^0.4.2",
-    "@nexo-assist/api": "workspace:*",
-    "@nexo-assist/auth": "workspace:*",
-    "@nexo-assist/db": "workspace:*",
-    "@nexo-assist/tickets": "workspace:*",
-    "@trpc/server": "catalog:",
-    "better-auth": "catalog:",
-    "drizzle-orm": "catalog:",
-    "hono": "^4.13.7",
-    "varlock": "catalog:",
-    "zod": "catalog:"
-  },
-  "devDependencies": {
-    "@cloudflare/workers-types": "catalog:",
-    "@nexo-assist/config": "workspace:*",
-    "@nexo-assist/infra": "workspace:*",
-    "@types/bun": "^1.4.4",
-    "@types/node": "^26.4.1",
-    "tsdown": "^0.23.0",
-    "typescript": "catalog:"
-  }
+	"name": "server",
+	"type": "module",
+	"main": "src/index.ts",
+	"scripts": {
+		"build": "tsdown",
+		"check-types": "tsc --noEmit",
+		"test": "bun test",
+		"compile": "bun build --compile --no-compile-autoload-dotenv --minify --sourcemap --bytecode ./src/index.ts --outfile server",
+		"env:generate": "varlock codegen"
+	},
+	"dependencies": {
+		"@hono/trpc-server": "^0.4.2",
+		"@nexo-assist/api": "workspace:*",
+		"@nexo-assist/auth": "workspace:*",
+		"@nexo-assist/db": "workspace:*",
+		"@nexo-assist/tickets": "workspace:*",
+		"@trpc/server": "catalog:",
+		"better-auth": "catalog:",
+		"drizzle-orm": "catalog:",
+		"hono": "^4.13.7",
+		"varlock": "catalog:",
+		"zod": "catalog:"
+	},
+	"devDependencies": {
+		"@cloudflare/workers-types": "catalog:",
+		"@nexo-assist/config": "workspace:*",
+		"@nexo-assist/infra": "workspace:*",
+		"@types/bun": "^1.4.4",
+		"@types/node": "^26.4.1",
+		"tsdown": "^0.23.0",
+		"typescript": "catalog:"
+	}
 }

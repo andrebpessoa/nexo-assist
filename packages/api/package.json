@@ -1,22 +1,22 @@
 {
-  "name": "@nexo-assist/api",
-  "type": "module",
-  "exports": {
-    ".": "./src/index.ts",
-    "./*": "./src/*.ts"
-  },
-  "scripts": {
-    "check-types": "tsc --noEmit"
-  },
-  "dependencies": {
-    "@nexo-assist/auth": "workspace:*",
-    "@nexo-assist/db": "workspace:*",
-    "@trpc/client": "catalog:",
-    "@trpc/server": "catalog:",
-    "zod": "catalog:"
-  },
-  "devDependencies": {
-    "@nexo-assist/config": "workspace:*",
-    "typescript": "catalog:"
-  }
+	"name": "@nexo-assist/api",
+	"type": "module",
+	"exports": {
+		".": "./src/index.ts",
+		"./*": "./src/*.ts"
+	},
+	"scripts": {
+		"check-types": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@nexo-assist/auth": "workspace:*",
+		"@nexo-assist/db": "workspace:*",
+		"@trpc/client": "catalog:",
+		"@trpc/server": "catalog:",
+		"zod": "catalog:"
+	},
+	"devDependencies": {
+		"@nexo-assist/config": "workspace:*",
+		"typescript": "catalog:"
+	}
 }

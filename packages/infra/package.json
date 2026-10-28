@@ -1,24 +1,24 @@
 {
-  "name": "@nexo-assist/infra",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "check-types": "tsc --noEmit",
-    "dev": "env -u npm_execpath DEV_SEED_ENABLED=true node ./node_modules/alchemy/bin/cli.js dev",
-    "deploy": "alchemy deploy",
-    "destroy": "alchemy destroy"
-  },
-  "dependencies": {
-    "zod": "catalog:"
-  },
-  "devDependencies": {
-    "@alchemy.run/cloudflare": "2.0.0-beta.84",
-    "@effect/platform-bun": "4.0.6",
-    "@effect/platform-node": "4.0.6",
-    "@nexo-assist/config": "workspace:*",
-    "alchemy": "2.0.0-beta.84",
-    "effect": "4.0.6",
-    "typescript": "catalog:",
-    "varlock": "catalog:"
-  }
+	"name": "@nexo-assist/infra",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"check-types": "tsc --noEmit",
+		"dev": "env -u npm_execpath DEV_SEED_ENABLED=true node ./node_modules/alchemy/bin/cli.js dev",
+		"deploy": "alchemy deploy",
+		"destroy": "alchemy destroy"
+	},
+	"dependencies": {
+		"zod": "catalog:"
+	},
+	"devDependencies": {
+		"@alchemy.run/cloudflare": "2.0.0-beta.84",
+		"@effect/platform-bun": "4.0.6",
+		"@effect/platform-node": "4.0.6",
+		"@nexo-assist/config": "workspace:*",
+		"alchemy": "2.0.0-beta.84",
+		"effect": "4.0.6",
+		"typescript": "catalog:",
+		"varlock": "catalog:"
+	}
 }
