@@ -11,6 +11,7 @@ import { createProfileReader } from "./profile";
 import type { Sleep } from "./retry";
 import { createConversationStore } from "./store";
 import type { Block } from "./types";
+import type { Understander } from "./understand";
 import {
 	createScriptedUnderstander,
 	type ScriptedTurn,
@@ -39,6 +40,8 @@ export interface HarnessOptions {
 	/** The model deadline; defaults to one that never fires. */
 	timer?: Sleep;
 	now?: Date;
+	/** A real model instead of the scripted one (`bun run eval --live`). */
+	understander?: Understander;
 }
 
 /** An agent over the seeded database with a scripted model, a fixed clock and instant waits. */
@@ -54,7 +57,7 @@ export async function agentHarness(options: HarnessOptions = {}) {
 	let key = 0;
 	const agent = createAgent({
 		tickets,
-		understander,
+		understander: options.understander ?? understander,
 		store,
 		profileOf: createProfileReader(db),
 		clock,

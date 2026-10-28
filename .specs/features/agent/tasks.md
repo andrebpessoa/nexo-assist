@@ -259,8 +259,8 @@ T5 → T6 → T7 → T8 → T9 → T10 → T11
 
 **Done when**:
 
-- [ ] 22 conversas cobrindo cada regra
-- [ ] Comando imprime acerto por regra e total ≥ 90%
+- [x] 22 conversas cobrindo cada regra
+- [x] Comando imprime acerto por regra e total ≥ 90%
 
 **Tests**: integration
 **Gate**: full
