@@ -1,5 +1,6 @@
-import { CLOSED_STATUSES, type Priority, type Status } from "../types";
+import type { Priority, Status } from "../types";
 import { addBusinessMinutes, businessMinutesBetween } from "./business-hours";
+import { isOpen } from "./transitions";
 
 const MINUTE = 60_000;
 
@@ -28,9 +29,9 @@ export function overdue(
 	ticket: SlaTicket,
 	now: Date,
 ): { vencido: boolean; atrasoMinutos: number } {
-	const closed = (CLOSED_STATUSES as readonly Status[]).includes(ticket.status);
 	const deadline = deadlineFor(ticket.priority, ticket.slaAnchorAt);
-	if (closed || now <= deadline) return { vencido: false, atrasoMinutos: 0 };
+	if (!isOpen(ticket.status) || now <= deadline)
+		return { vencido: false, atrasoMinutos: 0 };
 	const atrasoMinutos =
 		ticket.priority === "Crítica"
 			? Math.floor((now.getTime() - deadline.getTime()) / MINUTE)
