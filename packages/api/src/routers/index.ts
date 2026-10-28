@@ -5,12 +5,6 @@ export const appRouter = router({
 	healthCheck: publicProcedure.query(() => {
 		return "OK";
 	}),
-	privateData: protectedProcedure.query(({ ctx }) => {
-		return {
-			message: "This is private",
-			user: ctx.session.user,
-		};
-	}),
 	/** The signed-in user for the sidebar and "Meu perfil" (AUTH-17 to AUTH-19). */
 	me: protectedProcedure.query(async ({ ctx }) => {
 		const { name, email, id } = ctx.session.user;

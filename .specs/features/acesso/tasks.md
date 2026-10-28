@@ -144,8 +144,8 @@ T3 → T4 → T5 → T6 → T7 → T8
 
 **Done when**:
 
-- [ ] Não há `sign-up-form`, `mode-toggle`, `header` nem `dashboard`
-- [ ] `bun run check-types` passa
+- [x] Não há `sign-up-form`, `mode-toggle`, `header` nem `dashboard`
+- [x] `bun run check-types` passa
 
 **Tests**: none
 **Gate**: build

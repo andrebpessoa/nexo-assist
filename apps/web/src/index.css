@@ -1,1 +1,26 @@
 @import "@nexo-assist/ui/globals.css";
+
+/* Prototype tokens (.specs/source/prototipo.md): light theme only (AD-011). */
+@theme {
+	--font-display: "Newsreader Variable", Georgia, serif;
+	--font-ui: "Schibsted Grotesk Variable", system-ui, sans-serif;
+	--font-data: "IBM Plex Mono", ui-monospace, monospace;
+	--color-paper: #ffffff;
+	--color-desk: #f6f7f9;
+	--color-ink: #1b2431;
+	--color-ink-2: #3d4656;
+	--color-ink-3: #5b6472;
+	--color-rule: #e6e8ec;
+	--color-cta: #0062c4;
+	--color-cta-soft: #e8f1fb;
+	--color-showcase: #1b2431;
+}
+
+@layer base {
+	html,
+	body {
+		font-family: var(--font-ui);
+		color: var(--color-ink);
+		background: var(--color-paper);
+	}
+}
