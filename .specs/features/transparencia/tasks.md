@@ -99,9 +99,9 @@ T1 → T2 → T3
 
 **Done when**:
 
-- [ ] "Nexo Assist" e os rótulos com ✓/✕ acima da resposta
-- [ ] Gerúndio enquanto o passo roda
-- [ ] Clique abre o painel; X e Esc fecham
+- [x] "Nexo Assist" e os rótulos com ✓/✕ acima da resposta
+- [x] Gerúndio enquanto o passo roda
+- [x] Clique abre o painel; X e Esc fecham
 
 **Tests**: component
 **Gate**: full
