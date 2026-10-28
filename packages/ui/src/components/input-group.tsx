@@ -9,6 +9,7 @@ import type * as React from "react";
 
 function InputGroup({ className, ...props }: React.ComponentProps<"div">) {
 	return (
+		// biome-ignore lint/a11y/useSemanticElements: shadcn input group; a <fieldset> would break its flex layout and add a border
 		<div
 			data-slot="input-group"
 			role="group"
@@ -53,6 +54,8 @@ function InputGroupAddon({
 	...props
 }: React.ComponentProps<"div"> & VariantProps<typeof inputGroupAddonVariants>) {
 	return (
+		// biome-ignore lint/a11y/useSemanticElements: shadcn addon; a <fieldset> would break its flex layout and add a border
+		// biome-ignore lint/a11y/useKeyWithClickEvents: the click only moves focus to the input, which the keyboard already reaches
 		<div
 			role="group"
 			data-slot="input-group-addon"

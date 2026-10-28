@@ -5,6 +5,7 @@ import type * as React from "react";
 
 function Label({ className, ...props }: React.ComponentProps<"label">) {
 	return (
+		// biome-ignore lint/a11y/noLabelWithoutControl: generic shadcn Label; each caller passes htmlFor or wraps its control
 		<label
 			data-slot="label"
 			className={cn(
