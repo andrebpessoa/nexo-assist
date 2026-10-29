@@ -5,6 +5,7 @@ import { emptyUnderstanding } from "./understand";
 import {
 	createMastraUnderstander,
 	JUDGE_INSTRUCTIONS,
+	UNDERSTAND_INSTRUCTIONS,
 } from "./understand-mastra";
 
 const reply = (value: unknown) =>
@@ -170,5 +171,43 @@ describe("mastra understander", () => {
 		// passo já feito
 		expect(rules).toContain("articleTried");
 		expect(rules).toContain("o autoatendimento não libera");
+	});
+
+	// The prompt reaches the model as the system message of each understand call.
+	const understandPrompt = async () => {
+		const model = reply(emptyUnderstanding());
+		await createMastraUnderstander({
+			model: model as never,
+			modelId: "google/gemini-3.5-flash-lite",
+		}).understand(input);
+		return JSON.stringify(model.doGenerateCalls[0]?.prompt);
+	};
+
+	test("understand prompt asks affected only when said", async () => {
+		expect(await understandPrompt()).toContain(
+			JSON.stringify(UNDERSTAND_INSTRUCTIONS).slice(1, 60),
+		);
+		const rules = UNDERSTAND_INSTRUCTIONS;
+		expect(rules).toContain("quantas pessoas são afetadas");
+		expect(rules).toContain("equipamento ou acesso para ela mesma");
+		expect(rules).toContain('"só comigo" é "Só eu"');
+		expect(rules).toContain(
+			'"consigo mandar pelo webmail" sozinho não diz quem é afetado',
+		);
+	});
+
+	test("understand prompt reads a workaround as not blocking", () => {
+		expect(UNDERSTAND_INSTRUCTIONS).toContain(
+			"outro jeito de trabalhar, workaround true e blocksWork false",
+		);
+	});
+
+	test("understand prompt sends a vague report to low confidence", () => {
+		const rules = UNDERSTAND_INSTRUCTIONS;
+		expect(rules).toContain(
+			"outro (saudação, agradecimento ou mensagem sem pedido nem problema)",
+		);
+		expect(rules).toContain("diz que algo está errado sem dizer o quê");
+		expect(rules).toContain("abrir_chamado com confidence abaixo de 60");
 	});
 });

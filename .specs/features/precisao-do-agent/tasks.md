@@ -172,7 +172,7 @@ T7
 
 ---
 
-### T6: Prompt de entendimento para afetados, alternativa e relato vago
+### T6: Prompt de entendimento para afetados, alternativa e relato vago ✅
 
 **What**: `UNDERSTAND_INSTRUCTIONS` (exportado) define `affected` só quando dito (ou equipamento/acesso para si) com os exemplos da PRE-14, "outro jeito de trabalhar" como `workaround` true e `blocksWork` false, `outro` só para saudação, agradecimento ou mensagem sem pedido nem problema, e relato vago de problema como `abrir_chamado` com confiança abaixo de 60.
 **Where**: `packages/agent/src/understand-mastra.ts`
@@ -182,9 +182,9 @@ T7
 
 **Done when**:
 
-- [ ] Testes que conferem cada definição e exemplo no prompt enviado ao modelo
-- [ ] Rodada parcial ao vivo do plano acima registrada em `## Handoff` (acerto por conversa)
-- [ ] Gate quick e build passam
+- [x] Testes que conferem cada definição e exemplo no prompt enviado ao modelo
+- [x] Rodada parcial ao vivo do plano acima registrada em `## Handoff` (acerto por conversa)
+- [x] Gate quick e build passam
 
 **Tests**: unit
 **Gate**: build
@@ -284,6 +284,7 @@ Proof: `bun test packages/agent/eval/eval.test.ts -t "eval set"`
 
 **Settled mid-build:** none
 **Dispatched:** none
+**Rodadas ao vivo:** parcial 1 (2026-10-29, depois da T6, 11 conversas, ~25 chamadas): 38/40 = 95%. Prioridade 15/15, duplicidade 9/9, central 7/7, transferir 1/1, saudação 2/2, uma pergunta por vez 4/6. Erros: `afetados-nao-sei` passo 1 (`rascunho_chamado` em vez de `perguntar`) e passo 2 em cascata (`descartar`). Saída crua: o modelo devolve `affected: "Só eu"` para "O Outlook parou de enviar e-mails, mas consigo mandar pelo webmail." mesmo com o exemplo no prompt. Rodadas completas: 0.
 **Walked:** N/A - sem tela nova; o efeito é medido pelas rodadas ao vivo
 
 ---
