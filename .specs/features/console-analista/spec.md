@@ -218,6 +218,7 @@ Os analistas do Suporte N1 e N2 precisam ver as conversas que dependem deles, in
 | Linha de ações do agent sem detalhe | Clique abre o painel lateral "Por que o Nexo fez isso" | y - AD-007 |
 | Tema claro | Tema claro, sem o alternador de tema da base | y - AD-011 |
 | "online" no cabeçalho e bolinhas verdes de presença nos avatares (04, 05) | Nada (sem presença em tempo real) | y - André, 2026-10-28: "Tirar (Recomendado)" |
+| "Transferido para um analista" no último evento do cartão "Desta conversa" (04) | "Transferido para <equipe>" (Suporte N1 ou N2), a equipe real do evento | y - André, 2026-10-28: "Mostrar a equipe (Recomendado)" |
 | Ana (contato até 12:05) acima de Carla ("contato em 25 min") na lista (04) | Aguardando pelo prazo de contato mais próximo, como CON-07 | y - André, 2026-10-28: "Prazo mais próximo (Recomendado)" |
 
 ## Success Criteria
