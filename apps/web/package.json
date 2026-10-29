@@ -5,10 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"build": "vite build",
-		"serve": "vite preview",
-		"start": "vite",
 		"check-types": "vite build && tsc --noEmit",
-		"dev:bare": "vite dev",
 		"env:generate": "varlock codegen",
 		"test": "bun test"
 	},
