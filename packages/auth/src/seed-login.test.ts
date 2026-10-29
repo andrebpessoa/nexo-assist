@@ -138,3 +138,24 @@ describe("seed login", () => {
 		expect(after?.total).toBe(before?.total);
 	});
 });
+
+describe("session cookie cache (latency)", () => {
+	test("a signed-in request reads the session from the cookie, not the database, for 5 minutes", async () => {
+		const { session } = await import("@nexo-assist/db/schema/auth");
+		const response = await post("/sign-in/seed", {
+			email: "ana.souza@nexo.com.br",
+			password: "x",
+		});
+		const cookies = response.headers.getSetCookie();
+		const data = cookies.find((c) => c.includes("session_data="));
+		expect(data).toContain("Max-Age=300");
+		const all = cookies.map((c) => c.split(";")[0]).join("; ");
+		// With the rows gone, only the cookie cache can still answer.
+		await db.delete(session);
+		const cached = await auth.api.getSession({
+			headers: new Headers({ cookie: all }),
+		});
+		expect(cached?.user.email).toBe("ana.souza@nexo.com.br");
+		expect(await sessionEmail(response)).toBeNull();
+	});
+});

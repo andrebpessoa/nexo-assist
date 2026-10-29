@@ -26,7 +26,13 @@ export function createAuth(
 		trustedOrigins: [env.CORS_ORIGIN, ...desktopOrigins],
 		// No sign-up and no real password: the seed login is the only way in (AUTH-13).
 		emailAndPassword: { enabled: false },
-		session: { expiresIn: THIRTY_DAYS },
+		session: {
+			expiresIn: THIRTY_DAYS,
+			// The session rides in a signed cookie for 5 minutes, so most requests skip the database
+			// lookup; D1 sits an ocean away from Brazil (~140 ms a query). A sign-out elsewhere takes
+			// up to 5 minutes to reach other tabs.
+			cookieCache: { enabled: true, maxAge: 5 * 60 },
+		},
 		secret: env.BETTER_AUTH_SECRET,
 		baseURL: env.BETTER_AUTH_URL,
 		advanced: {
