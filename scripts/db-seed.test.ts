@@ -21,4 +21,16 @@ describe("db:seed target (DLV-12)", () => {
 			headers: { authorization: "Bearer tok-123" },
 		});
 	});
+
+	test("a SERVER_URL ending in / still hits the route", () => {
+		expect(
+			seedRequest({
+				SERVER_URL: "https://server.example.workers.dev//",
+				SEED_TOKEN: "tok-123",
+			}).url,
+		).toBe("https://server.example.workers.dev/admin/seed");
+		expect(seedRequest({ SERVER_URL: "http://localhost:3000/" }).url).toBe(
+			"http://localhost:3000/internal/seed",
+		);
+	});
 });

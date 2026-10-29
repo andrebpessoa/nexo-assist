@@ -7,7 +7,10 @@ export function seedRequest(env: {
 	SERVER_URL?: string;
 	SEED_TOKEN?: string;
 }): { url: string; headers: Record<string, string> } {
-	const serverUrl = env.SERVER_URL ?? "http://localhost:3000";
+	const serverUrl = (env.SERVER_URL ?? "http://localhost:3000").replace(
+		/\/+$/,
+		"",
+	);
 	const token = env.SEED_TOKEN?.trim();
 	return token
 		? {
