@@ -124,9 +124,9 @@ Remaining dimensions N/A for this scope.
 | DLV-09 | P1 - Qualidade de código | Verify | Verified |
 | DLV-10 | P1 - Qualidade de código | Verify | Verified |
 | DLV-11 | P1 - Qualidade de código | Verify | Verified |
-| DLV-12 | P3 - Deploy protegido | Verify | Deferred (deploy sem aval, AD-010) |
-| DLV-13 | P3 - Deploy protegido | Verify | Deferred (deploy sem aval, AD-010) |
-| DLV-14 | P3 - Deploy protegido | Verify | Deferred (deploy sem aval, AD-010) |
+| DLV-12 | P3 - Deploy protegido | Build | In Progress (deploy autorizado em 2026-10-29) |
+| DLV-13 | P3 - Deploy protegido | Build | In Progress (deploy autorizado em 2026-10-29) |
+| DLV-14 | P3 - Deploy protegido | Build | In Progress (deploy autorizado em 2026-10-29) |
 | DLV-15 | P1 - Rodar e entender o projeto | Verify | Verified |
 
 **Coverage:** 15 critérios, todos mapeados a uma história.

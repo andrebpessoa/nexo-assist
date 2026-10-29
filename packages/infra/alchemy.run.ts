@@ -35,6 +35,13 @@ export const server = Cloudflare.Worker("server", {
 		LLM_MODEL: Config.String("LLM_MODEL").pipe(
 			Config.withDefault("google/gemini-3.5-flash-lite"),
 		),
+		// Usage limits (DLV-13): messages per user per minute and model calls per UTC day.
+		RATE_LIMIT_PER_MINUTE: Config.String("RATE_LIMIT_PER_MINUTE").pipe(
+			Config.withDefault("10"),
+		),
+		LLM_DAILY_LIMIT: Config.String("LLM_DAILY_LIMIT").pipe(
+			Config.withDefault("400"),
+		),
 	},
 	dev: {
 		port: 3000,

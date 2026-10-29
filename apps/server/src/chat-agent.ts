@@ -12,8 +12,9 @@ import type { Context } from "hono";
 import type { ChatAccess } from "./chat";
 import { createDevUnderstander } from "./dev-understander";
 import { createTicketService, type TicketsEnv } from "./tickets";
+import { createUsageLimiter, limitsFrom, meter, type UsageEnv } from "./usage";
 
-export interface ChatEnv extends TicketsEnv {
+export interface ChatEnv extends TicketsEnv, UsageEnv {
 	GOOGLE_GENERATIVE_AI_API_KEY?: string;
 	/** `provider/model` for the Mastra model router; Flash-Lite when empty (AD-008, AD-017). */
 	LLM_MODEL?: string;
@@ -72,7 +73,11 @@ export function createChatResolver({
 		const userId = access.actor.userId;
 		const profileOf = createProfileReader(db);
 		const { name } = await profileOf(userId);
-		const { understander, modelId } = chooseUnderstander(env);
+		const chosen = chooseUnderstander(env);
+		const usage = createUsageLimiter({ db, limits: limitsFrom(env) });
+		// Every model call counts toward the daily cap (DLV-13).
+		const understander = meter(chosen.understander, usage.countModelCall);
+		const { modelId } = chosen;
 		return {
 			ok: true,
 			userId,

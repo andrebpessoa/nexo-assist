@@ -12,6 +12,7 @@ import { createContext } from "./context";
 import { createDevRoutes } from "./dev-seed";
 import { ENV } from "./env.server";
 import { createAuth, getDb } from "./services";
+import { createUsageLimiter, limitsFrom } from "./usage";
 
 const app = new Hono();
 
@@ -44,6 +45,10 @@ app.use(
 app.route(
 	"/",
 	createChatRoutes({
+		admitUsage: (userId) =>
+			createUsageLimiter({ db: getDb(), limits: limitsFrom(ENV) }).admitMessage(
+				userId,
+			),
 		resolve: createChatResolver({
 			getDb,
 			getSession: async (db, headers) =>

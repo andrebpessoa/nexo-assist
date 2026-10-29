@@ -53,6 +53,7 @@ const ERRORS = {
 	empty: "Escreva uma mensagem.",
 	too_long: "Máximo de 2.000 caracteres.",
 	limit: "Você chegou ao limite de 30 mensagens nesta conversa.",
+	rate_limit: "Limite de uso atingido. Tente mais tarde.",
 } as const;
 
 /** Text the employee reads, one word at a time (CHAT-02). */
@@ -87,9 +88,12 @@ const view = (m: StoredMessage) => ({
  */
 export function createChatRoutes({
 	resolve,
+	admitUsage = async () => true,
 	wordDelayMs = 18,
 }: {
 	resolve: (c: Context) => Promise<ChatAccess>;
+	/** Counts the message against the usage limits; false refuses it (DLV-13). */
+	admitUsage?: (userId: string) => Promise<boolean>;
 	wordDelayMs?: number;
 }) {
 	const app = new Hono();
@@ -134,6 +138,8 @@ export function createChatRoutes({
 		if (!parsed.success)
 			return c.json({ error: "invalid", message: "Pedido inválido." }, 400);
 		const input = parsed.data as AgentInput;
+		if (!(await admitUsage(access.userId)))
+			return c.json({ error: "rate_limit", message: ERRORS.rate_limit }, 429);
 		const probe = access.agentFor();
 		const { messages } = await probe.history(access.userId);
 		const admission = admit(messages, input);

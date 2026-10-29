@@ -9,12 +9,13 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 ---
 
 **Design**: `.specs/features/entrega/design.md`
-**Status**: Approved
+**Status**: In Progress
 **Approved**: 2026-10-28 - user: "sim, siga com a validação do console e depois a entrega" (aprovação delegada, AD-020)
+**Approved**: 2026-10-29 - user: "pode começar o deploy, depois arrume tudo para publicarmos no github" (fase 2, deploy autorizado: AD-010)
 **Mutations**: 3
 **Build**: `bun run check-types; bun biome check .; bun run test; bun test scripts`
 
-> Commits locais, um por tarefa, sem `--no-verify` e sem push. Deploy (DLV-12 a DLV-14) só com o aval do André (AD-010).
+> Commits locais, um por tarefa, sem `--no-verify` e sem push. Deploy (DLV-12 a DLV-14) autorizado pelo André em 2026-10-29 (AD-010); `git push` continua pedindo aval à parte.
 
 ---
 
@@ -27,6 +28,7 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 | Escolha do modelo no servidor | unit | `LLM_MODEL` definido, ausente e sem chave | `apps/server/src/chat-agent.test.ts` | `bun --cwd apps/server test` |
 | Scripts da raiz (setup, dev, varredura) | unit (sistema de arquivos temporário, `fetch` falso) | Cada caminho: cria, mantém, gera segredo; seed depois do servidor; servidor que não sobe | `scripts/*.test.ts` | `bun test scripts` |
 | README e `.env.example` | unit (lê o arquivo) | Seções e variáveis obrigatórias | `scripts/docs.test.ts` | `bun test scripts` |
+| Limite de uso e seed protegido | unit + integration (libsql em memória, relógio fixo) | 10 por minuto, virada do minuto, teto diário, contagem das chamadas ao modelo, token certo, errado e ausente | `apps/server/src/usage.test.ts`, `apps/server/src/admin-seed.test.ts` | `bun --cwd apps/server test` |
 | Config (Biome, Alchemy, schemas) | none | build gate | - | build gate |
 
 ## Gate Check Commands
@@ -45,6 +47,12 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 
 ```
 T1 → T2 → T3 → T4 → T5 → T6
+```
+
+### Phase 2: Deploy protegido
+
+```
+T6 → T7 → T8 → T9 → T10
 ```
 
 ---
@@ -170,6 +178,87 @@ T1 → T2 → T3 → T4 → T5 → T6
 
 ---
 
+#### T7: Limite por usuário e teto diário do modelo
+
+**What**: tabela `usage_counter` (chave, contagem, expira em) com migração; `createUsageLimiter` em `apps/server/src/usage.ts` conta mensagens por usuário por minuto (`RATE_LIMIT_PER_MINUTE`, padrão 10) e chamadas ao modelo por dia UTC (`LLM_DAILY_LIMIT`, padrão 400); `/chat/send` responde 429 `{ error: "rate_limit", message: "Limite de uso atingido. Tente mais tarde." }` quando um dos dois estoura; o entendedor conta cada chamada ao modelo.
+**Where**: `apps/server/src/usage.ts`
+**Depends on**: T6
+**Reuses**: `createTestDb`, padrão de `admit` em `chat.ts`
+**Requirement**: DLV-13
+
+**Done when**:
+
+- [x] A 11ª mensagem do mesmo usuário no mesmo minuto recebe 429 com "Limite de uso atingido. Tente mais tarde."; outro usuário e o minuto seguinte passam
+- [x] Com o teto diário de chamadas ao modelo atingido, `/chat/send` recebe o mesmo 429; o dia seguinte passa
+- [x] Cada chamada a `understand` e `judge` soma 1 no contador do dia
+- [x] Os dois limites vêm do env, com os padrões 10 e 400
+
+**Tests**: integration
+**Gate**: quick
+**Commit**: `feat(server): limite de mensagens por minuto e teto diário do modelo`
+
+---
+
+#### T8: Seed protegido por token no servidor publicado
+
+**What**: `POST /admin/seed` só existe com `SEED_TOKEN` definido e exige `Authorization: Bearer <SEED_TOKEN>`; `bun run db:seed` usa a rota protegida quando `SEED_TOKEN` está no ambiente.
+**Where**: `apps/server/src/admin-seed.ts`
+**Depends on**: T7
+**Reuses**: `applySeed`, `buildSeed`
+**Requirement**: DLV-12
+
+**Done when**:
+
+- [ ] Sem `SEED_TOKEN` no servidor, `/admin/seed` dá 404
+- [ ] Token ausente ou errado dá 401 e não grava nada; token certo aplica o seed e devolve as contagens
+- [ ] `db:seed` com `SERVER_URL` e `SEED_TOKEN` chama `/admin/seed` com o token
+
+**Tests**: integration
+**Gate**: quick
+**Commit**: `feat(server): seed do deploy protegido por token`
+
+---
+
+#### T9: Configuração do deploy e publicação
+
+**What**: `alchemy.run.ts` e o `.env.schema` da infra repassam `RATE_LIMIT_PER_MINUTE`, `LLM_DAILY_LIMIT` e `SEED_TOKEN` (secret); a chave do Gemini e o `BETTER_AUTH_SECRET` vão como secret; `bun run deploy` publica, o seed roda pela rota protegida e o link entra no README.
+**Where**: `packages/infra/alchemy.run.ts`
+**Depends on**: T8
+**Reuses**: `Config.Redacted` da base
+**Requirement**: DLV-12
+
+**Done when**:
+
+- [ ] `bun run deploy` publica o web e o servidor na conta Cloudflare do André
+- [ ] Login da Ana no link público abre o chat e o agent responde com o Gemini
+- [ ] Chave, segredo do auth e token do seed aparecem como secret no Worker, não como texto
+
+**Tests**: none
+**Gate**: build
+**Commit**: `feat(infra): deploy com limites e seed protegido`
+
+---
+
+#### T10: README do deploy
+
+**What**: seção "Deploy" no README: link público, como foi publicado (Alchemy, dois Workers, D1), como as chaves ficam (secrets do Worker, state cifrado com `ALCHEMY_PASSWORD`), o limite por usuário, o teto diário e o seed protegido.
+**Where**: `README.md`
+**Depends on**: T9
+**Reuses**: -
+**Requirement**: DLV-12, DLV-14
+
+**Done when**:
+
+- [ ] O README tem a seção "Deploy" com o link público
+- [ ] Explica secrets, limite por usuário, teto diário e seed por token
+- [ ] O teste do README passa
+
+**Tests**: unit
+**Gate**: build
+**Commit**: `docs: deploy publicado e proteção das chaves`
+
+---
+
 ## Checks
 
 **C1** - README tem as seis seções do PDF (DLV-01)
@@ -206,13 +295,16 @@ Proof: `bun test scripts/docs.test.ts -t "README shows the last eval result"`
 Proof: `walk - git log da entrega: um commit por tarefa, Conventional Commits validados por check_commit.py`
 
 **C12** - Deploy publicado com a chave como secret (DLV-12)
-Proof: `walk - não se aplica nesta rodada: o André não autorizou o deploy (AD-010)`
+Proof: `walk - bun run deploy; seed pela rota protegida; login da Ana no link público e resposta do agent; secrets listados no Worker`
 
 **C13** - Limite de 10 mensagens por minuto e teto diário (DLV-13)
-Proof: `walk - não se aplica nesta rodada: só com deploy (AD-010)`
+Proof: `bun --cwd apps/server test src/usage.test.ts`
 
 **C14** - README explica o deploy e a proteção das chaves (DLV-14)
-Proof: `walk - não se aplica nesta rodada: só com deploy (AD-010)`
+Proof: `bun test scripts/docs.test.ts -t "README explains the deploy and how keys are protected"`
+
+**C17** - O seed do deploy só roda com o token (DLV-12)
+Proof: `bun --cwd apps/server test src/admin-seed.test.ts`
 
 **C15** - `.env.example` com a chave vazia e `LLM_MODEL`; README explica a chave, o free tier e o uso dos dados (DLV-15)
 Proof: `bun test scripts/docs.test.ts -t "README explains the AI Studio key and the free tier"`
