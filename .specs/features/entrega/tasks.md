@@ -141,8 +141,8 @@ T1 → T2 → T3 → T4 → T5 → T6
 
 **Done when**:
 
-- [ ] A avaliação roteirizada continua passando (`eval.test.ts`)
-- [ ] `RESULT.md` traz o resultado ao vivo e o custo médio por conversa
+- [x] A avaliação roteirizada continua passando (`eval.test.ts`)
+- [x] `RESULT.md` traz o resultado ao vivo e o custo médio por conversa
 
 **Tests**: unit
 **Gate**: quick
