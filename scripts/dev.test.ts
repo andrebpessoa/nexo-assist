@@ -53,13 +53,16 @@ describe("bun run dev", () => {
 	});
 
 	test("a seed that fails is reported once, not as a server that never answered", async () => {
-		for (const seed of [
-			async () => new Response("boom", { status: 500 }),
-			async () => {
-				throw new Error("socket hang up");
-			},
-			async () => new Response("<html>", { status: 200 }),
-		]) {
+		for (const [seed, says] of [
+			[async () => new Response("boom", { status: 500 }), "respondeu 500"],
+			[
+				async () => {
+					throw new Error("socket hang up");
+				},
+				"socket hang up",
+			],
+			[async () => new Response("<html>", { status: 200 }), "o seed falhou"],
+		] as const) {
 			const logs: string[] = [];
 			let posts = 0;
 			const fetch = mock(async (url: string | URL | Request) => {
@@ -77,6 +80,7 @@ describe("bun run dev", () => {
 			expect(result).toBe("seed_failed");
 			expect(posts).toBe(1);
 			expect(logs.join("\n")).toContain("bun run db:seed");
+			expect(logs.join("\n")).toContain(says);
 			expect(logs.join("\n")).not.toContain("não respondeu");
 		}
 	});
