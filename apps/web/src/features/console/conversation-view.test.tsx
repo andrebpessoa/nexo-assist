@@ -220,6 +220,33 @@ describe("ConversationView", () => {
 		expect(act).toHaveBeenCalledWith("assume", undefined);
 	});
 
+	test("⋮ assume follows the state: on with the agent, off once mine", async () => {
+		const assumeItem = async () => {
+			await userEvent.click(screen.getByRole("button", { name: "Mais ações" }));
+			return within(screen.getByRole("menu")).getByRole("menuitem", {
+				name: "Assumir atendimento",
+			}) as HTMLButtonElement;
+		};
+		const agent = setup(
+			anaConversation({
+				state: "agent",
+				status: { kind: "agent" },
+				contactBy: null,
+			}),
+		);
+		expect((await assumeItem()).disabled).toBe(false);
+		agent.view.unmount();
+		setup(mine());
+		expect((await assumeItem()).disabled).toBe(true);
+		expect(
+			(
+				within(screen.getByRole("menu")).getByRole("menuitem", {
+					name: "Encerrar atendimento",
+				}) as HTMLButtonElement
+			).disabled,
+		).toBe(false);
+	});
+
 	test("⋮ on a closed conversation disables the actions", async () => {
 		setup(
 			anaConversation({

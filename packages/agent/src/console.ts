@@ -103,6 +103,14 @@ export type ConsoleFilter = (typeof CONSOLE_FILTERS)[number];
 
 const HOUR = 3_600_000;
 const RESOLVED_AFTER = 24 * HOUR;
+const SOLVED = /\b(resolveu|resolvido|resolvida|funcionou|deu certo)\b/i;
+const NEGATED =
+	/\bn[ãa]o\b[^.!?]*\b(resolveu|resolvido|resolvida|funcionou|deu certo)\b/i;
+
+/** "Resolvida pelo agent" when the employee says it worked (console-analista D-02). */
+function saysSolved(text: string): boolean {
+	return SOLVED.test(text) && !NEGATED.test(text);
+}
 const KEEP_CLOSED = 7 * 24 * HOUR;
 const TICKET = /^(INC|REQ)-\d+$/;
 
@@ -172,8 +180,9 @@ export function summarize(row: ConsoleRow, now: Date, me: string): ConsoleItem {
 				: { kind: "outro_analista", assigneeId: conv.assigneeId };
 	else if (conv.state === "encerrada") status = { kind: "encerrada" };
 	else if (
-		last?.role === "agent" &&
-		now.getTime() - last.createdAt.getTime() > RESOLVED_AFTER
+		(last?.role === "employee" && saysSolved(last.text)) ||
+		((last?.role === "agent" || last?.role === "analyst") &&
+			now.getTime() - last.createdAt.getTime() > RESOLVED_AFTER)
 	)
 		status = { kind: "resolvida" };
 	else status = { kind: "agent" };

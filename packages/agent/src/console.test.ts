@@ -242,6 +242,51 @@ describe("summarize", () => {
 		expect(summarize(closed, NOW, ME).status).toEqual({ kind: "encerrada" });
 	});
 
+	test("the employee saying it is solved marks it resolved", () => {
+		const said = (text: string) =>
+			summarize(
+				row("agent", [
+					msg("agent", "Tente reiniciar.", 3),
+					msg("employee", text, 1),
+				]),
+				NOW,
+				ME,
+			).status;
+		expect(said("Isso resolveu, obrigado!")).toEqual({ kind: "resolvida" });
+		expect(said("Funcionou!")).toEqual({ kind: "resolvida" });
+		expect(said("Deu certo, valeu")).toEqual({ kind: "resolvida" });
+		expect(said("Não resolveu.")).toEqual({ kind: "agent" });
+		expect(said("Ainda não funcionou")).toEqual({ kind: "agent" });
+		expect(said("Reiniciei e nada")).toEqual({ kind: "agent" });
+	});
+
+	test("24 h of silence after the central's answer, agent or analyst, not after the employee's", () => {
+		const analystLast = row("agent", [
+			msg("employee", "Está lento.", 26 * 60),
+			msg("analyst", "Atualizei o driver.", 25 * 60 + 2),
+			msg("system", "Voltei para a conversa. Como posso ajudar?", 25 * 60),
+		]);
+		const employeeLast = row("agent", [
+			msg("agent", "Tente reiniciar.", 26 * 60),
+			msg("employee", "Vou tentar amanhã.", 25 * 60),
+		]);
+		expect(summarize(analystLast, NOW, ME).status).toEqual({
+			kind: "resolvida",
+		});
+		expect(summarize(employeeLast, NOW, ME).status).toEqual({ kind: "agent" });
+	});
+
+	test("opening up to the employee's last message leaves nothing unread", () => {
+		const m1 = msg("agent", "Oi", 3);
+		const m2 = msg("employee", "Ainda aí?", 1);
+		const item = summarize(
+			row("aguardando_analista", [m1, m2], { readSeq: m2.seq }),
+			NOW,
+			ME,
+		);
+		expect(item.unread).toBe(0);
+	});
+
 	test("preview skips system lines; unread counts employee messages after read_seq", () => {
 		const m1 = msg("employee", "Está parado há 5 dias.", 10);
 		const m2 = msg("agent", "Vou chamar um analista.", 9);

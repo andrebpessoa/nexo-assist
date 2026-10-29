@@ -4,7 +4,7 @@ import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import type { ConsoleApi, ConsoleList } from "./api";
-import { ConsoleScreen } from "./console-screen";
+import { ConsoleScreen, POLL_MS } from "./console-screen";
 import { anaConversation, item, list, NOW, panel } from "./fixtures";
 
 function fakeApi(over: Partial<ConsoleApi> = {}) {
@@ -169,5 +169,10 @@ describe("ConsoleScreen", () => {
 			screen.getAllByRole("button", { name: /Nexo Assist/ })[0] as HTMLElement,
 		);
 		expect(await screen.findByText("Por que o Nexo fez isso")).toBeTruthy();
+	});
+
+	test("by default the screen refreshes within 5 seconds", () => {
+		expect(POLL_MS).toBeGreaterThan(0);
+		expect(POLL_MS).toBeLessThanOrEqual(5000);
 	});
 });

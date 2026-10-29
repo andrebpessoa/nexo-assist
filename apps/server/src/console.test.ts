@@ -163,15 +163,26 @@ describe("console routes", () => {
 	});
 
 	test("lists with counts computed on the server", async () => {
-		const { call, transferred } = await setup();
+		const { call, transferred, store, ids } = await setup();
 		const id = await transferred();
+		const bruno = await store.open(ids.bruno as string);
+		await store.append(bruno.id, {
+			role: "employee",
+			text: "Como configuro a VPN?",
+			blocks: [{ kind: "text", text: "Como configuro a VPN?" }],
+			decision: null,
+		});
 		const list = await json<List>(call("/console/conversations"));
 		expect(list.counts).toEqual({
-			todas: 1,
+			todas: 2,
 			para_voce: 1,
-			com_agent: 0,
+			com_agent: 1,
 			minhas: 0,
 		});
+		expect(list.items.map((i) => i.status.kind)).toEqual([
+			"transferida",
+			"agent",
+		]);
 		expect(list.items[0]).toMatchObject({
 			id,
 			name: "Ana Souza",

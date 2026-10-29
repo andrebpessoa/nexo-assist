@@ -15,13 +15,15 @@ import { initials } from "./labels";
 import { TicketsPanel } from "./tickets-panel";
 
 const AVAILABLE = "nexo.console.available";
+/** List, conversation and panel refresh within 5 s without a reload (CON-10). */
+export const POLL_MS = 3000;
 
 /** The analyst console: rail, list, conversation and tickets, polled every `pollMs` (CON-01, CON-10). */
 export function ConsoleScreen({
 	api,
 	me,
 	now = () => new Date(),
-	pollMs = 3000,
+	pollMs = POLL_MS,
 	onSignOut,
 }: {
 	api: ConsoleApi;
