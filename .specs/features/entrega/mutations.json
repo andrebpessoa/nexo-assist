@@ -1,0 +1,23 @@
+[
+	{
+		"file": "apps/server/src/chat-agent.ts",
+		"old": "make({ apiKey, modelId })",
+		"new": "make({ apiKey, modelId: DEFAULT_MODEL })",
+		"proof": "bun --cwd apps/server test src/chat-agent.test.ts -t \"the Mastra understander is built with LLM_MODEL and the key\"",
+		"label": "LLM_MODEL nao chega ao understander (so ao modelId devolvido)"
+	},
+	{
+		"file": "packages/agent/eval/run.ts",
+		"old": "Math.round((tokens.costUsd / conversations) * 1e6) / 1e6",
+		"new": "Math.round(tokens.costUsd * 1e6) / 1e6",
+		"proof": "bun test packages/agent/eval/eval.test.ts -t \"cost per conversation divides the total by the conversations\"",
+		"label": "custo por conversa vira o custo total"
+	},
+	{
+		"file": "scripts/dev.ts",
+		"old": "if (!seed.ok) {",
+		"new": "if (false) {",
+		"proof": "bun test scripts/dev.test.ts -t \"a seed that fails is reported once\"",
+		"label": "seed que responde erro conta como seeded"
+	}
+]

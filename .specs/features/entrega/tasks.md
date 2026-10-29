@@ -225,5 +225,5 @@ Proof: `bun --cwd apps/server test src/chat-agent.test.ts -t "the Mastra underst
 ## Handoff
 
 **Settled mid-build:** none
-**Dispatched:** Verifier em 2026-10-28 sobre HEAD 295dd0a (sem capturas, sem screens sub-agent)
+**Dispatched:** Verifier em 2026-10-28 sobre HEAD 295dd0a (sem capturas, sem screens sub-agent); returned, 9 achados fechados em d5f4fc0
 **Walked:** 2026-10-28. C4: `git clone` do HEAD 4a95c4c para um diretório temporário, `bun install` (592 pacotes), `bun run setup` (criou `apps/server/.env` com segredo de 48 caracteres e `apps/web/.env`), `bun run dev` sem `ALCHEMY_PASSWORD` nem token Cloudflare: "dev: seed ok {users:7, …, tickets:9}", web em :3001; login de `ana.souza@nexo.com.br` com senha "x" abre o chat com "Olá, Ana! Sou o Nexo Assist…". C11: os 7 commits da entrega (b52f7f7..4a95c4c) passam no `check_commit.py`, um por tarefa mais o de design. C12 a C14: sem deploy nesta rodada (AD-010). Achado da caminhada da T1: o Google devolve 404 a `gemini-2.5-flash-lite` para chaves novas; padrão trocado para `gemini-3.5-flash-lite` (AD-023).
