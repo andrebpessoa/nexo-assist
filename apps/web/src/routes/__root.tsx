@@ -1,4 +1,3 @@
-import { Toaster } from "@nexo-assist/ui/components/sonner";
 import type { QueryClient } from "@tanstack/react-query";
 import {
 	createRootRouteWithContext,
@@ -41,7 +40,6 @@ function RootComponent() {
 		<>
 			<HeadContent />
 			<Outlet />
-			<Toaster theme="light" richColors />
 		</>
 	);
 }

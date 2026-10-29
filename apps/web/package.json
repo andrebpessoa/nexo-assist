@@ -29,10 +29,8 @@
 		"@trpc/tanstack-react-query": "^11.19.0",
 		"better-auth": "catalog:",
 		"lucide-react": "^1.56.0",
-		"next-themes": "catalog:",
 		"react": "^19.3.0",
 		"react-dom": "^19.3.0",
-		"sonner": "catalog:",
 		"varlock": "catalog:",
 		"zod": "catalog:"
 	},
