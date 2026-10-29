@@ -1,0 +1,23 @@
+[
+	{
+		"file": "packages/agent/src/engine.ts",
+		"old": "if (dup.kind === \"new\") {",
+		"new": "if (dup.kind !== \"complement\") {",
+		"proof": "bun test packages/agent/src/engine.ticket-article.test.ts -t \"duplicate wins over the article\"",
+		"label": "artigo volta a vencer reabrir e chamado novo que cita (PRE-05)"
+	},
+	{
+		"file": "packages/agent/src/rules/article.ts",
+		"old": "if (signals.articleResolves !== true || signals.articleTried === true)",
+		"new": "if (signals.articleResolves === false || signals.articleTried === true)",
+		"proof": "bun test packages/agent/src/engine.ticket-article.test.ts -t \"article that does not resolve goes to the draft\"",
+		"label": "sinal articleResolves ausente conta como resolve (PRE-07)"
+	},
+	{
+		"file": "packages/agent/src/engine.ts",
+		"old": "if (merged.blocksWork === undefined && f.workaround === true)",
+		"new": "if (f.workaround === true)",
+		"proof": "bun test packages/agent/src/engine.create.test.ts -t \"workaround counts as not blocking\"",
+		"label": "alternativa sobrescreve blocksWork true dito pela pessoa (PRE-13)"
+	}
+]
