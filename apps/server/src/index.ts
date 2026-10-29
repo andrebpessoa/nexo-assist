@@ -5,15 +5,13 @@ import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 
 import { createAdminRoutes } from "./admin-seed";
-import { createChatRoutes } from "./chat";
-import { createChatResolver } from "./chat-agent";
+import { createChatApp } from "./chat-app";
 import { createConsoleRoutes } from "./console";
 import { createConsoleResolver } from "./console-access";
 import { createContext } from "./context";
 import { createDevRoutes } from "./dev-seed";
 import { ENV } from "./env.server";
 import { createAuth, getDb } from "./services";
-import { createUsageLimiter, limitsFrom } from "./usage";
 
 const app = new Hono();
 
@@ -45,17 +43,11 @@ app.use(
 
 app.route(
 	"/",
-	createChatRoutes({
-		admitUsage: (userId) =>
-			createUsageLimiter({ db: getDb(), limits: limitsFrom(ENV) }).admitMessage(
-				userId,
-			),
-		resolve: createChatResolver({
-			getDb,
-			getSession: async (db, headers) =>
-				(await createAuth(db)).api.getSession({ headers }),
-			env: ENV,
-		}),
+	createChatApp({
+		getDb,
+		getSession: async (db, headers) =>
+			(await createAuth(db)).api.getSession({ headers }),
+		env: ENV,
 	}),
 );
 

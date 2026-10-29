@@ -52,6 +52,7 @@ export function createChatResolver({
 	getDb,
 	getSession,
 	env,
+	makeUnderstander,
 }: {
 	getDb: () => Database;
 	getSession: (
@@ -59,6 +60,8 @@ export function createChatResolver({
 		headers: Headers,
 	) => Promise<{ user: { id: string } } | null>;
 	env: ChatEnv;
+	/** The Mastra understander unless a test gives another. */
+	makeUnderstander?: (o: { apiKey: string; modelId: string }) => Understander;
 }) {
 	return async (c: Context): Promise<ChatAccess> => {
 		const db = getDb();
@@ -73,10 +76,10 @@ export function createChatResolver({
 		const userId = access.actor.userId;
 		const profileOf = createProfileReader(db);
 		const { name } = await profileOf(userId);
-		const chosen = chooseUnderstander(env);
+		const chosen = chooseUnderstander(env, makeUnderstander);
 		const usage = createUsageLimiter({ db, limits: limitsFrom(env) });
-		// Every model call counts toward the daily cap (DLV-13).
-		const understander = meter(chosen.understander, usage.countModelCall);
+		// Every model call takes one from the day's budget (DLV-13).
+		const understander = meter(chosen.understander, usage.reserveModelCall);
 		const { modelId } = chosen;
 		return {
 			ok: true,

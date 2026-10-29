@@ -57,27 +57,64 @@ describe("messages per user per minute (DLV-13)", () => {
 		expect(await limiter.admitMessage("bruno")).toBe(true);
 	});
 
-	test("the next minute passes again", async () => {
-		const { limiter, clock } = await limiterAt("2026-10-29T12:00:50Z");
-		for (let i = 0; i < 10; i++) await limiter.admitMessage("ana");
+	test("10 messages at 12:00:59 block an 11th at 12:01:00.5: the limit counts the last 60 s", async () => {
+		const { limiter, clock } = await limiterAt("2026-10-29T12:00:59Z");
+		for (let i = 0; i < 10; i++)
+			expect(await limiter.admitMessage("ana")).toBe(true);
+		clock.advance(1_500);
 		expect(await limiter.admitMessage("ana")).toBe(false);
-		clock.advance(10_000);
+	});
+
+	test("60 s after the messages were sent the user passes again", async () => {
+		const { limiter, clock } = await limiterAt("2026-10-29T12:00:59Z");
+		for (let i = 0; i < 10; i++) await limiter.admitMessage("ana");
+		clock.advance(59_999);
+		expect(await limiter.admitMessage("ana")).toBe(false);
+		clock.advance(2);
 		expect(await limiter.admitMessage("ana")).toBe(true);
 	});
 });
 
 describe("model calls per day (DLV-13)", () => {
+	function fakeModel() {
+		const calls = { n: 0 };
+		const fake = {
+			understand: async () => {
+				calls.n++;
+				return { understanding: {} };
+			},
+			judge: async () => {
+				calls.n++;
+				return { judgement: {} };
+			},
+		} as unknown as Understander;
+		return { calls, fake };
+	}
+
 	test("each understand and judge call counts one", async () => {
 		const { limiter } = await limiterAt("2026-10-29T12:00:00Z");
-		const fake = {
-			understand: async () => ({ understanding: {} }),
-			judge: async () => ({ judgement: {} }),
-		} as unknown as Understander;
-		const metered = meter(fake, limiter.countModelCall);
+		const { fake } = fakeModel();
+		const metered = meter(fake, limiter.reserveModelCall);
 		await metered.understand({} as never);
 		await metered.judge({} as never);
 		await metered.understand({} as never);
 		expect(await limiter.modelCallsToday()).toBe(3);
+	});
+
+	test("past the daily cap the model is not called and the call fails as a 429", async () => {
+		const { limiter } = await limiterAt("2026-10-29T12:00:00Z", {
+			perMinute: 10,
+			dailyModelCalls: 2,
+		});
+		const { calls, fake } = fakeModel();
+		const metered = meter(fake, limiter.reserveModelCall);
+		await metered.understand({} as never);
+		await metered.judge({} as never);
+		const refused = await metered.understand({} as never).catch((e) => e);
+		expect(refused).toMatchObject({ status: 429 });
+		await metered.judge({} as never).catch(() => null);
+		expect(calls.n).toBe(2);
+		expect(await limiter.modelCallsToday()).toBe(2);
 	});
 
 	test("with the daily cap reached every message is refused; the next day passes", async () => {
@@ -86,8 +123,8 @@ describe("model calls per day (DLV-13)", () => {
 			dailyModelCalls: 2,
 		});
 		expect(await limiter.admitMessage("ana")).toBe(true);
-		await limiter.countModelCall();
-		await limiter.countModelCall();
+		await limiter.reserveModelCall();
+		await limiter.reserveModelCall();
 		expect(await limiter.admitMessage("bruno")).toBe(false);
 		clock.advance(2 * 60_000);
 		expect(await limiter.admitMessage("bruno")).toBe(true);
