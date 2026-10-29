@@ -32,6 +32,7 @@
 		"db:generate": "turbo run db:generate -F @nexo-assist/db --",
 		"db:seed": "bun scripts/db-seed.ts",
 		"setup": "bun scripts/setup.ts",
+		"eval": "bun run --cwd packages/agent eval",
 		"deploy": "turbo run deploy -F @nexo-assist/infra --",
 		"destroy": "turbo run destroy -F @nexo-assist/infra --",
 		"env:generate": "varlock codegen --path ./apps/web/ && varlock codegen --path ./apps/server/ && varlock codegen --path ./packages/db/",

@@ -160,13 +160,13 @@ T1 → T2 → T3 → T4 → T5 → T6
 
 **Done when**:
 
-- [ ] As seis seções existem com esses títulos
-- [ ] Modelo, custo por conversa, chave do AI Studio, free tier e dados fictícios explicados
-- [ ] O teste do README passa
+- [x] As seis seções existem com esses títulos
+- [x] Modelo, custo por conversa, chave do AI Studio, free tier e dados fictícios explicados
+- [x] O teste do README passa
 
 **Tests**: unit
 **Gate**: build
-**Commit**: `docs: README do Nexo Assist`
+**Commit**: `docs: readme do Nexo Assist com como rodar, decisões e avaliação`
 
 ---
 

@@ -48,7 +48,7 @@ if (live) {
 		[
 			"# Último resultado da avaliação ao vivo",
 			"",
-			`${title}, em ${date}. Gerado por \`bun --cwd packages/agent run eval --live\`.`,
+			`${title}, em ${date}. Gerado por \`bun run eval --live\` na raiz.`,
 			"",
 			"```",
 			...rules,

@@ -1,6 +1,6 @@
 # Último resultado da avaliação ao vivo
 
-Avaliação ao vivo (google/gemini-3.5-flash-lite) - 22 conversas, em 2026-10-29. Gerado por `bun --cwd packages/agent run eval --live`.
+Avaliação ao vivo (google/gemini-3.5-flash-lite) - 22 conversas, em 2026-10-29. Gerado por `bun run eval --live` na raiz.
 
 ```
  100%  2/2  Saudação e mensagens vagas
