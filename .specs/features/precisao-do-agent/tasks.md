@@ -211,7 +211,7 @@ T7
 
 ---
 
-### T7: Rodada final e resultado registrado
+### T7: Rodada final e resultado registrado ✅
 
 **What**: Com aviso ao André, `bun run eval --live` completo; RESULT.md gerado; README ("Último resultado ao vivo", leitura do resultado e "O que faria com mais tempo") atualizado; `eval/result.test.ts` prova a meta a partir do RESULT.md; `scripts/docs.test.ts` confere as regras abaixo de 100% no README.
 **Where**: `packages/agent/eval/RESULT.md`, `README.md`, `packages/agent/eval/result.test.ts`, `scripts/docs.test.ts`
@@ -221,10 +221,10 @@ T7
 
 **Done when**:
 
-- [ ] André avisado antes da rodada completa; resultado ≥ 90% (abaixo disso: parar e mostrar os erros antes de uma segunda rodada)
-- [ ] `result.test.ts`: 22 conversas, total ≥ 90%, as 9 regras que estavam em 100% continuam em 100%, nenhum erro de `confianca-baixa`
-- [ ] `docs.test.ts`: total, custo por conversa e cada regra abaixo de 100% do RESULT.md aparecem no README
-- [ ] Gate build passa
+- [x] André avisado antes da rodada completa; resultado ≥ 90% (abaixo disso: parar e mostrar os erros antes de uma segunda rodada)
+- [x] `result.test.ts`: 22 conversas, total ≥ 90%, as 9 regras que estavam em 100% continuam em 100%, nenhum erro de `confianca-baixa`
+- [x] `docs.test.ts`: total, custo por conversa e cada regra abaixo de 100% do RESULT.md aparecem no README
+- [x] Gate build passa
 
 **Tests**: unit
 **Gate**: build
@@ -306,7 +306,7 @@ Proof: `bun test packages/agent/eval/eval.test.ts -t "eval set"`
 
 **Settled mid-build:** 2026-10-29, depois da rodada parcial 1: ajuste do `affected` - user escolheu "New prompt task (Recommended)" (T8: `affected` null por padrão, preenchido só quando a mensagem diz quem é afetado); rodada completa - user: "Yes, run it (Recommended)" (T7 roda logo depois da T8; abaixo de 90%, parar e mostrar os erros antes de uma segunda).
 **Dispatched:** none
-**Rodadas ao vivo:** parcial 1 (2026-10-29, depois da T6, 11 conversas, ~25 chamadas): 38/40 = 95%. Prioridade 15/15, duplicidade 9/9, central 7/7, transferir 1/1, saudação 2/2, uma pergunta por vez 4/6. Erros: `afetados-nao-sei` passo 1 (`rascunho_chamado` em vez de `perguntar`) e passo 2 em cascata (`descartar`). Saída crua: o modelo devolve `affected: "Só eu"` para "O Outlook parou de enviar e-mails, mas consigo mandar pelo webmail." mesmo com o exemplo no prompt. Rodadas completas: 0.
+**Rodadas ao vivo:** parcial 1 (2026-10-29, depois da T6, 11 conversas, ~25 chamadas): 38/40 = 95%. Prioridade 15/15, duplicidade 9/9, central 7/7, transferir 1/1, saudação 2/2, uma pergunta por vez 4/6. Erros: `afetados-nao-sei` passo 1 (`rascunho_chamado` em vez de `perguntar`) e passo 2 em cascata (`descartar`). Saída crua: o modelo devolve `affected: "Só eu"` para "O Outlook parou de enviar e-mails, mas consigo mandar pelo webmail." mesmo com o exemplo no prompt. Rodada completa 1 (2026-10-29, depois da T8, avisada e aprovada): 68/68 = 100%, todas as 13 regras em 100%, US$ 0.00073 por conversa no pago. Rodadas completas no total: 1 de 2.
 **Walked:** N/A - sem tela nova; o efeito é medido pelas rodadas ao vivo
 
 ---

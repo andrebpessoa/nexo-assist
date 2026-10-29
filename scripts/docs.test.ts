@@ -78,6 +78,17 @@ describe("README", () => {
 		const total = /\*\*Total\*\*: ([0-9]+%)/.exec(result)?.[1];
 		expect(total).toBeDefined();
 		expect(readme).toContain(`**${total}** dos campos`);
+		// Every rule of the run shows in the README with the same score.
+		const rules = [...result.matchAll(/^\s*(\d+%)\s+(\d+\/\d+)\s+(.+)$/gm)].map(
+			(m) => ({ pct: m[1], count: m[2], rule: (m[3] as string).trim() }),
+		);
+		expect(rules.length).toBeGreaterThanOrEqual(10);
+		const lines = readme.split("\n");
+		for (const { pct, count, rule } of rules) {
+			const line = lines.find((l) => l.startsWith(`| ${rule} `));
+			expect(line, rule).toBeDefined();
+			expect(line, rule).toContain(`${pct} (${count})`);
+		}
 	});
 
 	test("README explains the AI Studio key and the free tier", () => {

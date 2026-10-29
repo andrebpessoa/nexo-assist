@@ -188,11 +188,11 @@ A avaliação ao vivo com `google/gemini-3.5-flash-lite` acerta 72% dos campos (
 | PRE-14 | P1: Dados de impacto | T6 | Done |
 | PRE-15 | P1: Dados de impacto | T6 | Done |
 | PRE-16 | P1: Relato vago transfere | T6 | Done |
-| PRE-17 | P1: Relato vago transfere | Design | Pending |
-| PRE-18 | P1: Resultado registrado | Design | Pending |
-| PRE-19 | P1: Resultado registrado | Design | Pending |
-| PRE-20 | P1: Resultado registrado | Design | Pending |
-| PRE-21 | P1: Resultado registrado | Design | Pending |
+| PRE-17 | P1: Relato vago transfere | T7 | Done |
+| PRE-18 | P1: Resultado registrado | T7 | Done |
+| PRE-19 | P1: Resultado registrado | T7 | Done |
+| PRE-20 | P1: Resultado registrado | T7 | Done |
+| PRE-21 | P1: Resultado registrado | T7 | Done |
 
 **Coverage:** 21 total, 0 mapped to tasks, 21 unmapped ⚠️ (Tasks ainda não feitas)
 

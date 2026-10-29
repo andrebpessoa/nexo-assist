@@ -71,7 +71,7 @@ Cada mensagem do funcionário passa por um laço curto em `packages/agent/src/en
 1. **Estado da conversa.** Se ela está aguardando ou com um analista, o agent não responde. Conversa encerrada: a próxima mensagem abre outra. O limite é de 30 mensagens por sessão.
 2. **Entender.** Uma chamada ao modelo (Mastra + Gemini, saída estruturada em zod) com as últimas 20 mensagens e um resumo das anteriores. Volta a intenção, os campos do chamado (tipo, categoria, impacto, urgência), quem é afetado e a confiança.
 3. **Decidir em código.** O modelo entende, as regras decidem. Prioridade (impacto × urgência), prazo em horas úteis, duplicidade (complementar um chamado aberto, reabrir um resolvido há pouco), privacidade (só os chamados do próprio funcionário), "uma pergunta por vez" e "só TI" são funções testadas. Abaixo de 60% de confiança o agent não age: chama um analista com "Agent pediu ajuda · confiança NN%" (AD-007).
-4. **Agir com confirmação.** Criar, complementar ou reabrir chamado vira um rascunho que só grava depois do "Confirmar". Antes de abrir um chamado, o agent busca na central de ajuda e oferece o artigo que serve.
+4. **Agir com confirmação.** Criar, complementar ou reabrir chamado vira um rascunho que só grava depois do "Confirmar". Antes de abrir um chamado, o agent olha se já existe um chamado do mesmo problema; se não, oferece o artigo da central só quando ele resolve o sintoma sem chamado, vale para a pessoa e ela ainda não tentou o passo dele.
 5. **Transferir na hora certa.** Pedido explícito e prioridade Crítica transferem direto; chamado vencido oferece o analista. Na transferência vai um resumo do problema, do que já foi tentado e o prazo de contato (2 horas úteis; Crítica, 1 hora corrida).
 6. **Registrar.** Cada resposta grava um registro de decisão: o que entendeu, a ação, a regra aplicada, a confiança, as ferramentas chamadas (com tentativas e tempo), tokens e custo. A linha "Nexo Assist ✓ consultou seus chamados ✓ calculou o prazo" sai desse registro, e clicar nela abre o painel "Por que o Nexo fez isso", no chat e no console.
 
@@ -79,7 +79,7 @@ Falhas do serviço de chamados têm novas tentativas (0,5 s, 1 s, 2 s); 429 do m
 
 **Escolha do modelo.** Gemini Flash-Lite pelo free tier do Google AI Studio: chama ferramentas e devolve saída estruturada, é rápido e custa zero para o avaliador. Era `gemini-2.5-flash-lite`, mas o Google responde 404 a esse modelo para chaves novas ("no longer available to new users"), então o padrão é `gemini-3.5-flash-lite` (AD-023). Como o modelo só entende e as regras ficam em código, um modelo menor basta.
 
-**Custo estimado por conversa.** Na última avaliação ao vivo, 22 conversas gastaram 12.697 tokens de entrada e 4.022 de saída. No preço pago do `gemini-3.5-flash-lite` (US$ 0,30 por milhão de entrada e US$ 2,50 por milhão de saída), isso dá **US$ 0.00063 por conversa**, menos de um décimo de centavo. No free tier, o custo é zero. Cada decisão registra os próprios tokens e o custo (`window.ts`, `estimateCost`).
+**Custo estimado por conversa.** Na última avaliação ao vivo, 22 conversas gastaram 17.527 tokens de entrada e 4.323 de saída. No preço pago do `gemini-3.5-flash-lite` (US$ 0,30 por milhão de entrada e US$ 2,50 por milhão de saída), isso dá **US$ 0.00073 por conversa**, menos de um décimo de centavo. No free tier, o custo é zero. Cada decisão registra os próprios tokens e o custo (`window.ts`, `estimateCost`).
 
 ## Como garanti a qualidade das decisões
 
@@ -87,18 +87,26 @@ Falhas do serviço de chamados têm novas tentativas (0,5 s, 1 s, 2 s); 429 do m
 - **Avaliação do agent.** `packages/agent/eval/conversations.ts` tem 22 conversas roteirizadas com a intenção, a ação, o tipo, a categoria e a prioridade esperados, cobrindo cada regra do Anexo A. `bun run eval` roda com o entendimento roteirizado (100%, trava regressões do motor). `bun run eval --live` roda com o Gemini e grava o resultado.
 - **Spec com prova por critério.** Cada feature em `.specs/features/` tem os critérios em EARS, uma prova (um teste nomeado) por critério e um `proofs.md` gerado no commit. Um verificador independente injeta mutações no código: uma mutação que nenhum teste pega vira achado e só fecha com um teste novo. As telas são comparadas com as capturas do protótipo.
 
-Último resultado ao vivo (`packages/agent/eval/RESULT.md`, `google/gemini-3.5-flash-lite`, 2026-10-29):
+Último resultado ao vivo (`packages/agent/eval/RESULT.md`, `google/gemini-3.5-flash-lite`, 2026-10-29, depois da correção do motor):
 
-| Regra                                                                                                   | Acerto             |
-| ------------------------------------------------------------------------------------------------------- | ------------------ |
-| Saudação, central de ajuda, consulta, vencido, privacidade, Crítica, confirmar, só TI, seguir as regras | 100%               |
-| Transferir para analista                                                                                | 67% (2/3)          |
-| Prioridade por impacto e urgência                                                                       | 47% (7/15)         |
-| Sem duplicar: complementar ou reabrir                                                                   | 44% (4/9)          |
-| Perguntar uma coisa por vez                                                                             | 17% (1/6)          |
-| **Total**                                                                                               | **72%** dos campos |
+| Regra                                 | Acerto              |
+| ------------------------------------- | ------------------- |
+| Saudação e mensagens vagas            | 100% (2/2)          |
+| Central de ajuda antes do chamado     | 100% (9/9)          |
+| Consulta de chamados                  | 100% (5/5)          |
+| Vencido: oferecer analista            | 100% (3/3)          |
+| Privacidade                           | 100% (4/4)          |
+| Prioridade por impacto e urgência     | 100% (15/15)        |
+| Crítica: criar e transferir           | 100% (6/6)          |
+| Perguntar uma coisa por vez           | 100% (6/6)          |
+| Sem duplicar: complementar ou reabrir | 100% (9/9)          |
+| Confirmar antes de gravar             | 100% (3/3)          |
+| Transferir para analista              | 100% (3/3)          |
+| Só TI                                 | 100% (2/2)          |
+| Seguir as regras                      | 100% (1/1)          |
+| **Total**                             | **100%** dos campos |
 
-Leitura honesta: quando a mensagem cita um sintoma que algum artigo cobre, o Flash-Lite tende a responder com o artigo em vez de montar o rascunho. Então a prioridade, a duplicidade e "uma pergunta por vez" nem chegam a ser testadas nesses casos. As regras em si passam em 100% no modo roteirizado; o que falta é o entendimento do modelo.
+Leitura do resultado: a rodada anterior ficou em 72%. O entendimento já acertava quase tudo; os erros vinham do motor, que ao abrir chamado respondia com qualquer artigo do mesmo assunto e só depois olhava a duplicidade. Agora a duplicidade vem primeiro, o modelo devolve sinais sobre o artigo (resolve o sintoma sem chamado? a pessoa já tentou o passo?) e o código decide; com alternativa de trabalho, o motor conta "não impede"; o prompt pede "quem é afetado" só quando a pessoa diz e manda relato vago para o analista. Cada rodada é uma amostra: o modelo não é determinístico, e o caso mais instável é `afetados-nao-sei`, em que o modelo às vezes presume "Só eu" (numa amostra de teste, acertou 2 de 3). `bun run eval --live --only <ids>` roda só algumas conversas, para medir sem gastar a cota do dia.
 
 ## Trade-offs
 
@@ -113,7 +121,7 @@ Leitura honesta: quando a mensagem cita um sintoma que algum artigo cobre, o Fla
 
 ## O que faria com mais tempo
 
-- Subir o acerto ao vivo para mais de 90%: separar a decisão "artigo ou chamado" do entendimento, usar exemplos no prompt para prioridade e duplicidade, e comparar com o Gemini Flash.
+- Medir a variação do acerto ao vivo com várias rodadas completas (a cota do free tier comporta poucas por dia) e comparar com o Gemini Flash.
 - Deploy na Cloudflare pelo Alchemy, com a chave como secret, 10 mensagens por minuto por usuário e um teto diário de chamadas ao modelo (pronto para fazer, depende de autorização).
 - Serviço de chamados num Worker próprio, atrás da mesma interface.
 - Presença em tempo real e notificações no console.
