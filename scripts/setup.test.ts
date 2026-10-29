@@ -32,7 +32,9 @@ describe("bun run setup", () => {
 		const server = readFileSync(join(root, "apps/server/.env"), "utf8");
 		expect(secretOf(server)).toMatch(/^[A-Za-z0-9_-]{48}$/);
 		expect(server).toContain("GOOGLE_GENERATIVE_AI_API_KEY=\n");
-		expect(existsSync(join(root, "apps/web/.env"))).toBe(true);
+		expect(readFileSync(join(root, "apps/web/.env"), "utf8")).toBe(
+			readFileSync(join(ROOT, "apps/web/.env.example"), "utf8"),
+		);
 	});
 
 	test("keeps an existing .env untouched", async () => {
@@ -53,5 +55,24 @@ describe("bun run setup", () => {
 		const read = (r: string) =>
 			secretOf(readFileSync(join(r, "apps/server/.env"), "utf8"));
 		expect(read(a)).not.toBe(read(b));
+	});
+
+	test("an example with an empty quoted or spaced secret still gets one", async () => {
+		for (const line of [
+			'BETTER_AUTH_SECRET=""',
+			"BETTER_AUTH_SECRET= ",
+			"BETTER_AUTH_SECRET=\r",
+		]) {
+			const root = await fakeRoot();
+			const example = join(root, "apps/server/.env.example");
+			writeFileSync(
+				example,
+				readFileSync(example, "utf8").replace(/^BETTER_AUTH_SECRET=$/m, line),
+			);
+			setup({ root });
+			expect(
+				secretOf(readFileSync(join(root, "apps/server/.env"), "utf8")),
+			).toMatch(/^[A-Za-z0-9_-]{48}\r?$/);
+		}
 	});
 });

@@ -185,7 +185,7 @@ Proof: `bun test scripts/docs.test.ts -t "env example covers every schema variab
 Proof: `walk - clone limpo em diretório temporário: bun install, bun run setup, bun run dev; login da Ana com o seed`
 
 **C5** - Nenhuma chave no git nem no bundle do navegador (DLV-05)
-Proof: `bun test scripts/secrets.test.ts -t "no Google key in tracked files"`
+Proof: `bun test scripts/secrets.test.ts`
 
 **C6** - Interface, agent e serviço de chamados em pacotes separados, justificados no README (DLV-06)
 Proof: `bun test scripts/docs.test.ts -t "README justifies the module split"`
@@ -218,7 +218,7 @@ Proof: `walk - não se aplica nesta rodada: só com deploy (AD-010)`
 Proof: `bun test scripts/docs.test.ts -t "README explains the AI Studio key and the free tier"`
 
 **C16** - O servidor usa o modelo de `LLM_MODEL` (DLV-15)
-Proof: `bun --cwd apps/server test src/chat-agent.test.ts -t "LLM_MODEL picks the model"`
+Proof: `bun --cwd apps/server test src/chat-agent.test.ts -t "the Mastra understander is built with LLM_MODEL and the key"`
 
 ---
 

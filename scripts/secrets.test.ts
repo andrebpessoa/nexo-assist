@@ -1,5 +1,12 @@
 import { expect, test } from "bun:test";
-import { readFileSync, statSync } from "node:fs";
+import {
+	existsSync,
+	mkdtempSync,
+	readdirSync,
+	readFileSync,
+	statSync,
+} from "node:fs";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 const ROOT = join(import.meta.dir, "..");
@@ -27,3 +34,41 @@ test("no Google key in tracked files, and none reaches the browser", () => {
 	expect(web).not.toContain("GOOGLE_GENERATIVE_AI_API_KEY");
 	expect(web).not.toContain("LLM_MODEL");
 });
+
+/** Every file under `dir`, recursively. */
+const walk = (dir: string): string[] =>
+	readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
+		e.isDirectory() ? walk(join(dir, e.name)) : [join(dir, e.name)],
+	);
+
+test("the browser bundle carries no key", () => {
+	const out = mkdtempSync(join(tmpdir(), "nexo-web-"));
+	const build = Bun.spawnSync(
+		["bunx", "vite", "build", "--outDir", out, "--emptyOutDir"],
+		{ cwd: join(ROOT, "apps/web"), stderr: "pipe", stdout: "pipe" },
+	);
+	expect(build.exitCode).toBe(0);
+	const serverEnv = join(ROOT, "apps/server/.env");
+	// Values of the server's secrets, when this machine has them; a name alone is not a secret.
+	const env = existsSync(serverEnv) ? readFileSync(serverEnv, "utf8") : "";
+	const valueOf = (name: string) =>
+		new RegExp(`^${name}=(.*)$`, "m")
+			.exec(env)?.[1]
+			?.replace(/"/g, "")
+			.trim() ?? "";
+	const secrets = [
+		valueOf("GOOGLE_GENERATIVE_AI_API_KEY"),
+		valueOf("BETTER_AUTH_SECRET"),
+	].filter((v) => v.length >= 16);
+	const files = walk(out);
+	expect(files.some((f) => f.endsWith(".js"))).toBe(true);
+	const leaks = files.filter((f) => {
+		const text = readFileSync(f, "utf8");
+		return (
+			GOOGLE_KEY.test(text) ||
+			text.includes("GOOGLE_GENERATIVE_AI_API_KEY") ||
+			secrets.some((v) => text.includes(v))
+		);
+	});
+	expect(leaks).toEqual([]);
+}, 120_000);

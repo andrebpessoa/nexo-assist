@@ -32,6 +32,16 @@ export interface EvalReport {
 
 type Tokens = { inputTokens: number; outputTokens: number; costUsd: number };
 
+/** Totals and the cost per conversation the README quotes, rounded to a millionth of a dollar. */
+export function usageOf(tokens: Tokens, conversations: number): EvalUsage {
+	return {
+		...tokens,
+		costUsd: Math.round(tokens.costUsd * 1e6) / 1e6,
+		costPerConversationUsd:
+			Math.round((tokens.costUsd / conversations) * 1e6) / 1e6,
+	};
+}
+
 async function runOne(
 	conversation: EvalConversation,
 	understander: (() => Understander) | undefined,
@@ -107,11 +117,6 @@ export async function runEval(
 		checks,
 		byRule: [...rules].map(([rule, t]) => ({ rule, ...t })),
 		accuracy: checks.length ? passed / checks.length : 0,
-		usage: {
-			...tokens,
-			costUsd: Math.round(tokens.costUsd * 1e6) / 1e6,
-			costPerConversationUsd:
-				Math.round((tokens.costUsd / CONVERSATIONS.length) * 1e6) / 1e6,
-		},
+		usage: usageOf(tokens, CONVERSATIONS.length),
 	};
 }

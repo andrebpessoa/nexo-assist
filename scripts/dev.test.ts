@@ -51,4 +51,33 @@ describe("bun run dev", () => {
 		expect(fetch).toHaveBeenCalledTimes(3);
 		expect(logs.join("\n")).toContain("bun run db:seed");
 	});
+
+	test("a seed that fails is reported once, not as a server that never answered", async () => {
+		for (const seed of [
+			async () => new Response("boom", { status: 500 }),
+			async () => {
+				throw new Error("socket hang up");
+			},
+			async () => new Response("<html>", { status: 200 }),
+		]) {
+			const logs: string[] = [];
+			let posts = 0;
+			const fetch = mock(async (url: string | URL | Request) => {
+				if (String(url).endsWith("/internal/health")) return ok();
+				posts++;
+				return seed();
+			});
+			const result = await waitThenSeed({
+				url: "http://localhost:3000",
+				fetch: fetch as unknown as typeof globalThis.fetch,
+				attempts: 3,
+				delayMs: 1,
+				log: (l) => logs.push(l),
+			});
+			expect(result).toBe("seed_failed");
+			expect(posts).toBe(1);
+			expect(logs.join("\n")).toContain("bun run db:seed");
+			expect(logs.join("\n")).not.toContain("não respondeu");
+		}
+	});
 });

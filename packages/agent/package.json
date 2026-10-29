@@ -8,7 +8,7 @@
 	"scripts": {
 		"check-types": "tsc --noEmit",
 		"test": "bun test",
-		"eval": "bun eval/cli.ts"
+		"eval": "bun --env-file=../../apps/server/.env eval/cli.ts"
 	},
 	"dependencies": {
 		"@mastra/core": "1.80.0",

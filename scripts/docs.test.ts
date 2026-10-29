@@ -17,7 +17,7 @@ const vars = (text: string) =>
 
 describe(".env.example", () => {
 	test("env example covers every schema variable", () => {
-		for (const app of ["apps/server", "apps/web"]) {
+		for (const app of ["apps/server", "apps/web", "packages/infra"]) {
 			const schema = vars(read(`${app}/.env.schema`));
 			const example = vars(read(`${app}/.env.example`));
 			expect([...example.keys()].sort()).toEqual([...schema.keys()].sort());
@@ -71,6 +71,10 @@ describe("README", () => {
 
 	test("README shows the last eval result", () => {
 		expect(readme).toContain("bun run eval --live");
+		// --live reads the key the README tells people to put in apps/server/.env.
+		expect(read("packages/agent/package.json")).toContain(
+			"--env-file=../../apps/server/.env",
+		);
 		const total = /\*\*Total\*\*: ([0-9]+%)/.exec(result)?.[1];
 		expect(total).toBeDefined();
 		expect(readme).toContain(`**${total}** dos campos`);

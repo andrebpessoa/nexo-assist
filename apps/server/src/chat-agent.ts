@@ -26,7 +26,11 @@ const unavailable: Understander = {
 };
 
 /** Gemini through Mastra with a key; keywords in local dev; otherwise the model is down (D-06). */
-export function chooseUnderstander(env: ChatEnv): {
+export function chooseUnderstander(
+	env: ChatEnv,
+	make: (o: { apiKey: string; modelId: string }) => Understander = (o) =>
+		createMastraUnderstander(o),
+): {
 	understander: Understander;
 	modelId: string | undefined;
 } {
@@ -34,7 +38,7 @@ export function chooseUnderstander(env: ChatEnv): {
 	const modelId = env.LLM_MODEL?.trim() || DEFAULT_MODEL;
 	if (apiKey)
 		return {
-			understander: createMastraUnderstander({ apiKey, modelId }),
+			understander: make({ apiKey, modelId }),
 			modelId,
 		};
 	if (env.DEV_SEED_ENABLED === "true")

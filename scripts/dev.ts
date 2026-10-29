@@ -4,6 +4,36 @@
  */
 const SERVER_URL = process.env.SERVER_URL ?? "http://localhost:3000";
 
+async function answers(fetch: typeof globalThis.fetch, url: string) {
+	try {
+		return (await fetch(`${url}/internal/health`)).ok;
+	} catch {
+		return false; // Not up yet.
+	}
+}
+
+/** One POST: a seed that fails is reported, never retried as if the server were down. */
+async function seedOnce(
+	fetch: typeof globalThis.fetch,
+	url: string,
+	log: (line: string) => void,
+): Promise<"seeded" | "seed_failed"> {
+	try {
+		const seed = await fetch(`${url}/internal/seed`, { method: "POST" });
+		if (!seed.ok) {
+			log(`dev: o seed respondeu ${seed.status}. Rode bun run db:seed.`);
+			return "seed_failed";
+		}
+		log(`dev: seed ok ${JSON.stringify(await seed.json())}`);
+		return "seeded";
+	} catch (error) {
+		log(
+			`dev: o seed falhou (${error instanceof Error ? error.message : error}). Rode bun run db:seed.`,
+		);
+		return "seed_failed";
+	}
+}
+
 export async function waitThenSeed({
 	url,
 	fetch = globalThis.fetch,
@@ -18,20 +48,7 @@ export async function waitThenSeed({
 	log?: (line: string) => void;
 }): Promise<"seeded" | "seed_failed" | "timeout"> {
 	for (let i = 0; i < attempts; i++) {
-		try {
-			const health = await fetch(`${url}/internal/health`);
-			if (health.ok) {
-				const seed = await fetch(`${url}/internal/seed`, { method: "POST" });
-				if (!seed.ok) {
-					log(`dev: o seed respondeu ${seed.status}. Rode bun run db:seed.`);
-					return "seed_failed";
-				}
-				log(`dev: seed ok ${JSON.stringify(await seed.json())}`);
-				return "seeded";
-			}
-		} catch {
-			// Not up yet.
-		}
+		if (await answers(fetch, url)) return seedOnce(fetch, url, log);
 		await Bun.sleep(delayMs);
 	}
 	log(

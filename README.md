@@ -35,7 +35,7 @@ bun test scripts      # testes dos scripts da raiz (setup, dev, varredura de cha
 bun run check-types   # TypeScript strict em todo o monorepo
 bun run check         # Biome (lint e formatação)
 bun run eval          # avaliação do agent com o entendimento roteirizado
-bun run eval --live   # avaliação com o Gemini; grava packages/agent/eval/RESULT.md
+bun run eval --live   # avaliação com o Gemini (lê a chave de apps/server/.env); grava packages/agent/eval/RESULT.md
 bun run db:seed       # recarrega o seed (idempotente) com o dev no ar
 ```
 
@@ -83,7 +83,7 @@ Falhas do serviço de chamados têm novas tentativas (0,5 s, 1 s, 2 s); 429 do m
 
 ## Como garanti a qualidade das decisões
 
-- **Testes onde as regras moram.** `bun run test` roda mais de 400 testes: prazos e horas úteis, prioridade, privacidade, duplicidade e reabertura, transições de chamado e de conversa, limite de mensagens, rotas com banco em memória e componentes com uma API falsa. As regras puras usam relógio fixo.
+- **Testes onde as regras moram.** `bun run test` roda cerca de 400 testes: prazos e horas úteis, prioridade, privacidade, duplicidade e reabertura, transições de chamado e de conversa, limite de mensagens, rotas com banco em memória e componentes com uma API falsa. As regras puras usam relógio fixo.
 - **Avaliação do agent.** `packages/agent/eval/conversations.ts` tem 22 conversas roteirizadas com a intenção, a ação, o tipo, a categoria e a prioridade esperados, cobrindo cada regra do Anexo A. `bun run eval` roda com o entendimento roteirizado (100%, trava regressões do motor). `bun run eval --live` roda com o Gemini e grava o resultado.
 - **Spec com prova por critério.** Cada feature em `.specs/features/` tem os critérios em EARS, uma prova (um teste nomeado) por critério e um `proofs.md` gerado no commit. Um verificador independente injeta mutações no código: uma mutação que nenhum teste pega vira achado e só fecha com um teste novo. As telas são comparadas com as capturas do protótipo.
 

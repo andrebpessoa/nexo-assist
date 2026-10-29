@@ -39,6 +39,26 @@ describe("chat agent", () => {
 		).toBeUndefined();
 	});
 
+	test("the Mastra understander is built with LLM_MODEL and the key", () => {
+		const built: unknown[] = [];
+		const make = (o: { apiKey: string; modelId: string }) => {
+			built.push(o);
+			return createDevUnderstander();
+		};
+		chooseUnderstander(
+			{
+				GOOGLE_GENERATIVE_AI_API_KEY: " k ",
+				LLM_MODEL: "google/gemini-2.5-flash",
+			},
+			make,
+		);
+		chooseUnderstander({ GOOGLE_GENERATIVE_AI_API_KEY: "k" }, make);
+		expect(built).toEqual([
+			{ apiKey: "k", modelId: "google/gemini-2.5-flash" },
+			{ apiKey: "k", modelId: "google/gemini-3.5-flash-lite" },
+		]);
+	});
+
 	test("no key and no dev: the model is down", async () => {
 		const { understander } = chooseUnderstander({ DEV_SEED_ENABLED: "false" });
 		await expect(understander.understand({} as never)).rejects.toThrow(

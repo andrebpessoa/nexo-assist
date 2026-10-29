@@ -21,10 +21,12 @@ export function setup({ root }: { root: string }) {
 		}
 		copyFileSync(join(root, app, ".env.example"), env);
 		const text = readFileSync(env, "utf8");
-		writeFileSync(
-			env,
-			text.replace(/^BETTER_AUTH_SECRET=$/m, `BETTER_AUTH_SECRET=${secret()}`),
+		// An empty secret may be written as `=`, `=""` or `= `, with LF or CRLF.
+		const filled = text.replace(
+			/^BETTER_AUTH_SECRET=[ \t]*(?:""|'')?[ \t]*(\r?)$/m,
+			(_, cr: string) => `BETTER_AUTH_SECRET=${secret()}${cr}`,
 		);
+		writeFileSync(env, filled);
 		created.push(app);
 	}
 	return { created, kept };

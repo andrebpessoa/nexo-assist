@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test";
 
 import { CONVERSATIONS } from "./conversations";
-import { runEval } from "./run";
+import { runEval, usageOf } from "./run";
 
 describe("evaluation", () => {
 	test("eval set", async () => {
@@ -11,6 +11,20 @@ describe("evaluation", () => {
 		expect(wrong).toEqual([]);
 		expect(report.accuracy).toBeGreaterThanOrEqual(0.9);
 		expect(report.byRule.length).toBeGreaterThanOrEqual(10);
+	});
+
+	test("cost per conversation divides the total by the conversations", () => {
+		expect(
+			usageOf(
+				{ inputTokens: 12697, outputTokens: 4022, costUsd: 0.0139141 },
+				22,
+			),
+		).toEqual({
+			inputTokens: 12697,
+			outputTokens: 4022,
+			costUsd: 0.013914,
+			costPerConversationUsd: 0.000632,
+		});
 	});
 
 	test("pauses between conversations and reports tokens and cost per conversation", async () => {
