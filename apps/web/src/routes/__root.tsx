@@ -1,6 +1,5 @@
-import type { QueryClient } from "@tanstack/react-query";
 import {
-	createRootRouteWithContext,
+	createRootRoute,
 	HeadContent,
 	Outlet,
 	redirect,
@@ -8,16 +7,10 @@ import {
 
 import { resolveAccess } from "@/lib/access";
 import { loadMe } from "@/lib/session";
-import type { trpc } from "@/utils/trpc";
 
 import "../index.css";
 
-export interface RouterAppContext {
-	trpc: typeof trpc;
-	queryClient: QueryClient;
-}
-
-export const Route = createRootRouteWithContext<RouterAppContext>()({
+export const Route = createRootRoute({
 	component: RootComponent,
 	/** Every route goes through `resolveAccess` (AUTH-01, AUTH-14). */
 	beforeLoad: async ({ location }) => {
