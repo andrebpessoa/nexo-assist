@@ -216,5 +216,34 @@ describe("open a ticket", () => {
 		const unsaid = await drafted([open({ ...excel, workaround: false })]);
 		expect(unsaid.draft.decision?.action).toBe("perguntar");
 		expect(said(unsaid.draft.blocks)).toContain(COPY.blocksQuestion);
+
+		// What the person said about blocking wins over the alternative, in the same turn or earlier.
+		const blocking = expect.objectContaining({
+			kind: "ticket_draft",
+			draft: expect.objectContaining({ priority: "Alta", blocksWork: true }),
+		});
+		const sameTurn = await drafted([open({ ...excel, blocksWork: true })]);
+		expect(sameTurn.draft.blocks).toContainEqual(blocking);
+
+		const earlier = await drafted([
+			open({
+				...excel,
+				affected: undefined,
+				workaround: null,
+				blocksWork: true,
+			}),
+			{
+				understanding: {
+					intent: "abrir_chamado",
+					confidence: 90,
+					fields: { affected: "Só eu", workaround: true, blocksWork: null },
+				},
+			},
+		]);
+		expect(earlier.draft.decision?.action).toBe("perguntar");
+		const answered = await earlier.agent.send(earlier.ana, {
+			text: "Só comigo, e uso o Excel online enquanto isso.",
+		});
+		expect(answered.blocks).toContainEqual(blocking);
 	});
 });
