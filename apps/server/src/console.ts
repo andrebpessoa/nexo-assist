@@ -6,6 +6,11 @@ import {
 	transition,
 } from "@nexo-assist/agent/console";
 import type { Agent } from "@nexo-assist/agent/engine";
+import {
+	realSleep,
+	type Sleep,
+	withTicketRetry,
+} from "@nexo-assist/agent/retry";
 import { MAX_CHARS } from "@nexo-assist/agent/session";
 import type {
 	ConversationStore,
@@ -49,14 +54,17 @@ const UNAVAILABLE = {
 /**
  * `/console/*` for analysts: the list with counts computed here (CON-03 to CON-07), one
  * conversation, the employee's tickets and the actions. Every move goes through `transition`
- * and a conditional update, so two analysts never both win (CON-24, CON-29).
+ * and a conditional update, so two analysts never both win (CON-24, CON-29). Ticket reads retry
+ * SERVICE_UNAVAILABLE like the agent does (AGT-43), so a flaky legacy call doesn't reach the screen.
  */
 export function createConsoleRoutes({
 	resolve,
 	now = () => new Date(),
+	sleep = realSleep,
 }: {
 	resolve: (c: Context) => Promise<ConsoleAccess>;
 	now?: () => Date;
+	sleep?: Sleep;
 }) {
 	const app = new Hono<{ Variables: { access: Ok } }>();
 
@@ -142,13 +150,18 @@ export function createConsoleRoutes({
 		const a = access(c);
 		const found = await itemOf(a, c.req.param("id"));
 		if (!found) return c.json({ error: "NOT_FOUND" }, 404);
-		const list = await a.service.list(a.analyst, {
-			requesterId: found.conv.userId,
-		});
+		const { result: list } = await withTicketRetry(
+			() => a.service.list(a.analyst, { requesterId: found.conv.userId }),
+			sleep,
+		);
 		if (!list.ok) return c.json(UNAVAILABLE, 503);
 		let current = null;
 		if (found.item.ticket) {
-			const got = await a.service.get(a.analyst, found.item.ticket);
+			const ticket = found.item.ticket;
+			const { result: got } = await withTicketRetry(
+				() => a.service.get(a.analyst, ticket),
+				sleep,
+			);
 			if (!got.ok && got.error.code === "SERVICE_UNAVAILABLE")
 				return c.json(UNAVAILABLE, 503);
 			if (got.ok) current = got.value;
@@ -166,7 +179,11 @@ export function createConsoleRoutes({
 
 	app.get("/console/tickets/:number", async (c) => {
 		const a = access(c);
-		const got = await a.service.get(a.analyst, c.req.param("number"));
+		const number = c.req.param("number");
+		const { result: got } = await withTicketRetry(
+			() => a.service.get(a.analyst, number),
+			sleep,
+		);
 		if (got.ok) return c.json(got.value);
 		return got.error.code === "NOT_FOUND"
 			? c.json({ error: "NOT_FOUND" }, 404)

@@ -56,6 +56,7 @@ async function setup(
 			"/",
 			createConsoleRoutes({
 				now: () => SEED_NOW,
+				sleep: async () => {},
 				resolve: async (c) => {
 					const who = c.req.header("x-user");
 					if (!who) return { ok: false, status: 401 };
@@ -368,6 +369,40 @@ describe("console routes", () => {
 		);
 		expect(one.description).toContain("notebook");
 		expect((await call("/console/tickets/INC-1")).status).toBe(404);
+	});
+
+	test("the tickets panel rides out a flaky ticket service", async () => {
+		const unavailable = {
+			ok: false,
+			error: { code: "SERVICE_UNAVAILABLE", message: "fora" },
+		} as const;
+		let failures = 0;
+		const flaky = (s: TicketService): TicketService => ({
+			...s,
+			list: async (...args) => (failures++ < 2 ? unavailable : s.list(...args)),
+			get: async (...args) => (failures++ < 3 ? unavailable : s.get(...args)),
+		});
+		const { call, transferred } = await setup({ wrap: flaky });
+		const id = await transferred();
+		const res = await call(`/console/conversations/${id}/tickets`);
+		expect(res.status).toBe(200);
+		expect(((await res.json()) as { current: unknown }).current).not.toBeNull();
+	});
+
+	test("the ticket detail rides out a flaky ticket service", async () => {
+		let failures = 0;
+		const flaky = (s: TicketService): TicketService => ({
+			...s,
+			get: async (...args) =>
+				failures++ < 1
+					? {
+							ok: false,
+							error: { code: "SERVICE_UNAVAILABLE", message: "fora" },
+						}
+					: s.get(...args),
+		});
+		const { call } = await setup({ wrap: flaky });
+		expect((await call("/console/tickets/INC-20311")).status).toBe(200);
 	});
 
 	test("state and assignee survive a restart", async () => {
