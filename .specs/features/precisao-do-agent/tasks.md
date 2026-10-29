@@ -9,7 +9,7 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 ---
 
 **Design**: `.specs/features/precisao-do-agent/design.md`
-**Status**: In Progress
+**Status**: Done
 **Approved**: 2026-10-29 - user: "pode xecutar"
 **Mutations**: 3
 **Build**: `bun run check-types; bun run check; bun run test; bun test scripts`

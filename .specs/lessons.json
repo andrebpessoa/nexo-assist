@@ -3,7 +3,7 @@
   "promote_threshold": 2,
   "window_days": 45,
   "quarantine_threshold": 2,
-  "next_id": 20,
+  "next_id": 22,
   "lessons": [
     {
       "id": "L-001",
@@ -346,6 +346,42 @@
       ],
       "created": "2026-10-29T01:11:20Z",
       "last_seen": "2026-10-29T01:11:20Z"
+    },
+    {
+      "id": "L-020",
+      "key": "surviving_mutant::a guard that keeps a value the user already gave needs a test where that value is set not only the case where it is missing",
+      "text": "A guard that keeps a value the user already gave needs a test where that value is set, not only the case where it is missing",
+      "signal": "surviving_mutant",
+      "scope": "agent",
+      "status": "candidate",
+      "features": [
+        "precisao-do-agent"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "packages/agent/src/engine.ts:621 (agent)"
+      ],
+      "created": "2026-10-29T04:10:18Z",
+      "last_seen": "2026-10-29T04:10:18Z"
+    },
+    {
+      "id": "L-021",
+      "key": "ac_gap::a cli list flag must reject an empty list instead of running on zero items",
+      "text": "A CLI list flag must reject an empty list instead of running on zero items",
+      "signal": "ac_gap",
+      "scope": "eval",
+      "status": "candidate",
+      "features": [
+        "precisao-do-agent"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "packages/agent/eval/run.ts:113 (eval)"
+      ],
+      "created": "2026-10-29T04:10:18Z",
+      "last_seen": "2026-10-29T04:10:18Z"
     }
   ]
 }

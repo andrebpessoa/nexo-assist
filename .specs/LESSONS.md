@@ -128,6 +128,18 @@ Seen once or not yet corroborated. Tracked, not trusted.
 - evidence: packages/infra/.env.schema:1 (config)
 - last seen: 2026-10-29T01:11:20Z
 
+### L-020 - A guard that keeps a value the user already gave needs a test where that value is set, not only the case where it is missing
+- signal: `surviving_mutant` · recurrence: 1 feature(s) · scope: `agent` · harmful: 0
+- features: precisao-do-agent
+- evidence: packages/agent/src/engine.ts:621 (agent)
+- last seen: 2026-10-29T04:10:18Z
+
+### L-021 - A CLI list flag must reject an empty list instead of running on zero items
+- signal: `ac_gap` · recurrence: 1 feature(s) · scope: `eval` · harmful: 0
+- features: precisao-do-agent
+- evidence: packages/agent/eval/run.ts:113 (eval)
+- last seen: 2026-10-29T04:10:18Z
+
 ## Quarantined (failed when applied - ignore)
 
 A confirmed lesson that recurred alongside failure. Kept for the maintainer to review.

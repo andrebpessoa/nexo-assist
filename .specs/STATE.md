@@ -211,10 +211,9 @@
 
 ## Handoff
 
-- **Fase**: as 7 features do ROADMAP concluídas (2026-10-28). `console-analista` e `entrega` validadas nesta sessão: `validate_verification.py` com 0 nas duas (console: 36 provas, 3 mutações mortas, telas na rodada 2; entrega: 20 provas, 3 mutações mortas).
-- **Concluído**: entrega T1 a T6 e a passada de correções em master, local, sem push.
-- **Em andamento**: `precisao-do-agent` (subir a avaliação ao vivo de 72% para 90%+). Diagnóstico em `features/precisao-do-agent/diagnosis.md`; spec aprovada em 2026-10-28; próximo passo: Design e Tasks, com aprovação das tasks antes de executar.
-- **Pendente do André**: deploy (DLV-12 a DLV-14) só com o aval dele (AD-010). Avaliação ao vivo em 72% com `gemini-3.5-flash-lite` (AD-023); subir o acerto é trabalho novo.
+- **Fase**: as 7 features do ROADMAP e `precisao-do-agent` concluídas. `precisao-do-agent` validada em 2026-10-29: `validate_verification.py` com 0 (27 provas, 3 mutações mortas na rodada 2, 2 achados fechados).
+- **Concluído**: precisao-do-agent T1 a T8 em master, local, sem push. Avaliação ao vivo completa com `gemini-3.5-flash-lite`: 100% (68/68), US$ 0.00073 por conversa; 1 das 2 rodadas completas permitidas usada.
+- **Pendente do André**: deploy (DLV-12 a DLV-14) só com o aval dele (AD-010).
 - **Bloqueios**: nenhum.
-- **Não commitado**: `features/*/proofs.md` (gerados no HEAD). O stash "formatação do biome (bun run check)" ficou obsoleto com o AD-022. `.claude/` está em `.git/info/exclude` (local).
+- **Não commitado**: `features/*/proofs.md` (gerados no HEAD, fora do git de propósito). `.claude/` está em `.git/info/exclude` (local).
 - **Branch**: master.

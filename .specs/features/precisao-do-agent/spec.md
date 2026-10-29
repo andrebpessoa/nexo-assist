@@ -2,7 +2,7 @@
 
 **Approved**: 2026-10-28 - user: "aprovo, pode continuar"
 
-Tamanho: Large · Fonte: pedido do André (2026-10-28), diagnóstico em `diagnosis.md`, Anexo A do PDF, spec do `agent` · Status: Specify aprovado em 2026-10-28; próximo: Design
+Tamanho: Large · Fonte: pedido do André (2026-10-28), diagnóstico em `diagnosis.md`, Anexo A do PDF, spec do `agent` · Status: concluída em 2026-10-29 (rodada ao vivo final 100%, verifier com achados fechados)
 
 ## Problem Statement
 
@@ -194,7 +194,7 @@ A avaliação ao vivo com `google/gemini-3.5-flash-lite` acerta 72% dos campos (
 | PRE-20 | P1: Resultado registrado | T7 | Done |
 | PRE-21 | P1: Resultado registrado | T7 | Done |
 
-**Coverage:** 21 total, 0 mapped to tasks, 21 unmapped ⚠️ (Tasks ainda não feitas)
+**Coverage:** 21 total, 21 mapped to tasks, 0 unmapped
 
 ---
 
