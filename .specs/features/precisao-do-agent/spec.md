@@ -176,14 +176,14 @@ A avaliação ao vivo com `google/gemini-3.5-flash-lite` acerta 72% dos campos (
 | PRE-02 | P1: Rodar só algumas conversas | T1 | Done |
 | PRE-03 | P1: Rodar só algumas conversas | T1 | Done |
 | PRE-04 | P1: Rodar só algumas conversas | T1 | Done |
-| PRE-05 | P1: Duplicidade antes do artigo | Design | Pending |
-| PRE-09 | P1: Duplicidade antes do artigo | Design | Pending |
-| PRE-06 | P1: Artigo só quando resolve | Design | Pending |
-| PRE-07 | P1: Artigo só quando resolve | Design | Pending |
-| PRE-08 | P1: Artigo só quando resolve | Design | Pending |
-| PRE-10 | P1: Artigo só quando resolve | Design | Pending |
+| PRE-05 | P1: Duplicidade antes do artigo | T4 | Done |
+| PRE-09 | P1: Duplicidade antes do artigo | T4 | Done |
+| PRE-06 | P1: Artigo só quando resolve | T4 | Done |
+| PRE-07 | P1: Artigo só quando resolve | T4 | Done |
+| PRE-08 | P1: Artigo só quando resolve | T4 | Done |
+| PRE-10 | P1: Artigo só quando resolve | T4 | Done |
 | PRE-11 | P1: Artigo só quando resolve | T2 | Done |
-| PRE-12 | P1: Artigo só quando resolve | Design | Pending |
+| PRE-12 | P1: Artigo só quando resolve | T4 | Done |
 | PRE-13 | P1: Dados de impacto | Design | Pending |
 | PRE-14 | P1: Dados de impacto | Design | Pending |
 | PRE-15 | P1: Dados de impacto | Design | Pending |

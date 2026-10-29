@@ -26,6 +26,7 @@ import {
 	withModelLimits,
 	withTicketRetry,
 } from "./retry";
+import { articleForTicket } from "./rules/article";
 import { isTextConfirmation } from "./rules/confirm";
 import { contactDeadline, teamFor } from "./rules/contact";
 import { duplicateAction } from "./rules/duplicates";
@@ -195,7 +196,7 @@ function describeModel(value: unknown): string {
 	if (u) return `${u.intent} · ${u.confidence}%`;
 	const j = record(r?.judgement);
 	if (j)
-		return `artigo: ${j.articleSlug ?? "nenhum"}${j.articleFits === false ? " (não serve)" : ""}; mesmo problema: ${j.sameProblemNumber ?? "nenhum"}`;
+		return `artigo: ${j.articleSlug ?? "nenhum"}${j.articleResolves === false ? " (não resolve)" : ""}${j.articleTried === true ? " (já tentou)" : ""}${j.articleFits === false ? " (não serve)" : ""}; mesmo problema: ${j.sameProblemNumber ?? "nenhum"}`;
 	return "ok";
 }
 
@@ -763,11 +764,16 @@ export function createAgent(deps: AgentDeps) {
 		);
 		if (!listed.ok) return serviceDown(turn, "consultar seus chamados");
 		const j = await judge(turn, articles, listed.value);
-		if (articles.length && j.articleSlug) {
-			const article = articles.find((a) => a.slug === j.articleSlug);
-			if (article && j.articleFits !== false)
-				return answerWithArticle(article, true);
-			if (article) opts.misfit = article;
+		const same =
+			j.sameProblemConfidence >= CONFIDENCE_THRESHOLD
+				? j.sameProblemNumber
+				: null;
+		// A ticket on the same problem comes first: whoever says "de novo" already had help (PRE-05).
+		const dup = duplicateAction(listed.value, same, turn.now);
+		if (dup.kind === "new") {
+			const pick = articleForTicket(j, articles);
+			if (pick.kind === "answer") return answerWithArticle(pick.article, true);
+			if (pick.kind === "misfit") opts.misfit = pick.article;
 		}
 		if (opts.misfit)
 			prefix.push(
@@ -775,11 +781,6 @@ export function createAgent(deps: AgentDeps) {
 					`O artigo “${opts.misfit.title}” não serve no seu caso: ${opts.misfit.appliesWhen} Vou montar um chamado.`,
 				),
 			);
-		const same =
-			j.sameProblemConfidence >= CONFIDENCE_THRESHOLD
-				? j.sameProblemNumber
-				: null;
-		const dup = duplicateAction(listed.value, same, turn.now);
 		if (dup.kind === "complement")
 			return {
 				...(await complementTicket(

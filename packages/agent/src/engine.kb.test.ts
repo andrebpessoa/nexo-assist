@@ -71,6 +71,24 @@ describe("help center", () => {
 		expect((await store.get(turn.conversationId))?.pending).toBeNull();
 	});
 
+	test("doubt ignores the ticket signals", async () => {
+		const { agent, ids } = await agentHarness({
+			turns: vpn({
+				articleSlug: "vpn-erro-809",
+				articleFits: true,
+				articleResolves: false,
+				articleTried: true,
+			}),
+		});
+		const turn = await agent.send(ids.bruno as string, {
+			text: "Minha VPN dá erro 809",
+		});
+		expect(turn.decision?.action).toBe("responder_artigo");
+		expect(turn.blocks).toContainEqual(
+			expect.objectContaining({ kind: "article", slug: "vpn-erro-809" }),
+		);
+	});
+
 	test("article condition fails", async () => {
 		const { agent, ana } = await agentHarness({
 			turns: vpn({

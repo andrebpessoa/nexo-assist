@@ -131,7 +131,7 @@ T7
 
 ---
 
-### T4: Duplicidade antes do artigo em `startTicket`
+### T4: Duplicidade antes do artigo em `startTicket` ✅
 
 **What**: `startTicket` aplica `duplicateAction` antes do artigo e decide o artigo por `articleForTicket`; a frase "não serve no seu caso" só sai em `misfit`; `helpCenter` (dúvida) não muda; `describeModel` mostra "não resolve" e "já tentou" no resultado de `modelo.comparar`.
 **Where**: `packages/agent/src/engine.ts`
@@ -141,11 +141,11 @@ T7
 
 **Done when**:
 
-- [ ] `engine.ticket-article.test.ts`: chamado aberto, resolvido há ≤ 7 dias e há mais, cada um com o juiz dizendo que o artigo resolve, dão complementar, reabrir e rascunho que cita (sem bloco de artigo); sem duplicado, artigo que resolve responde com oferta; que não resolve ou sem sinal vai ao rascunho sem "não serve"; já tentado vai ao rascunho; resolve mas não serve diz por quê; chamado apontado fora da lista segue para o artigo
-- [ ] O resultado de `modelo.comparar` no registro de decisão mostra "não resolve" e "já tentou"
-- [ ] Teste em `engine.kb.test.ts`: dúvida com `articleResolves: false` ainda responde com o artigo (PRE-12)
-- [ ] `bun run eval` roteirizado em 100%, `conversations.ts` sem mudança
-- [ ] Gate full e build passam
+- [x] `engine.ticket-article.test.ts`: chamado aberto, resolvido há ≤ 7 dias e há mais, cada um com o juiz dizendo que o artigo resolve, dão complementar, reabrir e rascunho que cita (sem bloco de artigo); sem duplicado, artigo que resolve responde com oferta; que não resolve ou sem sinal vai ao rascunho sem "não serve"; já tentado vai ao rascunho; resolve mas não serve diz por quê; chamado apontado fora da lista segue para o artigo
+- [x] O resultado de `modelo.comparar` no registro de decisão mostra "não resolve" e "já tentou"
+- [x] Teste em `engine.kb.test.ts`: dúvida com `articleResolves: false` ainda responde com o artigo (PRE-12)
+- [x] `bun run eval` roteirizado em 100%, `conversations.ts` sem mudança
+- [x] Gate full e build passam
 
 **Tests**: integration
 **Gate**: build
