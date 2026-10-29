@@ -9,7 +9,7 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 ---
 
 **Design**: `.specs/features/chat-funcionario/design.md`
-**Status**: Approved
+**Status**: Done
 **Approved**: 2026-10-28 - user: "sim, faça a aplicação de todas as features, me avise se precisar de algo" (delegado por André em t152u; recomendações adotadas, AD-020)
 **Mutations**: 3
 **Build**: `bun run check-types; bun biome check apps packages; bun run test`

@@ -9,7 +9,7 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 ---
 
 **Design**: `.specs/features/servico-de-chamados/design.md`
-**Status**: In Progress
+**Status**: Done
 **Approved**: 2026-10-28 - user: "Aprovo as 28 tasks de servico-de-chamados e as 4 recomendações (biome check só leitura, pedir aval antes de trocar a versão do alchemy, seed por rota de dev, corrigir dev:server na entrega); pode implementar"
 **Mutations**: 3
 **Build**: `bun run check-types; bun biome check apps packages; bun run test`
