@@ -16,6 +16,7 @@ local.db-*
 # Environment variables
 .env
 .env*.local
+*.local
 
 # IDEs and editors
 .vscode/*
@@ -43,8 +44,9 @@ lerna-debug.log*
 .turbo
 .nx
 
-# Better-T-Stack
+# Alchemy and Wrangler local state
 .alchemy
+.wrangler
 
 # Testing
 coverage
