@@ -153,7 +153,7 @@ T7
 
 ---
 
-### T5: Alternativa conta como "não impede"
+### T5: Alternativa conta como "não impede" ✅
 
 **What**: `fieldsFrom` define `blocksWork = false` quando `workaround` é true e `blocksWork` é null.
 **Where**: `packages/agent/src/engine.ts`
@@ -163,8 +163,8 @@ T7
 
 **Done when**:
 
-- [ ] Teste em `engine.create.test.ts`: "O Excel trava…" com `workaround: true`, `blocksWork: null`, `affected: "Só eu"` dá rascunho Média sem pergunta; `workaround: false` e `blocksWork: null` ainda pergunta "impede"
-- [ ] Gate full e build passam
+- [x] Teste em `engine.create.test.ts`: "O Excel trava…" com `workaround: true`, `blocksWork: null`, `affected: "Só eu"` dá rascunho Média sem pergunta; `workaround: false` e `blocksWork: null` ainda pergunta "impede"
+- [x] Gate full e build passam
 
 **Tests**: integration
 **Gate**: build

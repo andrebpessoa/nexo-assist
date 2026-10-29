@@ -617,6 +617,9 @@ export function createAgent(deps: AgentDeps) {
 			if (f.workaround === null) merged.workaround = !f.blocksWork;
 		}
 		if (f.workaround !== null) merged.workaround = f.workaround;
+		// Anexo A, Média: "atrapalha, mas há alternativa" - an alternative means it does not block.
+		if (merged.blocksWork === undefined && f.workaround === true)
+			merged.blocksWork = false;
 		if (f.sameDayCommitment !== null)
 			merged.sameDayCommitment = f.sameDayCommitment;
 		if (!merged.title) merged.title = turn.text.slice(0, 80);

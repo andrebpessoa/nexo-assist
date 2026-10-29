@@ -186,4 +186,35 @@ describe("open a ticket", () => {
 		expect(understander.calls.understand).toBe(1);
 		expect(await count()).toBe(before + 1);
 	});
+
+	test("workaround counts as not blocking", async () => {
+		const excel = {
+			title: "Excel trava com planilhas grandes",
+			description: "O Excel trava ao abrir planilhas grandes",
+			type: "INC" as const,
+			typeConfidence: 90,
+			category: "Software" as const,
+			categoryConfidence: 90,
+			affected: "Só eu" as const,
+			workaround: true,
+			blocksWork: null,
+		};
+		const { draft } = await drafted([open(excel)]);
+		expect(draft.decision?.action).toBe("rascunho_chamado");
+		expect(said(draft.blocks)).not.toContain(COPY.blocksQuestion);
+		expect(draft.blocks).toContainEqual(
+			expect.objectContaining({
+				kind: "ticket_draft",
+				draft: expect.objectContaining({
+					priority: "Média",
+					blocksWork: false,
+					workaround: true,
+				}),
+			}),
+		);
+
+		const unsaid = await drafted([open({ ...excel, workaround: false })]);
+		expect(unsaid.draft.decision?.action).toBe("perguntar");
+		expect(said(unsaid.draft.blocks)).toContain(COPY.blocksQuestion);
+	});
 });
