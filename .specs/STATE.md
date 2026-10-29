@@ -171,7 +171,7 @@
 - **Trade-off**: Markdown e JSON de `.specs/` e `.cursor/` ficam fora do lint; o smoke não roda no `bun run test` sem `SERVER_URL`.
 - **Scope**: servico-de-chamados, entrega.
 - **Date**: 2026-10-28
-- **Status**: active (AD-019)
+- **Status**: superseded by AD-022
 
 ### AD-020
 
@@ -190,6 +190,15 @@
 - **Scope**: chat-funcionario, console-analista, entrega.
 - **Date**: 2026-10-28
 - **Status**: active (AD-021)
+
+### AD-022
+
+- **Decision**: O Biome roda no repositório inteiro (`bun biome check .`, `bun run check`) e ignora as pastas de documentação e ferramentas: `.specs`, `.agents`, `.cursor` e `.claude`. Supera o AD-019.
+- **Reason**: `bun run check` (`biome check --write .`) reformatava 39 arquivos de `.specs/`, inclusive o `.pen.json` do protótipo, que são fontes e não código. Design da `entrega`, aprovação delegada (AD-020) com o "sim, siga com a validação do console e depois a entrega" do André em 2026-10-28.
+- **Trade-off**: Markdown e JSON das specs não passam pelo formatador.
+- **Scope**: entrega, todas as features (lint).
+- **Date**: 2026-10-28
+- **Status**: active (AD-022)
 
 ## Handoff
 
