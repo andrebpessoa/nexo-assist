@@ -5,8 +5,8 @@
 	"scripts": {
 		"check-types": "tsc --noEmit",
 		"dev": "env -u npm_execpath DEV_SEED_ENABLED=true node ./node_modules/alchemy/bin/cli.js dev",
-		"deploy": "alchemy deploy",
-		"destroy": "alchemy destroy"
+		"deploy": "env -u npm_execpath NODE_ENV=production node ./node_modules/alchemy/bin/cli.js deploy",
+		"destroy": "env -u npm_execpath NODE_ENV=production node ./node_modules/alchemy/bin/cli.js destroy"
 	},
 	"dependencies": {
 		"zod": "catalog:"

@@ -229,9 +229,9 @@ T6 → T7 → T8 → T9 → T10
 
 **Done when**:
 
-- [ ] `bun run deploy` publica o web e o servidor na conta Cloudflare do André
-- [ ] Login da Ana no link público abre o chat e o agent responde com o Gemini
-- [ ] Chave, segredo do auth e token do seed aparecem como secret no Worker, não como texto
+- [x] `bun run deploy` publica o web e o servidor na conta Cloudflare do André
+- [x] Login da Ana no link público abre o chat e o agent responde com o Gemini
+- [x] Chave, segredo do auth e token do seed aparecem como secret no Worker, não como texto
 
 **Tests**: none
 **Gate**: build
