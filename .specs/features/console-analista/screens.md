@@ -9,7 +9,7 @@ Rodada 1: fotos tiradas pelo verificador com Chromium (playwright-core), context
 
 | Screen | Compared with | Verdict | Finding |
 | --- | --- | --- | --- |
-| `captures/04-console-conversa-transferida.running.png` | `captures/04-console-conversa-transferida.png` | diverges | 1 row differs (rodada 1: 15) |
+| `captures/04-console-conversa-transferida.running.png` | `captures/04-console-conversa-transferida.png` | matches | 0 rows differ (rodada 1: 15); a única linha da rodada 2 virou diferença aprovada pelo André |
 | `captures/05-console-atendimento-assumido.running.png` | `captures/05-console-atendimento-assumido.png` | matches | 0 rows differ (rodada 1: 13) |
 
 ### `captures/04-console-conversa-transferida.running.png`
@@ -38,7 +38,7 @@ Rodada 1: fotos tiradas pelo verificador com Chromium (playwright-core), context
 | campo desabilitado "Assuma o atendimento para responder" | same | |
 | painel: cabeçalho "Chamados da Ana", "N abertos · M encerrados", X à direita | same | "3 abertos · 3 encerrados" (dado) |
 | painel: rótulos de seção "Desta conversa" e "Outros chamados" | same | rodada 2: "Desta conversa" e "Outros chamados" sem caixa alta |
-| cartão "Desta conversa": número, "● Aguardando analista" à direita, título em destaque, "Hardware · prioridade média", divisória e linha "⇄ Transferido para um analista" com hora à direita | differs | rodada 2: cartão de fundo cinza, divisória, ícone ⇄, hora à direita e sem "Ver detalhes" (corrigido); mas o texto do evento é "Transferido para Suporte N1" em vez de "Transferido para um analista" (cópia) |
+| cartão "Desta conversa": número, "● Aguardando analista" à direita, título em destaque, "Hardware · prioridade média", divisória e linha "⇄ Transferido para um analista" com hora à direita | same | aplicada depois da rodada 2 a diferença confirmada pelo André em `## Differences from the source` ("Mostrar a equipe (Recomendado)"); o juízo da rodada 2 era `differs`: cartão de fundo cinza, divisória, ícone ⇄, hora à direita e sem "Ver detalhes" (corrigido); mas o texto do evento é "Transferido para Suporte N1" em vez de "Transferido para um analista" (cópia) |
 | "Outros chamados": cada linha com ponto de cor à esquerda, título, subtítulo "INC-xxxxx · status", seta "›" à direita, divisórias | same | rodada 2: ponto à esquerda, título (truncado com "…" quando longo), "INC · status", seta e divisórias |
 | botão "Ver todos os chamados da Ana ↗" preso ao pé do painel | same | rodada 2: preso ao pé do painel |
 
