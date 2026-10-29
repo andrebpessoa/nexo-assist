@@ -122,8 +122,8 @@ T1 → T2 → T3 → T4 → T5 → T6
 
 **Done when**:
 
-- [ ] `bun biome check .` sai com 0 erros e 0 avisos
-- [ ] `bun run check` não muda nenhum arquivo
+- [x] `bun biome check .` sai com 0 erros e 0 avisos
+- [x] `bun run check` não muda nenhum arquivo
 
 **Tests**: none
 **Gate**: build
