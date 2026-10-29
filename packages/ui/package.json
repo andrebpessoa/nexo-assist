@@ -6,16 +6,13 @@
 	"exports": {
 		"./globals.css": "./src/styles/globals.css",
 		"./lib/*": "./src/lib/*.ts",
-		"./components/*": "./src/components/*.tsx",
-		"./hooks/*": "./src/hooks/*.ts",
-		"./postcss.config": "./postcss.config.mjs"
+		"./components/*": "./src/components/*.tsx"
 	},
 	"scripts": {
 		"check-types": "tsc --noEmit"
 	},
 	"dependencies": {
 		"@base-ui/react": "^1.8.0",
-		"@shadcn/react": "^0.3.1",
 		"class-variance-authority": "^0.7.1",
 		"cn": "^0.5.0",
 		"lucide-react": "^1.41.0",
@@ -28,7 +25,6 @@
 	},
 	"devDependencies": {
 		"@nexo-assist/config": "workspace:*",
-		"@tailwindcss/postcss": "^4.3.3",
 		"@types/react": "^19.2.18",
 		"@types/react-dom": "^19.2.7",
 		"tailwindcss": "catalog:",
