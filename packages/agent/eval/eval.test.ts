@@ -95,6 +95,25 @@ describe("evaluation", () => {
 		expect(writesResult({ live: true, only: null })).toBe(true);
 	});
 
+	test("only without ids exits 1", async () => {
+		expect(onlyArg(["--only="])).toEqual([]);
+		expect(onlyArg(["--live", "--only"])).toEqual([]);
+		expect(selectConversations([])).toEqual({ ok: false, unknown: [] });
+		const run = Bun.spawn(["bun", "eval/cli.ts", "--only="], {
+			cwd: join(import.meta.dir, ".."),
+			stdout: "pipe",
+			stderr: "pipe",
+		});
+		const [code, out, err] = await Promise.all([
+			run.exited,
+			new Response(run.stdout).text(),
+			new Response(run.stderr).text(),
+		]);
+		expect(code).toBe(1);
+		expect(err).toContain("--only precisa de ao menos um id");
+		expect(out).not.toContain("Avaliação");
+	});
+
 	test("unknown id exits 1 without calling the model", async () => {
 		expect(selectConversations(["saudacao", "nao-existe"])).toEqual({
 			ok: false,

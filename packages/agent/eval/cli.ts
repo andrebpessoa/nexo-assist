@@ -17,7 +17,11 @@ const live = process.argv.includes("--live");
 const only = onlyArg(process.argv.slice(2));
 const picked = selectConversations(only);
 if (!picked.ok)
-	fail(`Conversa desconhecida em --only: ${picked.unknown.join(", ")}.`);
+	fail(
+		picked.unknown.length
+			? `Conversa desconhecida em --only: ${picked.unknown.join(", ")}.`
+			: "--only precisa de ao menos um id.",
+	);
 const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
 if (live && !apiKey)
 	fail("--live precisa de GOOGLE_GENERATIVE_AI_API_KEY no ambiente.");

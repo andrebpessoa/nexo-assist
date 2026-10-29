@@ -273,6 +273,9 @@ Proof: `bun test packages/agent/src/engine.kb.test.ts -t "doubt ignores the tick
 **C13** - `workaround` true e `blocksWork` null: rascunho Média, sem pergunta "impede" (PRE-13, AC 1)
 Proof: `bun test packages/agent/src/engine.create.test.ts -t "workaround counts as not blocking"`
 
+**C23** - `--only` sem id (`--only=` ou no fim) sai 1 com "--only precisa de ao menos um id" e não roda conversa (PRE-03, AC 3)
+Proof: `bun test packages/agent/eval/eval.test.ts -t "only without ids exits 1"`
+
 **C14** - O prompt de entendimento pede `affected` só quando dito, com os dois exemplos (PRE-14, AC 2)
 Proof: `bun test packages/agent/src/understand-mastra.test.ts -t "understand prompt asks affected only when said"`
 
@@ -305,7 +308,7 @@ Proof: `bun test packages/agent/eval/eval.test.ts -t "eval set"`
 ## Handoff
 
 **Settled mid-build:** 2026-10-29, depois da rodada parcial 1: ajuste do `affected` - user escolheu "New prompt task (Recommended)" (T8: `affected` null por padrão, preenchido só quando a mensagem diz quem é afetado); rodada completa - user: "Yes, run it (Recommended)" (T7 roda logo depois da T8; abaixo de 90%, parar e mostrar os erros antes de uma segunda).
-**Dispatched:** Verifier em `c942f7d` (2026-10-29), faixa `b99971f..c942f7d`
+**Dispatched:** Verifier em `c942f7d` (2026-10-29), faixa `b99971f..c942f7d`, returned (FAIL: 1 mutação sobreviveu, 2 achados; `d221752`)
 **Rodadas ao vivo:** parcial 1 (2026-10-29, depois da T6, 11 conversas, ~25 chamadas): 38/40 = 95%. Prioridade 15/15, duplicidade 9/9, central 7/7, transferir 1/1, saudação 2/2, uma pergunta por vez 4/6. Erros: `afetados-nao-sei` passo 1 (`rascunho_chamado` em vez de `perguntar`) e passo 2 em cascata (`descartar`). Saída crua: o modelo devolve `affected: "Só eu"` para "O Outlook parou de enviar e-mails, mas consigo mandar pelo webmail." mesmo com o exemplo no prompt. Rodada completa 1 (2026-10-29, depois da T8, avisada e aprovada): 68/68 = 100%, todas as 13 regras em 100%, US$ 0.00073 por conversa no pago. Rodadas completas no total: 1 de 2.
 **Walked:** N/A - sem tela nova; o efeito é medido pelas rodadas ao vivo
 

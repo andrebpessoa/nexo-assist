@@ -112,6 +112,8 @@ export function selectConversations(
 	| { ok: false; unknown: string[] } {
 	if (!only) return { ok: true, conversations: CONVERSATIONS };
 	const ids = [...new Set(only)];
+	// `--only` with no id is a mistake, not a run of zero conversations.
+	if (!ids.length) return { ok: false, unknown: [] };
 	const unknown = ids.filter((id) => !CONVERSATIONS.some((c) => c.id === id));
 	if (unknown.length) return { ok: false, unknown };
 	return {
