@@ -7,7 +7,7 @@ const AREAS: Record<Role, readonly string[]> = {
 	analyst: ["/console"],
 };
 
-export const homeFor = (role: Role) =>
+const homeFor = (role: Role) =>
 	role === "analyst" ? "/console" : "/atendimento";
 
 const inside = (pathname: string, area: string) =>

@@ -16,7 +16,7 @@ import { hhmm, listTime } from "./labels";
 const OTHERS = 4;
 
 /** "da Ana", "do Bruno": the prototype's wording, guessed from the first name. */
-export function ofName(name: string) {
+function ofName(name: string) {
 	const first = name.split(" ")[0] ?? name;
 	return `${first.endsWith("a") ? "da" : "do"} ${first}`;
 }

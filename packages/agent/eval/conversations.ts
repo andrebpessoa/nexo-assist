@@ -11,7 +11,7 @@ export interface Expected {
 	priority?: Priority;
 }
 
-export interface EvalStep {
+interface EvalStep {
 	send: AgentInput;
 	/** What the model is expected to understand; played back in the scripted run. */
 	scripted?: ScriptedTurn;

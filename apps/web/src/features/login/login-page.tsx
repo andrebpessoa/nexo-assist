@@ -23,7 +23,7 @@ export type LoginOutcome =
 
 type FieldErrors = { email?: string; password?: string };
 
-export const LOGIN_TEXT = {
+const LOGIN_TEXT = {
 	emailNotFound:
 		"Não encontramos esse e-mail. Use seu e-mail corporativo da Nexo.",
 	emailRequired: "Digite seu e-mail corporativo.",
@@ -37,7 +37,7 @@ export const LOGIN_TEXT = {
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /** Field checks before sending (AUTH-07). */
-export function validateLogin(values: LoginValues): FieldErrors {
+function validateLogin(values: LoginValues): FieldErrors {
 	const errors: FieldErrors = {};
 	const email = values.email.trim();
 	if (email === "") errors.email = LOGIN_TEXT.emailRequired;

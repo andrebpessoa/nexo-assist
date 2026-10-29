@@ -38,7 +38,7 @@ const AVATAR = [
 	"bg-slate-200 text-slate-700",
 	"bg-amber-100 text-amber-800",
 ];
-export function avatarTone(name: string) {
+function avatarTone(name: string) {
 	let h = 0;
 	for (const ch of name) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
 	return AVATAR[h % AVATAR.length];
@@ -56,11 +56,7 @@ export function Avatar({ name, size = 40 }: { name: string; size?: number }) {
 }
 
 /** Inbox in the list filtered by `filter` and `query` (CON-03 to CON-09). */
-export function visibleItems(
-	list: ConsoleList,
-	filter: ConsoleFilter,
-	query: string,
-) {
+function visibleItems(list: ConsoleList, filter: ConsoleFilter, query: string) {
 	return list.items.filter((i) => {
 		const inFilter =
 			filter === "todas"

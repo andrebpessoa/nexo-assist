@@ -18,5 +18,3 @@ export async function createContext({
 	});
 	return buildContext({ db, session });
 }
-
-export type Context = Awaited<ReturnType<typeof createContext>>;

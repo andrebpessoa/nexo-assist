@@ -102,7 +102,7 @@ export function createUsageLimiter({
 }
 
 /** The day's model budget is spent; shaped as a 429 so the agent answers "muitas solicitações" (AGT-47). */
-export class DailyModelLimit extends Error {
+class DailyModelLimit extends Error {
 	readonly status = 429;
 	constructor() {
 		super("daily model limit reached");

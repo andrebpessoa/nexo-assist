@@ -6,7 +6,7 @@ import {
 	type Expected,
 } from "./conversations";
 
-export interface CheckResult {
+interface CheckResult {
 	conversation: string;
 	step: number;
 	field: keyof Expected;

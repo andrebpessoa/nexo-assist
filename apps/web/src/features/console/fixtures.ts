@@ -150,7 +150,7 @@ export function anaConversation(
 
 import type { TicketDetailJson, TicketJson, TicketsPanelData } from "./api";
 
-export const ticket = (over: Partial<TicketJson> = {}): TicketJson => ({
+const ticket = (over: Partial<TicketJson> = {}): TicketJson => ({
 	number: "INC-20311",
 	title: "Notebook lento após atualização",
 	type: "INC",
