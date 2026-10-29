@@ -102,9 +102,9 @@ T1 → T2 → T3 → T4 → T5 → T6
 
 **Done when**:
 
-- [ ] O seed roda depois da primeira resposta do servidor, e só uma vez
-- [ ] Servidor que não responde: aviso com `bun run db:seed`, sem seed
-- [ ] `package.json` aponta `dev` para o script
+- [x] O seed roda depois da primeira resposta do servidor, e só uma vez
+- [x] Servidor que não responde: aviso com `bun run db:seed`, sem seed
+- [x] `package.json` aponta `dev` para o script
 
 **Tests**: unit
 **Gate**: quick
