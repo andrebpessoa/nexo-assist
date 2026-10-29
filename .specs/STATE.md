@@ -193,10 +193,10 @@
 
 ## Handoff
 
-- **Fase**: `chat-funcionario` validada e concluída (2026-10-28); ver `features/chat-funcionario/validation.md`. `servico-de-chamados`, `acesso`, `agent` e `transparencia` concluídas antes (a `transparencia` ganhou `screens.md` com as fotos da caminhada do chat).
-- **Concluído**: chat-funcionario T1 a T5 em master (local, sem push). Provas de C1 a C33, 3 mutações mortas, `validate_verification.py` com 0 para `chat-funcionario` e `transparencia`.
-- **Em andamento**: nenhum.
-- **Próximo passo**: feature `console-analista` (6ª do ROADMAP), com aprovação delegada (AD-020). A avaliação ao vivo do `agent` espera a `GOOGLE_GENERATIVE_AI_API_KEY` em `apps/server/.env`.
-- **Bloqueios**: nenhum. Pendente na `entrega` (DLV-08): o aviso `noNonNullAssertion` em `apps/web/src/env.public.ts` e o lint fora de `apps` e `packages`. Os `env.ts` gerados já não entram no Biome (afe77a9).
-- **Não commitado**: `features/*/proofs.md`, gerados por `check_proofs.py` no HEAD (commitá-los muda o HEAD).
+- **Fase**: `console-analista` validada e concluída (2026-10-28): 36 provas verdes, 3 mutações mortas, telas 04 e 05 na rodada 2, `validate_verification.py` com 0. As cinco features anteriores já estavam concluídas.
+- **Concluído**: console T1 a T6 e a passada de correções (0aebed9, 02feeb5) em master, local, sem push.
+- **Em andamento**: `entrega` (7ª e última do ROADMAP): design e tarefas.
+- **Próximo passo**: Execute da `entrega` T1 a T6; deploy (DLV-12 a 14) só com o aval do André.
+- **Bloqueios**: nenhum.
+- **Não commitado**: `features/*/proofs.md` (gerados por `check_proofs.py` no HEAD). Um stash guarda a formatação que `bun run check` aplicou em `.specs/` e na raiz (T4 da entrega resolve). `.claude/` está em `.git/info/exclude` (local).
 - **Branch**: master.

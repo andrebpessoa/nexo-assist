@@ -162,39 +162,39 @@ Os analistas do Suporte N1 e N2 precisam ver as conversas que dependem deles, in
 
 | ID | Story | Phase | Status |
 | --- | --- | --- | --- |
-| CON-01 | P1 - Ver as conversas que precisam de mim | Specify | Pending |
-| CON-02 | P1 - Ver as conversas que precisam de mim | Specify | Pending |
-| CON-03 | P1 - Ver as conversas que precisam de mim | Specify | Pending |
-| CON-04 | P1 - Ver as conversas que precisam de mim | Specify | Pending |
-| CON-05 | P1 - Ver as conversas que precisam de mim | Specify | Pending |
-| CON-06 | P1 - Ver as conversas que precisam de mim | Specify | Pending |
-| CON-07 | P1 - Ver as conversas que precisam de mim | Specify | Pending |
-| CON-08 | P1 - Ver as conversas que precisam de mim | Specify | Pending |
-| CON-09 | P1 - Ver as conversas que precisam de mim | Specify | Pending |
-| CON-10 | P1 - Ver as conversas que precisam de mim | Specify | Pending |
-| CON-11 | P1 - Ver as conversas que precisam de mim | Specify | Pending |
-| CON-12 | P1 - Ver as conversas que precisam de mim | Specify | Pending |
-| CON-13 | P1 - Ler a conversa e os chamados do funcionário | Specify | Pending |
-| CON-14 | P1 - Ler a conversa e os chamados do funcionário | Specify | Pending |
-| CON-15 | P1 - Ler a conversa e os chamados do funcionário | Specify | Pending |
-| CON-16 | P1 - Ler a conversa e os chamados do funcionário | Specify | Pending |
-| CON-17 | P1 - Ler a conversa e os chamados do funcionário | Specify | Pending |
-| CON-18 | P1 - Ler a conversa e os chamados do funcionário | Specify | Pending |
-| CON-19 | P1 - Ler a conversa e os chamados do funcionário | Specify | Pending |
-| CON-20 | P1 - Ler a conversa e os chamados do funcionário | Specify | Pending |
-| CON-21 | P1 - Ler a conversa e os chamados do funcionário | Specify | Pending |
-| CON-22 | P1 - Assumir, responder, devolver e encerrar | Specify | Pending |
-| CON-23 | P1 - Assumir, responder, devolver e encerrar | Specify | Pending |
-| CON-24 | P1 - Assumir, responder, devolver e encerrar | Specify | Pending |
-| CON-25 | P1 - Assumir, responder, devolver e encerrar | Specify | Pending |
-| CON-26 | P1 - Assumir, responder, devolver e encerrar | Specify | Pending |
-| CON-27 | P1 - Assumir, responder, devolver e encerrar | Specify | Pending |
-| CON-28 | P1 - Assumir, responder, devolver e encerrar | Specify | Pending |
-| CON-29 | P1 - Assumir, responder, devolver e encerrar | Specify | Pending |
-| CON-30 | P1 - Assumir, responder, devolver e encerrar | Specify | Pending |
-| CON-31 | P1 - Carregar e persistir | Specify | Pending |
-| CON-32 | P1 - Carregar e persistir | Specify | Pending |
-| CON-33 | P1 - Carregar e persistir | Execute | Pending |
+| CON-01 | P1 - Ver as conversas que precisam de mim | Verify | Verified |
+| CON-02 | P1 - Ver as conversas que precisam de mim | Verify | Verified |
+| CON-03 | P1 - Ver as conversas que precisam de mim | Verify | Verified |
+| CON-04 | P1 - Ver as conversas que precisam de mim | Verify | Verified |
+| CON-05 | P1 - Ver as conversas que precisam de mim | Verify | Verified |
+| CON-06 | P1 - Ver as conversas que precisam de mim | Verify | Verified |
+| CON-07 | P1 - Ver as conversas que precisam de mim | Verify | Verified |
+| CON-08 | P1 - Ver as conversas que precisam de mim | Verify | Verified |
+| CON-09 | P1 - Ver as conversas que precisam de mim | Verify | Verified |
+| CON-10 | P1 - Ver as conversas que precisam de mim | Verify | Verified |
+| CON-11 | P1 - Ver as conversas que precisam de mim | Verify | Verified |
+| CON-12 | P1 - Ver as conversas que precisam de mim | Verify | Verified |
+| CON-13 | P1 - Ler a conversa e os chamados do funcionário | Verify | Verified |
+| CON-14 | P1 - Ler a conversa e os chamados do funcionário | Verify | Verified |
+| CON-15 | P1 - Ler a conversa e os chamados do funcionário | Verify | Verified |
+| CON-16 | P1 - Ler a conversa e os chamados do funcionário | Verify | Verified |
+| CON-17 | P1 - Ler a conversa e os chamados do funcionário | Verify | Verified |
+| CON-18 | P1 - Ler a conversa e os chamados do funcionário | Verify | Verified |
+| CON-19 | P1 - Ler a conversa e os chamados do funcionário | Verify | Verified |
+| CON-20 | P1 - Ler a conversa e os chamados do funcionário | Verify | Verified |
+| CON-21 | P1 - Ler a conversa e os chamados do funcionário | Verify | Verified |
+| CON-22 | P1 - Assumir, responder, devolver e encerrar | Verify | Verified |
+| CON-23 | P1 - Assumir, responder, devolver e encerrar | Verify | Verified |
+| CON-24 | P1 - Assumir, responder, devolver e encerrar | Verify | Verified |
+| CON-25 | P1 - Assumir, responder, devolver e encerrar | Verify | Verified |
+| CON-26 | P1 - Assumir, responder, devolver e encerrar | Verify | Verified |
+| CON-27 | P1 - Assumir, responder, devolver e encerrar | Verify | Verified |
+| CON-28 | P1 - Assumir, responder, devolver e encerrar | Verify | Verified |
+| CON-29 | P1 - Assumir, responder, devolver e encerrar | Verify | Verified |
+| CON-30 | P1 - Assumir, responder, devolver e encerrar | Verify | Verified |
+| CON-31 | P1 - Carregar e persistir | Verify | Verified |
+| CON-32 | P1 - Carregar e persistir | Verify | Verified |
+| CON-33 | P1 - Carregar e persistir | Verify | Verified |
 
 **Coverage:** 33 critérios, todos mapeados a uma história.
 

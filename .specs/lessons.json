@@ -1,0 +1,189 @@
+{
+  "schema": 1,
+  "promote_threshold": 2,
+  "window_days": 45,
+  "quarantine_threshold": 2,
+  "next_id": 11,
+  "lessons": [
+    {
+      "id": "L-001",
+      "key": "surviving_mutant::test a read marker with the last message at the marker itself not only with later messages",
+      "text": "Test a read marker with the last message at the marker itself, not only with later messages",
+      "signal": "surviving_mutant",
+      "scope": "console",
+      "status": "candidate",
+      "features": [
+        "console-analista"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "packages/agent/src/console.ts:195 (console)"
+      ],
+      "created": "2026-10-29T00:31:39Z",
+      "last_seen": "2026-10-29T00:31:39Z"
+    },
+    {
+      "id": "L-002",
+      "key": "surviving_mutant::test a time based state rule with each author as the last speaker not only the author the rule expects",
+      "text": "Test a time-based state rule with each author as the last speaker, not only the author the rule expects",
+      "signal": "surviving_mutant",
+      "scope": "console",
+      "status": "candidate",
+      "features": [
+        "console-analista"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "packages/agent/src/console.ts:175 (console)"
+      ],
+      "created": "2026-10-29T00:31:39Z",
+      "last_seen": "2026-10-29T00:31:39Z"
+    },
+    {
+      "id": "L-003",
+      "key": "surviving_mutant::prove a control enabled by state in every state that disables it not only where it is enabled",
+      "text": "Prove a control enabled by state in every state that disables it, not only where it is enabled",
+      "signal": "surviving_mutant",
+      "scope": "web",
+      "status": "candidate",
+      "features": [
+        "console-analista"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "apps/web/src/features/console/conversation-view.tsx:321 (web)"
+      ],
+      "created": "2026-10-29T00:31:39Z",
+      "last_seen": "2026-10-29T00:31:39Z"
+    },
+    {
+      "id": "L-004",
+      "key": "ac_gap::implement every branch an approved assumption names before marking the rule done",
+      "text": "Implement every branch an approved assumption names before marking the rule done",
+      "signal": "ac_gap",
+      "scope": "agent",
+      "status": "candidate",
+      "features": [
+        "console-analista"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "packages/agent/src/console.ts:174 (agent)"
+      ],
+      "created": "2026-10-29T00:31:39Z",
+      "last_seen": "2026-10-29T00:31:39Z"
+    },
+    {
+      "id": "L-005",
+      "key": "ac_gap::count every actor of the service side agent and analyst when a rule speaks of the central answering",
+      "text": "Count every actor of the service side (agent and analyst) when a rule speaks of the central answering",
+      "signal": "ac_gap",
+      "scope": "agent",
+      "status": "candidate",
+      "features": [
+        "console-analista"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "packages/agent/src/console.ts:175 (agent)"
+      ],
+      "created": "2026-10-29T00:31:39Z",
+      "last_seen": "2026-10-29T00:31:39Z"
+    },
+    {
+      "id": "L-006",
+      "key": "spec_precision_gap::give every filter in a count test at least one matching item or a filter that always returns false passes",
+      "text": "Give every filter in a count test at least one matching item, or a filter that always returns false passes",
+      "signal": "spec_precision_gap",
+      "scope": "routes",
+      "status": "candidate",
+      "features": [
+        "console-analista"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "apps/server/src/console.test.ts:165 (routes)"
+      ],
+      "created": "2026-10-29T00:31:39Z",
+      "last_seen": "2026-10-29T00:31:39Z"
+    },
+    {
+      "id": "L-007",
+      "key": "spec_precision_gap::assert the default value of a timing bound a criterion fixes when tests override it",
+      "text": "Assert the default value of a timing bound a criterion fixes when tests override it",
+      "signal": "spec_precision_gap",
+      "scope": "web",
+      "status": "candidate",
+      "features": [
+        "console-analista"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "apps/web/src/features/console/console-screen.tsx:24 (web)"
+      ],
+      "created": "2026-10-29T00:31:39Z",
+      "last_seen": "2026-10-29T00:31:39Z"
+    },
+    {
+      "id": "L-008",
+      "key": "spec_deviation::check list ordering presence marks and header fields against the binding capture before approving the spec",
+      "text": "Check list ordering, presence marks and header fields against the binding capture before approving the spec",
+      "signal": "spec_deviation",
+      "scope": "spec",
+      "status": "candidate",
+      "features": [
+        "console-analista"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "captures/04-console-conversa-transferida.png (spec)"
+      ],
+      "created": "2026-10-29T00:31:39Z",
+      "last_seen": "2026-10-29T00:31:39Z"
+    },
+    {
+      "id": "L-009",
+      "key": "spec_deviation::check each state s header against its capture when one criterion covers several states",
+      "text": "Check each state's header against its capture when one criterion covers several states",
+      "signal": "spec_deviation",
+      "scope": "spec",
+      "status": "candidate",
+      "features": [
+        "console-analista"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "captures/05-console-atendimento-assumido.png (spec)"
+      ],
+      "created": "2026-10-29T00:31:40Z",
+      "last_seen": "2026-10-29T00:31:40Z"
+    },
+    {
+      "id": "L-010",
+      "key": "spec_deviation::make test fixtures use the exact block shapes the engine writes never messages it never produces",
+      "text": "Make test fixtures use the exact block shapes the engine writes, never messages it never produces",
+      "signal": "spec_deviation",
+      "scope": "web",
+      "status": "candidate",
+      "features": [
+        "console-analista"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "captures/04-console-conversa-transferida.png (web)"
+      ],
+      "created": "2026-10-29T00:31:40Z",
+      "last_seen": "2026-10-29T00:31:40Z"
+    }
+  ]
+}
