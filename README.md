@@ -132,7 +132,7 @@ O primeiro deploy cria as URLs; o `CORS_ORIGIN` recebe a do web e o segundo depl
 - O navegador nunca vê a chave: o modelo só é chamado pelo servidor.
 - As rotas de dev (`/internal/*`) ficam desligadas em produção (`DEV_SEED_ENABLED=false`). O seed do banco publicado vai por `POST /admin/seed`, que só existe quando o Worker tem `SEED_TOKEN` e exige o token como `Authorization: Bearer`.
 
-**Como o uso fica limitado.** Cada pessoa manda até `RATE_LIMIT_PER_MINUTE` mensagens por minuto (10) e o total de chamadas ao modelo no dia (UTC) tem o teto `LLM_DAILY_LIMIT` (400; os limites do free tier do `gemini-3.5-flash-lite` não foram medidos, então ajuste à cota do seu projeto no AI Studio). Os contadores ficam no D1, então valem para todas as instâncias do Worker. Passando de qualquer um, o chat responde "Limite de uso atingido. Tente mais tarde." (HTTP 429), sem chamar o modelo.
+**Como o uso fica limitado.** Cada pessoa manda até `RATE_LIMIT_PER_MINUTE` mensagens nos últimos 60 s (10); a seguinte recebe "Limite de uso atingido. Tente mais tarde." (HTTP 429), sem chamar o modelo. O total de chamadas ao modelo no dia (UTC) tem o teto `LLM_DAILY_LIMIT` (400; os limites do free tier do `gemini-3.5-flash-lite` não foram medidos, então ajuste à cota do seu projeto no AI Studio): cada chamada reserva uma unidade antes de sair, e sem saldo ela não sai. Com o teto atingido, as mensagens novas recebem o mesmo 429; uma resposta já em andamento termina com "Estou recebendo muitas solicitações agora…". Os contadores ficam no D1, então valem para todas as instâncias do Worker.
 
 ## Trade-offs
 
