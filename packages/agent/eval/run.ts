@@ -88,8 +88,53 @@ async function runOne(
 	return results;
 }
 
+/** The ids after `--only` (`--only a,b` or `--only=a,b`), each once; `null` without the flag. */
+export function onlyArg(argv: string[]): string[] | null {
+	const at = argv.findIndex((a) => a === "--only" || a.startsWith("--only="));
+	if (at < 0) return null;
+	const flag = argv[at] as string;
+	const value = flag.includes("=") ? flag.slice(7) : (argv[at + 1] ?? "");
+	return [
+		...new Set(
+			value
+				.split(",")
+				.map((id) => id.trim())
+				.filter(Boolean),
+		),
+	];
+}
+
+/** The conversations `--only` names, in the order given; every one without it. */
+export function selectConversations(
+	only: string[] | null,
+):
+	| { ok: true; conversations: EvalConversation[] }
+	| { ok: false; unknown: string[] } {
+	if (!only) return { ok: true, conversations: CONVERSATIONS };
+	const ids = [...new Set(only)];
+	const unknown = ids.filter((id) => !CONVERSATIONS.some((c) => c.id === id));
+	if (unknown.length) return { ok: false, unknown };
+	return {
+		ok: true,
+		conversations: ids.map(
+			(id) => CONVERSATIONS.find((c) => c.id === id) as EvalConversation,
+		),
+	};
+}
+
+/** Only a full live run is recorded in RESULT.md; a partial one would hide the others. */
+export function writesResult({
+	live,
+	only,
+}: {
+	live: boolean;
+	only: string[] | null;
+}): boolean {
+	return live && only === null;
+}
+
 /**
- * Runs every conversation; `understander` builds a real model per conversation for `--live`.
+ * Runs every conversation (or the ones given); `understander` builds a real model per conversation for `--live`.
  * `pauseMs` waits between conversations so a free tier's per-minute limit holds.
  */
 export async function runEval(
@@ -97,12 +142,17 @@ export async function runEval(
 	{
 		pauseMs = 0,
 		sleep = (ms: number) => Bun.sleep(ms),
-	}: { pauseMs?: number; sleep?: (ms: number) => Promise<void> } = {},
+		conversations = CONVERSATIONS,
+	}: {
+		pauseMs?: number;
+		sleep?: (ms: number) => Promise<void>;
+		conversations?: EvalConversation[];
+	} = {},
 ): Promise<EvalReport> {
 	const checks: CheckResult[] = [];
 	const rules = new Map<string, { passed: number; total: number }>();
 	const tokens: Tokens = { inputTokens: 0, outputTokens: 0, costUsd: 0 };
-	for (const [index, conversation] of CONVERSATIONS.entries()) {
+	for (const [index, conversation] of conversations.entries()) {
 		if (index > 0 && pauseMs > 0) await sleep(pauseMs);
 		const results = await runOne(conversation, understander, tokens);
 		checks.push(...results);
@@ -113,10 +163,10 @@ export async function runEval(
 	}
 	const passed = checks.filter((c) => c.ok).length;
 	return {
-		conversations: CONVERSATIONS.length,
+		conversations: conversations.length,
 		checks,
 		byRule: [...rules].map(([rule, t]) => ({ rule, ...t })),
 		accuracy: checks.length ? passed / checks.length : 0,
-		usage: usageOf(tokens, CONVERSATIONS.length),
+		usage: usageOf(tokens, conversations.length),
 	};
 }

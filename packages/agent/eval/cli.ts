@@ -5,20 +5,28 @@ import {
 	createMastraUnderstander,
 	DEFAULT_MODEL,
 } from "../src/understand-mastra";
-import { runEval } from "./run";
+import { onlyArg, runEval, selectConversations, writesResult } from "./run";
+
+function fail(message: string): never {
+	console.error(message);
+	// Bun types `process.exit` as void here, so it does not narrow on its own.
+	return process.exit(1) as never;
+}
 
 const live = process.argv.includes("--live");
+const only = onlyArg(process.argv.slice(2));
+const picked = selectConversations(only);
+if (!picked.ok)
+	fail(`Conversa desconhecida em --only: ${picked.unknown.join(", ")}.`);
 const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
-if (live && !apiKey) {
-	console.error("--live precisa de GOOGLE_GENERATIVE_AI_API_KEY no ambiente.");
-	process.exit(1);
-}
+if (live && !apiKey)
+	fail("--live precisa de GOOGLE_GENERATIVE_AI_API_KEY no ambiente.");
 const modelId = process.env.LLM_MODEL?.trim() || DEFAULT_MODEL;
 // The free tier allows few requests per minute; live runs wait between conversations.
 const pauseMs = Number(process.env.EVAL_PAUSE_MS ?? (live ? 4000 : 0));
 const report = await runEval(
 	live ? () => createMastraUnderstander({ modelId, apiKey }) : undefined,
-	{ pauseMs },
+	{ pauseMs, conversations: picked.conversations },
 );
 
 const pct = (n: number) => `${(n * 100).toFixed(0)}%`;
@@ -41,7 +49,7 @@ for (const l of rules) console.log(l);
 for (const l of errors) console.log(`  ${l}`);
 console.log(`\nTotal: ${pct(report.accuracy)}\n${usage}`);
 
-if (live) {
+if (writesResult({ live, only })) {
 	const date = new Date().toISOString().slice(0, 10);
 	writeFileSync(
 		join(import.meta.dir, "RESULT.md"),
@@ -64,5 +72,6 @@ if (live) {
 		].join("\n"),
 	);
 	console.log("Resultado gravado em packages/agent/eval/RESULT.md");
-}
+} else if (live)
+	console.log("Rodada parcial (--only): RESULT.md não foi gravado.");
 process.exit(report.accuracy >= 0.9 ? 0 : 1);

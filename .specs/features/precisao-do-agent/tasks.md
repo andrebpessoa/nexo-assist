@@ -72,7 +72,7 @@ T7
 
 ## Task Breakdown
 
-### T1: `--only` na avaliação
+### T1: `--only` na avaliação ✅
 
 **What**: `bun run eval [--live] --only a,b` roda só essas conversas, deduplica, recusa id desconhecido com saída 1 antes de criar o modelo e nunca grava o RESULT.md.
 **Where**: `packages/agent/eval/run.ts` (`selectConversations`, `onlyArg`, `runEval({ conversations })`), `packages/agent/eval/cli.ts`
@@ -82,9 +82,9 @@ T7
 
 **Done when**:
 
-- [ ] Testes em `eval/eval.test.ts`: só as escolhidas (relatório, regras e erros só delas), repetida roda uma vez, sem `--only` roda as 22, gravação do RESULT.md só sem `--only` e ao vivo, `bun eval/cli.ts --live --only nao-existe` com chave falsa sai 1 citando o id
-- [ ] `bun run eval --only saudacao` roda uma conversa e não toca no RESULT.md
-- [ ] Gate quick e build passam
+- [x] Testes em `eval/eval.test.ts`: só as escolhidas (relatório, regras e erros só delas), repetida roda uma vez, sem `--only` roda as 22, gravação do RESULT.md só sem `--only` e ao vivo, `bun eval/cli.ts --live --only nao-existe` com chave falsa sai 1 citando o id
+- [x] `bun run eval --only saudacao` roda uma conversa e não toca no RESULT.md
+- [x] Gate quick e build passam
 
 **Tests**: unit
 **Gate**: build

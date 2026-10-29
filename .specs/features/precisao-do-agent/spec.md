@@ -172,10 +172,10 @@ A avaliação ao vivo com `google/gemini-3.5-flash-lite` acerta 72% dos campos (
 
 | Requirement ID | Story | Phase | Status |
 | --- | --- | --- | --- |
-| PRE-01 | P1: Rodar só algumas conversas | Design | Pending |
-| PRE-02 | P1: Rodar só algumas conversas | Design | Pending |
-| PRE-03 | P1: Rodar só algumas conversas | Design | Pending |
-| PRE-04 | P1: Rodar só algumas conversas | Design | Pending |
+| PRE-01 | P1: Rodar só algumas conversas | T1 | Done |
+| PRE-02 | P1: Rodar só algumas conversas | T1 | Done |
+| PRE-03 | P1: Rodar só algumas conversas | T1 | Done |
+| PRE-04 | P1: Rodar só algumas conversas | T1 | Done |
 | PRE-05 | P1: Duplicidade antes do artigo | Design | Pending |
 | PRE-09 | P1: Duplicidade antes do artigo | Design | Pending |
 | PRE-06 | P1: Artigo só quando resolve | Design | Pending |

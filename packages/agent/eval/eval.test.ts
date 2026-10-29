@@ -1,7 +1,14 @@
 import { describe, expect, test } from "bun:test";
+import { join } from "node:path";
 
 import { CONVERSATIONS } from "./conversations";
-import { runEval, usageOf } from "./run";
+import {
+	onlyArg,
+	runEval,
+	selectConversations,
+	usageOf,
+	writesResult,
+} from "./run";
 
 describe("evaluation", () => {
 	test("eval set", async () => {
@@ -42,5 +49,73 @@ describe("evaluation", () => {
 			costUsd: 0,
 			costPerConversationUsd: 0,
 		});
+	});
+
+	test("only runs the chosen conversations", async () => {
+		const picked = selectConversations(
+			onlyArg(["--live", "--only", "saudacao,consulta-nenhum"]),
+		);
+		if (!picked.ok) throw new Error("ids should be known");
+		const report = await runEval(undefined, {
+			conversations: picked.conversations,
+		});
+		expect(report.conversations).toBe(2);
+		expect([...new Set(report.checks.map((c) => c.conversation))]).toEqual([
+			"saudacao",
+			"consulta-nenhum",
+		]);
+		expect(report.byRule.map((r) => r.rule)).toEqual([
+			"Saudação e mensagens vagas",
+			"Consulta de chamados",
+		]);
+		expect(report.checks).toHaveLength(4);
+	});
+
+	test("only runs a repeated conversation once", () => {
+		expect(onlyArg(["--only=saudacao,saudacao"])).toEqual(["saudacao"]);
+		const picked = selectConversations(["saudacao", "saudacao"]);
+		expect(picked.ok && picked.conversations.map((c) => c.id)).toEqual([
+			"saudacao",
+		]);
+	});
+
+	test("without only runs all 22", async () => {
+		expect(onlyArg(["--live"])).toBeNull();
+		const picked = selectConversations(null);
+		expect(picked.ok && picked.conversations).toEqual(CONVERSATIONS);
+		const report = await runEval();
+		expect(report.conversations).toBe(22);
+		expect(new Set(report.checks.map((c) => c.conversation)).size).toBe(22);
+	});
+
+	test("partial run never writes RESULT.md", () => {
+		expect(writesResult({ live: true, only: ["saudacao"] })).toBe(false);
+		expect(writesResult({ live: false, only: ["saudacao"] })).toBe(false);
+		expect(writesResult({ live: false, only: null })).toBe(false);
+		expect(writesResult({ live: true, only: null })).toBe(true);
+	});
+
+	test("unknown id exits 1 without calling the model", async () => {
+		expect(selectConversations(["saudacao", "nao-existe"])).toEqual({
+			ok: false,
+			unknown: ["nao-existe"],
+		});
+		const run = Bun.spawn(
+			["bun", "eval/cli.ts", "--live", "--only", "saudacao,nao-existe"],
+			{
+				cwd: join(import.meta.dir, ".."),
+				env: { ...process.env, GOOGLE_GENERATIVE_AI_API_KEY: "chave-falsa" },
+				stdout: "pipe",
+				stderr: "pipe",
+			},
+		);
+		const [code, out, err] = await Promise.all([
+			run.exited,
+			new Response(run.stdout).text(),
+			new Response(run.stderr).text(),
+		]);
+		expect(code).toBe(1);
+		expect(err).toContain("nao-existe");
+		expect(out).not.toContain("Avaliação");
 	});
 });
