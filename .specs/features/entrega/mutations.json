@@ -1,23 +1,23 @@
 [
 	{
+		"file": "apps/server/src/admin-seed.ts",
+		"old": "let diff = a.length ^ b.length;",
+		"new": "let diff = 0;",
+		"proof": "bun --cwd apps/server test src/admin-seed.test.ts",
+		"label": "token comparison ignores length: the token plus any suffix opens /admin/seed (C17)"
+	},
+	{
 		"file": "apps/server/src/chat-agent.ts",
-		"old": "make({ apiKey, modelId })",
-		"new": "make({ apiKey, modelId: DEFAULT_MODEL })",
-		"proof": "bun --cwd apps/server test src/chat-agent.test.ts -t \"the Mastra understander is built with LLM_MODEL and the key\"",
-		"label": "LLM_MODEL nao chega ao understander (so ao modelId devolvido)"
+		"old": "const understander = meter(chosen.understander, usage.reserveModelCall);",
+		"new": "const understander = chosen.understander;",
+		"proof": "bun --cwd apps/server test src/usage.test.ts src/chat-app.test.ts",
+		"label": "model calls never counted in the server: the daily cap never triggers (C13)"
 	},
 	{
-		"file": "packages/agent/eval/run.ts",
-		"old": "Math.round((tokens.costUsd / conversations) * 1e6) / 1e6",
-		"new": "Math.round(tokens.costUsd * 1e6) / 1e6",
-		"proof": "bun test packages/agent/eval/eval.test.ts -t \"cost per conversation divides the total by the conversations\"",
-		"label": "custo por conversa vira o custo total"
-	},
-	{
-		"file": "scripts/dev.ts",
-		"old": "if (!seed.ok) {",
-		"new": "if (false) {",
-		"proof": "bun test scripts/dev.test.ts -t \"a seed that fails is reported once\"",
-		"label": "seed que responde erro conta como seeded"
+		"file": "apps/server/src/chat-app.ts",
+		"old": "admitUsage: (userId) =>",
+		"new": "admitUsage: async (_userId: string) => true, _off: (userId: string) =>",
+		"proof": "bun --cwd apps/server test src/usage.test.ts src/chat-app.test.ts",
+		"label": "/chat/send in the server admits every message: no minute limit nor daily cap (C13) - the wiring moved from index.ts to createChatApp in 66cc60b"
 	}
 ]

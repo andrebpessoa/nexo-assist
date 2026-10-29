@@ -298,7 +298,7 @@ Proof: `walk - git log da entrega: um commit por tarefa, Conventional Commits va
 Proof: `walk - bun run deploy; seed pela rota protegida; login da Ana no link público e resposta do agent; secrets listados no Worker`
 
 **C13** - Limite de 10 mensagens por minuto e teto diário (DLV-13)
-Proof: `bun --cwd apps/server test src/usage.test.ts`
+Proof: `bun --cwd apps/server test src/usage.test.ts src/chat-app.test.ts`
 
 **C14** - README explica o deploy e a proteção das chaves (DLV-14)
 Proof: `bun test scripts/docs.test.ts -t "README explains the deploy and how keys are protected"`
