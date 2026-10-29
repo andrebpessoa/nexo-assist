@@ -8,9 +8,6 @@
 		"deploy": "env -u npm_execpath NODE_ENV=production node ./node_modules/alchemy/bin/cli.js deploy",
 		"destroy": "env -u npm_execpath NODE_ENV=production node ./node_modules/alchemy/bin/cli.js destroy"
 	},
-	"dependencies": {
-		"zod": "catalog:"
-	},
 	"devDependencies": {
 		"@alchemy.run/cloudflare": "2.0.0-beta.84",
 		"@effect/platform-bun": "4.0.6",

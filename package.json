@@ -35,9 +35,6 @@
 		"postinstall": "varlock codegen --path ./apps/web/ && varlock codegen --path ./apps/server/ && varlock codegen --path ./packages/db/",
 		"check": "biome check --write ."
 	},
-	"dependencies": {
-		"zod": "catalog:"
-	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.6.2",
 		"@cloudflare/workers-types": "catalog:",

@@ -4,9 +4,6 @@
   "workspaces": {
     "": {
       "name": "nexo-assist",
-      "dependencies": {
-        "zod": "catalog:",
-      },
       "devDependencies": {
         "@biomejs/biome": "^2.6.2",
         "@cloudflare/workers-types": "catalog:",
@@ -28,7 +25,6 @@
         "@nexo-assist/db": "workspace:*",
         "@nexo-assist/tickets": "workspace:*",
         "@trpc/server": "catalog:",
-        "better-auth": "catalog:",
         "drizzle-orm": "catalog:",
         "hono": "^4.13.7",
         "varlock": "catalog:",
@@ -104,7 +100,6 @@
       "dependencies": {
         "@nexo-assist/auth": "workspace:*",
         "@nexo-assist/db": "workspace:*",
-        "@trpc/client": "catalog:",
         "@trpc/server": "catalog:",
         "drizzle-orm": "catalog:",
         "zod": "catalog:",
@@ -144,7 +139,6 @@
       "dependencies": {
         "@libsql/client": "0.18.0",
         "drizzle-orm": "catalog:",
-        "libsql": "0.5.29",
         "zod": "catalog:",
       },
       "devDependencies": {
@@ -156,9 +150,6 @@
     },
     "packages/infra": {
       "name": "@nexo-assist/infra",
-      "dependencies": {
-        "zod": "catalog:",
-      },
       "devDependencies": {
         "@alchemy.run/cloudflare": "2.0.0-beta.84",
         "@effect/platform-bun": "4.0.6",

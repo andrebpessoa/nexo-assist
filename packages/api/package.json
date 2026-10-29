@@ -12,7 +12,6 @@
 	"dependencies": {
 		"@nexo-assist/auth": "workspace:*",
 		"@nexo-assist/db": "workspace:*",
-		"@trpc/client": "catalog:",
 		"@trpc/server": "catalog:",
 		"drizzle-orm": "catalog:",
 		"zod": "catalog:"
