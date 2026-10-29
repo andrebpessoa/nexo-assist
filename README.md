@@ -2,7 +2,7 @@
 
 Agent de atendimento do service desk de TI da Nexo. O funcionário descreve o problema num chat; o agent consulta os chamados dele, busca na central de ajuda, abre ou atualiza chamados e chama um analista quando precisa. Cada resposta mostra o que o agent fez e por quê. O analista acompanha tudo num console, assume a conversa com o agent pausado e devolve ou encerra.
 
-**No ar:** https://nexo-assist-web-live-andre-kos6yhp3we5xxb6c.andrebpessoa09.workers.dev (entre com `ana.souza@nexo.com.br` e qualquer senha; analista: `marina.teixeira@nexo.com.br`).
+**No ar:** https://nexo-assist-web-live-andre-kw4kdidalbp3dpnb.andrebpessoa09.workers.dev (entre com `ana.souza@nexo.com.br` e qualquer senha; analista: `marina.teixeira@nexo.com.br`).
 
 Desafio técnico da Beyond the Bytes. Requisitos em `.specs/source/desafio-prd.md`; specs, decisões e provas de cada feature em `.specs/`.
 
@@ -112,7 +112,7 @@ Leitura do resultado: a rodada anterior ficou em 72%. O entendimento já acertav
 
 ## Deploy
 
-Publicado na Cloudflare em 2026-10-29: https://nexo-assist-web-live-andre-kos6yhp3we5xxb6c.andrebpessoa09.workers.dev
+Publicado na Cloudflare em 2026-10-29: https://nexo-assist-web-live-andre-kw4kdidalbp3dpnb.andrebpessoa09.workers.dev
 
 **Como foi feito.** O mesmo `packages/infra/alchemy.run.ts` do dev local descreve três recursos: o banco D1 (as migrações de `packages/db` rodam no deploy), o Worker do servidor e o site estático do web, que recebe a URL do servidor no build. `bun run deploy` roda o Alchemy com `NODE_ENV=production`; o estado do Alchemy fica na conta Cloudflare, cifrado com `ALCHEMY_PASSWORD`.
 

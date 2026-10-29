@@ -212,7 +212,7 @@
 ## Handoff
 
 - **Fase**: as 7 features do ROADMAP e `precisao-do-agent` concluídas. `entrega` fase 2 (deploy, T7 a T10) validada em 2026-10-29: `validate_verification.py entrega` com 0 (22 provas, 3 mutações mortas na rodada 2, 8 achados fechados).
-- **Deploy**: publicado em 2026-10-29 na conta Cloudflare do André (stage `live_andre`). Web https://nexo-assist-web-live-andre-kos6yhp3we5xxb6c.andrebpessoa09.workers.dev, server https://nexo-assist-server-live-andre-f4pp7jzy5m7i2v43.andrebpessoa09.workers.dev. Secrets conferidos no painel pelo André.
+- **Deploy**: publicado em 2026-10-29 na conta Cloudflare do André (stage `live_andre`). Web https://nexo-assist-web-live-andre-kw4kdidalbp3dpnb.andrebpessoa09.workers.dev, server https://nexo-assist-server-live-andre-nzruhrozvxphdstk.andrebpessoa09.workers.dev. Secrets conferidos no painel pelo André.
 - **Pendente**: novo deploy com as correções do verificador e as melhorias de latência (Smart Placement, cookieCache), commits 66cc60b..3057a29; o auto mode recusa `deploy --yes` para o agente, então o André roda. Limpeza de comentários e código morto em outro chat; depois `git branch -m master main` e push para `andrebpessoa/nexo-assist` (público, vazio), só com o aval dele.
 - **Bloqueios**: nenhum.
 - **Não commitado**: `features/*/proofs.md` (gerados no HEAD, fora do git de propósito). Segredos de produção em `apps/server/.env.production.local` e `packages/infra/.env.local`, ignorados pelo git.
