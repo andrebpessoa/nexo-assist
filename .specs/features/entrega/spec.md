@@ -113,21 +113,21 @@ Remaining dimensions N/A for this scope.
 
 | ID | Story | Phase | Status |
 | --- | --- | --- | --- |
-| DLV-01 | P1 - Rodar e entender o projeto | Specify | Pending |
-| DLV-02 | P1 - Rodar e entender o projeto | Specify | Pending |
-| DLV-03 | P1 - Rodar e entender o projeto | Specify | Pending |
-| DLV-04 | P1 - Rodar e entender o projeto | Specify | Pending |
-| DLV-05 | P1 - Rodar e entender o projeto | Specify | Pending |
-| DLV-06 | P1 - Rodar e entender o projeto | Specify | Pending |
-| DLV-07 | P1 - Qualidade de código | Specify | Pending |
-| DLV-08 | P1 - Qualidade de código | Specify | Pending |
-| DLV-09 | P1 - Qualidade de código | Specify | Pending |
-| DLV-10 | P1 - Qualidade de código | Specify | Pending |
-| DLV-11 | P1 - Qualidade de código | Specify | Pending |
-| DLV-12 | P3 - Deploy protegido | Specify | Pending |
-| DLV-13 | P3 - Deploy protegido | Specify | Pending |
-| DLV-14 | P3 - Deploy protegido | Specify | Pending |
-| DLV-15 | P1 - Rodar e entender o projeto | Specify | Pending |
+| DLV-01 | P1 - Rodar e entender o projeto | Verify | Verified |
+| DLV-02 | P1 - Rodar e entender o projeto | Verify | Verified |
+| DLV-03 | P1 - Rodar e entender o projeto | Verify | Verified |
+| DLV-04 | P1 - Rodar e entender o projeto | Verify | Verified |
+| DLV-05 | P1 - Rodar e entender o projeto | Verify | Verified |
+| DLV-06 | P1 - Rodar e entender o projeto | Verify | Verified |
+| DLV-07 | P1 - Qualidade de código | Verify | Verified |
+| DLV-08 | P1 - Qualidade de código | Verify | Verified |
+| DLV-09 | P1 - Qualidade de código | Verify | Verified |
+| DLV-10 | P1 - Qualidade de código | Verify | Verified |
+| DLV-11 | P1 - Qualidade de código | Verify | Verified |
+| DLV-12 | P3 - Deploy protegido | Verify | Deferred (deploy sem aval, AD-010) |
+| DLV-13 | P3 - Deploy protegido | Verify | Deferred (deploy sem aval, AD-010) |
+| DLV-14 | P3 - Deploy protegido | Verify | Deferred (deploy sem aval, AD-010) |
+| DLV-15 | P1 - Rodar e entender o projeto | Verify | Verified |
 
 **Coverage:** 15 critérios, todos mapeados a uma história.
 

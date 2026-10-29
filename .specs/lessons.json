@@ -3,7 +3,7 @@
   "promote_threshold": 2,
   "window_days": 45,
   "quarantine_threshold": 2,
-  "next_id": 11,
+  "next_id": 20,
   "lessons": [
     {
       "id": "L-001",
@@ -184,6 +184,168 @@
       ],
       "created": "2026-10-29T00:31:40Z",
       "last_seen": "2026-10-29T00:31:40Z"
+    },
+    {
+      "id": "L-011",
+      "key": "surviving_mutant::assert the value a dependency is built with not only the value a function returns about it",
+      "text": "Assert the value a dependency is built with, not only the value a function returns about it",
+      "signal": "surviving_mutant",
+      "scope": "server",
+      "status": "candidate",
+      "features": [
+        "entrega"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "apps/server/src/chat-agent.ts:37 (server)"
+      ],
+      "created": "2026-10-29T01:11:20Z",
+      "last_seen": "2026-10-29T01:11:20Z"
+    },
+    {
+      "id": "L-012",
+      "key": "surviving_mutant::test a reported average with nonzero inputs not only the all zero case",
+      "text": "Test a reported average with nonzero inputs, not only the all-zero case",
+      "signal": "surviving_mutant",
+      "scope": "agent",
+      "status": "candidate",
+      "features": [
+        "entrega"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "packages/agent/eval/run.ts:114 (agent)"
+      ],
+      "created": "2026-10-29T01:11:20Z",
+      "last_seen": "2026-10-29T01:11:20Z"
+    },
+    {
+      "id": "L-013",
+      "key": "surviving_mutant::when two failure paths share an outcome assert the message that tells them apart",
+      "text": "When two failure paths share an outcome, assert the message that tells them apart",
+      "signal": "surviving_mutant",
+      "scope": "scripts",
+      "status": "candidate",
+      "features": [
+        "entrega"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "scripts/dev.ts:25 (scripts)"
+      ],
+      "created": "2026-10-29T01:11:20Z",
+      "last_seen": "2026-10-29T01:11:20Z"
+    },
+    {
+      "id": "L-014",
+      "key": "ac_gap::accept every empty spelling of an env value empty quotes spaces crlf before filling it",
+      "text": "Accept every empty spelling of an env value (=, empty quotes, spaces, CRLF) before filling it",
+      "signal": "ac_gap",
+      "scope": "scripts",
+      "status": "candidate",
+      "features": [
+        "entrega"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "scripts/setup.ts:24 (scripts)"
+      ],
+      "created": "2026-10-29T01:11:20Z",
+      "last_seen": "2026-10-29T01:11:20Z"
+    },
+    {
+      "id": "L-015",
+      "key": "ac_gap::keep waiting for a service and acting on it in separate error paths",
+      "text": "Keep waiting for a service and acting on it in separate error paths",
+      "signal": "ac_gap",
+      "scope": "scripts",
+      "status": "candidate",
+      "features": [
+        "entrega"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "scripts/dev.ts:18 (scripts)"
+      ],
+      "created": "2026-10-29T01:11:20Z",
+      "last_seen": "2026-10-29T01:11:20Z"
+    },
+    {
+      "id": "L-016",
+      "key": "spec_precision_gap::prove a no secrets in the bundle rule by scanning a real build for secret values",
+      "text": "Prove a no-secrets-in-the-bundle rule by scanning a real build for secret values",
+      "signal": "spec_precision_gap",
+      "scope": "scripts",
+      "status": "candidate",
+      "features": [
+        "entrega"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "scripts/secrets.test.ts:25 (scripts)"
+      ],
+      "created": "2026-10-29T01:11:20Z",
+      "last_seen": "2026-10-29T01:11:20Z"
+    },
+    {
+      "id": "L-017",
+      "key": "spec_precision_gap::run every command the readme documents in the environment the readme describes",
+      "text": "Run every command the README documents, in the environment the README describes",
+      "signal": "spec_precision_gap",
+      "scope": "docs",
+      "status": "candidate",
+      "features": [
+        "entrega"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "README.md:38 (docs)"
+      ],
+      "created": "2026-10-29T01:11:20Z",
+      "last_seen": "2026-10-29T01:11:20Z"
+    },
+    {
+      "id": "L-018",
+      "key": "spec_precision_gap::quote counts in docs as approximate or generate them never as hand typed exact figures",
+      "text": "Quote counts in docs as approximate or generate them, never as hand-typed exact figures",
+      "signal": "spec_precision_gap",
+      "scope": "docs",
+      "status": "candidate",
+      "features": [
+        "entrega"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "README.md:86 (docs)"
+      ],
+      "created": "2026-10-29T01:11:20Z",
+      "last_seen": "2026-10-29T01:11:20Z"
+    },
+    {
+      "id": "L-019",
+      "key": "spec_precision_gap::cover every env schema in the repo with an example file and a test",
+      "text": "Cover every env schema in the repo with an example file and a test",
+      "signal": "spec_precision_gap",
+      "scope": "config",
+      "status": "candidate",
+      "features": [
+        "entrega"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "packages/infra/.env.schema:1 (config)"
+      ],
+      "created": "2026-10-29T01:11:20Z",
+      "last_seen": "2026-10-29T01:11:20Z"
     }
   ]
 }

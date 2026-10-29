@@ -74,6 +74,60 @@ Seen once or not yet corroborated. Tracked, not trusted.
 - evidence: captures/04-console-conversa-transferida.png (web)
 - last seen: 2026-10-29T00:31:40Z
 
+### L-011 - Assert the value a dependency is built with, not only the value a function returns about it
+- signal: `surviving_mutant` · recurrence: 1 feature(s) · scope: `server` · harmful: 0
+- features: entrega
+- evidence: apps/server/src/chat-agent.ts:37 (server)
+- last seen: 2026-10-29T01:11:20Z
+
+### L-012 - Test a reported average with nonzero inputs, not only the all-zero case
+- signal: `surviving_mutant` · recurrence: 1 feature(s) · scope: `agent` · harmful: 0
+- features: entrega
+- evidence: packages/agent/eval/run.ts:114 (agent)
+- last seen: 2026-10-29T01:11:20Z
+
+### L-013 - When two failure paths share an outcome, assert the message that tells them apart
+- signal: `surviving_mutant` · recurrence: 1 feature(s) · scope: `scripts` · harmful: 0
+- features: entrega
+- evidence: scripts/dev.ts:25 (scripts)
+- last seen: 2026-10-29T01:11:20Z
+
+### L-014 - Accept every empty spelling of an env value (=, empty quotes, spaces, CRLF) before filling it
+- signal: `ac_gap` · recurrence: 1 feature(s) · scope: `scripts` · harmful: 0
+- features: entrega
+- evidence: scripts/setup.ts:24 (scripts)
+- last seen: 2026-10-29T01:11:20Z
+
+### L-015 - Keep waiting for a service and acting on it in separate error paths
+- signal: `ac_gap` · recurrence: 1 feature(s) · scope: `scripts` · harmful: 0
+- features: entrega
+- evidence: scripts/dev.ts:18 (scripts)
+- last seen: 2026-10-29T01:11:20Z
+
+### L-016 - Prove a no-secrets-in-the-bundle rule by scanning a real build for secret values
+- signal: `spec_precision_gap` · recurrence: 1 feature(s) · scope: `scripts` · harmful: 0
+- features: entrega
+- evidence: scripts/secrets.test.ts:25 (scripts)
+- last seen: 2026-10-29T01:11:20Z
+
+### L-017 - Run every command the README documents, in the environment the README describes
+- signal: `spec_precision_gap` · recurrence: 1 feature(s) · scope: `docs` · harmful: 0
+- features: entrega
+- evidence: README.md:38 (docs)
+- last seen: 2026-10-29T01:11:20Z
+
+### L-018 - Quote counts in docs as approximate or generate them, never as hand-typed exact figures
+- signal: `spec_precision_gap` · recurrence: 1 feature(s) · scope: `docs` · harmful: 0
+- features: entrega
+- evidence: README.md:86 (docs)
+- last seen: 2026-10-29T01:11:20Z
+
+### L-019 - Cover every env schema in the repo with an example file and a test
+- signal: `spec_precision_gap` · recurrence: 1 feature(s) · scope: `config` · harmful: 0
+- features: entrega
+- evidence: packages/infra/.env.schema:1 (config)
+- last seen: 2026-10-29T01:11:20Z
+
 ## Quarantined (failed when applied - ignore)
 
 A confirmed lesson that recurred alongside failure. Kept for the maintainer to review.

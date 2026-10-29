@@ -211,10 +211,10 @@
 
 ## Handoff
 
-- **Fase**: `console-analista` validada e concluída (2026-10-28): 36 provas verdes, 3 mutações mortas, telas 04 e 05 na rodada 2, `validate_verification.py` com 0. As cinco features anteriores já estavam concluídas.
-- **Concluído**: console T1 a T6 e a passada de correções (0aebed9, 02feeb5) em master, local, sem push.
-- **Em andamento**: `entrega` (7ª e última do ROADMAP): design e tarefas.
-- **Próximo passo**: Execute da `entrega` T1 a T6; deploy (DLV-12 a 14) só com o aval do André.
+- **Fase**: as 7 features do ROADMAP concluídas (2026-10-28). `console-analista` e `entrega` validadas nesta sessão: `validate_verification.py` com 0 nas duas (console: 36 provas, 3 mutações mortas, telas na rodada 2; entrega: 20 provas, 3 mutações mortas).
+- **Concluído**: entrega T1 a T6 e a passada de correções em master, local, sem push.
+- **Em andamento**: nenhum.
+- **Pendente do André**: deploy (DLV-12 a DLV-14) só com o aval dele (AD-010). Avaliação ao vivo em 72% com `gemini-3.5-flash-lite` (AD-023); subir o acerto é trabalho novo.
 - **Bloqueios**: nenhum.
-- **Não commitado**: `features/*/proofs.md` (gerados por `check_proofs.py` no HEAD). Um stash guarda a formatação que `bun run check` aplicou em `.specs/` e na raiz (T4 da entrega resolve). `.claude/` está em `.git/info/exclude` (local).
+- **Não commitado**: `features/*/proofs.md` (gerados no HEAD). O stash "formatação do biome (bun run check)" ficou obsoleto com o AD-022. `.claude/` está em `.git/info/exclude` (local).
 - **Branch**: master.
