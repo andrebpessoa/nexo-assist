@@ -51,14 +51,14 @@ test("the browser bundle carries no key", () => {
 	const serverEnv = join(ROOT, "apps/server/.env");
 	// Values of the server's secrets, when this machine has them; a name alone is not a secret.
 	const env = existsSync(serverEnv) ? readFileSync(serverEnv, "utf8") : "";
-	const valueOf = (name: string) =>
+	const secretValue = (name: string) =>
 		new RegExp(`^${name}=(.*)$`, "m")
 			.exec(env)?.[1]
 			?.replace(/"/g, "")
 			.trim() ?? "";
 	const secrets = [
-		valueOf("GOOGLE_GENERATIVE_AI_API_KEY"),
-		valueOf("BETTER_AUTH_SECRET"),
+		secretValue("GOOGLE_GENERATIVE_AI_API_KEY"),
+		secretValue("BETTER_AUTH_SECRET"),
 	].filter((v) => v.length >= 16);
 	const files = walk(out);
 	expect(files.some((f) => f.endsWith(".js"))).toBe(true);
