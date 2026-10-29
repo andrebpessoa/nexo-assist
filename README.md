@@ -2,6 +2,8 @@
 
 Agent de atendimento do service desk de TI da Nexo. O funcionário descreve o problema num chat; o agent consulta os chamados dele, busca na central de ajuda, abre ou atualiza chamados e chama um analista quando precisa. Cada resposta mostra o que o agent fez e por quê. O analista acompanha tudo num console, assume a conversa com o agent pausado e devolve ou encerra.
 
+**No ar:** https://nexo-assist-web-live-andre-kos6yhp3we5xxb6c.andrebpessoa09.workers.dev (entre com `ana.souza@nexo.com.br` e qualquer senha; analista: `marina.teixeira@nexo.com.br`).
+
 Desafio técnico da Beyond the Bytes. Requisitos em `.specs/source/desafio-prd.md`; specs, decisões e provas de cada feature em `.specs/`.
 
 ## Como rodar
@@ -108,6 +110,30 @@ Falhas do serviço de chamados têm novas tentativas (0,5 s, 1 s, 2 s); 429 do m
 
 Leitura do resultado: a rodada anterior ficou em 72%. O entendimento já acertava quase tudo; os erros vinham do motor, que ao abrir chamado respondia com qualquer artigo do mesmo assunto e só depois olhava a duplicidade. Agora a duplicidade vem primeiro, o modelo devolve sinais sobre o artigo (resolve o sintoma sem chamado? a pessoa já tentou o passo?) e o código decide; com alternativa de trabalho, o motor conta "não impede"; o prompt pede "quem é afetado" só quando a pessoa diz e manda relato vago para o analista. Cada rodada é uma amostra: o modelo não é determinístico, e o caso mais instável é `afetados-nao-sei`, em que o modelo às vezes presume "Só eu" (numa amostra de teste, acertou 2 de 3). `bun run eval --live --only <ids>` roda só algumas conversas, para medir sem gastar a cota do dia.
 
+## Deploy
+
+Publicado na Cloudflare em 2026-10-29: https://nexo-assist-web-live-andre-kos6yhp3we5xxb6c.andrebpessoa09.workers.dev
+
+**Como foi feito.** O mesmo `packages/infra/alchemy.run.ts` do dev local descreve três recursos: o banco D1 (as migrações de `packages/db` rodam no deploy), o Worker do servidor e o site estático do web, que recebe a URL do servidor no build. `bun run deploy` roda o Alchemy com `NODE_ENV=production`; o estado do Alchemy fica na conta Cloudflare, cifrado com `ALCHEMY_PASSWORD`.
+
+```bash
+# uma vez: apps/server/.env.production.local (ignorado pelo git) com
+#   BETTER_AUTH_SECRET, SEED_TOKEN, DEV_SEED_ENABLED=false e CORS_ORIGIN=<url do web>
+# e packages/infra/.env.local com ALCHEMY_PASSWORD
+bun run deploy
+SERVER_URL=<url do server> SEED_TOKEN=<o mesmo token> bun run db:seed
+```
+
+O primeiro deploy cria as URLs; o `CORS_ORIGIN` recebe a do web e o segundo deploy aplica.
+
+**Como as chaves ficam protegidas.**
+
+- A chave do Gemini, o `BETTER_AUTH_SECRET` e o `SEED_TOKEN` vão para o Worker como secret: o `alchemy.run.ts` os declara com `Config.Redacted`, e o Alchemy os grava cifrados no estado e como binding de secret, não como variável de texto. Os valores ficam em `apps/server/.env.production.local` e `packages/infra/.env.local`, que o git ignora; o teste `scripts/secrets.test.ts` procura chaves no repositório e no bundle do navegador.
+- O navegador nunca vê a chave: o modelo só é chamado pelo servidor.
+- As rotas de dev (`/internal/*`) ficam desligadas em produção (`DEV_SEED_ENABLED=false`). O seed do banco publicado vai por `POST /admin/seed`, que só existe quando o Worker tem `SEED_TOKEN` e exige o token como `Authorization: Bearer`.
+
+**Como o uso fica limitado.** Cada pessoa manda até `RATE_LIMIT_PER_MINUTE` mensagens por minuto (10) e o total de chamadas ao modelo no dia (UTC) tem o teto `LLM_DAILY_LIMIT` (400; os limites do free tier do `gemini-3.5-flash-lite` não foram medidos, então ajuste à cota do seu projeto no AI Studio). Os contadores ficam no D1, então valem para todas as instâncias do Worker. Passando de qualquer um, o chat responde "Limite de uso atingido. Tente mais tarde." (HTTP 429), sem chamar o modelo.
+
 ## Trade-offs
 
 - **Serviço de chamados no mesmo Worker** (AD-013): menos peças para rodar e testar; a separação é de módulo, não de rede.
@@ -122,7 +148,7 @@ Leitura do resultado: a rodada anterior ficou em 72%. O entendimento já acertav
 ## O que faria com mais tempo
 
 - Medir a variação do acerto ao vivo com várias rodadas completas (a cota do free tier comporta poucas por dia) e comparar com o Gemini Flash.
-- Deploy na Cloudflare pelo Alchemy, com a chave como secret, 10 mensagens por minuto por usuário e um teto diário de chamadas ao modelo (pronto para fazer, depende de autorização).
+- Servir o web e a API no mesmo domínio (rota do Worker ou service binding), para o login não depender de cookie de outro site, que Safari e navegadores com bloqueio rígido recusam.
 - Serviço de chamados num Worker próprio, atrás da mesma interface.
 - Presença em tempo real e notificações no console.
 - CI no GitHub Actions com testes, tipos, lint e a avaliação roteirizada.

@@ -98,4 +98,28 @@ describe("README", () => {
 		expect(readme).toContain("limites por projeto");
 		expect(readme).toContain("dados fictícios");
 	});
+
+	test("README explains the deploy and how keys are protected", () => {
+		const headings = readme
+			.split("\n")
+			.filter((l) => l.startsWith("## "))
+			.map((l) => l.slice(3).trim());
+		expect(headings).toContain("Deploy");
+		const deploy = readme.slice(readme.indexOf("## Deploy"));
+		expect(deploy).toMatch(
+			/https:\/\/nexo-assist-web-[a-z0-9-]+\.[a-z0-9-]+\.workers\.dev/,
+		);
+		for (const term of [
+			"bun run deploy",
+			"secret",
+			"ALCHEMY_PASSWORD",
+			".env.production.local",
+			"RATE_LIMIT_PER_MINUTE",
+			"LLM_DAILY_LIMIT",
+			"Limite de uso atingido. Tente mais tarde.",
+			"SEED_TOKEN",
+			"/admin/seed",
+		])
+			expect(deploy, term).toContain(term);
+	});
 });

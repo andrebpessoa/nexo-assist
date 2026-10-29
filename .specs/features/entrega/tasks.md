@@ -249,9 +249,9 @@ T6 → T7 → T8 → T9 → T10
 
 **Done when**:
 
-- [ ] O README tem a seção "Deploy" com o link público
-- [ ] Explica secrets, limite por usuário, teto diário e seed por token
-- [ ] O teste do README passa
+- [x] O README tem a seção "Deploy" com o link público
+- [x] Explica secrets, limite por usuário, teto diário e seed por token
+- [x] O teste do README passa
 
 **Tests**: unit
 **Gate**: build
