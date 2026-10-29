@@ -305,7 +305,7 @@ Proof: `bun test packages/agent/eval/eval.test.ts -t "eval set"`
 ## Handoff
 
 **Settled mid-build:** 2026-10-29, depois da rodada parcial 1: ajuste do `affected` - user escolheu "New prompt task (Recommended)" (T8: `affected` null por padrão, preenchido só quando a mensagem diz quem é afetado); rodada completa - user: "Yes, run it (Recommended)" (T7 roda logo depois da T8; abaixo de 90%, parar e mostrar os erros antes de uma segunda).
-**Dispatched:** none
+**Dispatched:** Verifier em `c942f7d` (2026-10-29), faixa `b99971f..c942f7d`
 **Rodadas ao vivo:** parcial 1 (2026-10-29, depois da T6, 11 conversas, ~25 chamadas): 38/40 = 95%. Prioridade 15/15, duplicidade 9/9, central 7/7, transferir 1/1, saudação 2/2, uma pergunta por vez 4/6. Erros: `afetados-nao-sei` passo 1 (`rascunho_chamado` em vez de `perguntar`) e passo 2 em cascata (`descartar`). Saída crua: o modelo devolve `affected: "Só eu"` para "O Outlook parou de enviar e-mails, mas consigo mandar pelo webmail." mesmo com o exemplo no prompt. Rodada completa 1 (2026-10-29, depois da T8, avisada e aprovada): 68/68 = 100%, todas as 13 regras em 100%, US$ 0.00073 por conversa no pago. Rodadas completas no total: 1 de 2.
 **Walked:** N/A - sem tela nova; o efeito é medido pelas rodadas ao vivo
 
