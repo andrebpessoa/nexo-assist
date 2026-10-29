@@ -196,6 +196,13 @@ describe("mastra understander", () => {
 		);
 	});
 
+	test("understand prompt leaves affected null by default", () => {
+		expect(UNDERSTAND_INSTRUCTIONS).toContain("affected: null por padrão");
+		expect(UNDERSTAND_INSTRUCTIONS).toContain(
+			"falar de alternativa não diz quem é afetado",
+		);
+	});
+
 	test("understand prompt reads a workaround as not blocking", () => {
 		expect(UNDERSTAND_INSTRUCTIONS).toContain(
 			"outro jeito de trabalhar, workaround true e blocksWork false",

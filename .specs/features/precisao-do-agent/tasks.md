@@ -57,7 +57,7 @@ T2 → T3 → T4
 ### Phase 3: Dados de impacto e relato vago
 
 ```
-T5 → T6
+T5 → T6 → T8
 ```
 
 **Rodada parcial (depois da T6, sem commit)**: `bun run eval --live --only prioridade-baixa,prioridade-media,afetados-nao-sei,duplicado-resolvido-recente,duplicado-resolvido-antigo,confianca-baixa,artigo-serve,artigo-nao-serve,duplicado-aberto,saudacao,prioridade-alta-compromisso` (as 6 com erro e 5 controles das regras em 100%, ~25 chamadas). Rodadas parciais menores podem vir depois de T4 e T6 para conferir uma regra. Um ajuste de prompt que a rodada pedir vira tarefa nova, anotada em `**Settled mid-build:**` e mostrada ao André antes.
@@ -192,6 +192,25 @@ T7
 
 ---
 
+### T8: `affected` nulo por padrão no prompt ✅
+
+**What**: A linha de `affected` em `UNDERSTAND_INSTRUCTIONS` diz que o padrão é null, lista as palavras que dizem quem é afetado e repete que falar de alternativa não diz quem é afetado (wording testado ao vivo no scratchpad: 2 de 3 certos no caso que falha, controles certos).
+**Where**: `packages/agent/src/understand-mastra.ts`
+**Depends on**: T6
+**Reuses**: `understand-mastra.test.ts`
+**Requirement**: PRE-14
+
+**Done when**:
+
+- [x] Teste: o prompt diz "affected: null por padrão" e "falar de alternativa não diz quem é afetado"; os testes da T6 continuam passando sem mudança
+- [x] Gate build passa
+
+**Tests**: unit
+**Gate**: build
+**Commit**: `fix(agent): prompt deixa afetados nulos quando a pessoa não diz`
+
+---
+
 ### T7: Rodada final e resultado registrado
 
 **What**: Com aviso ao André, `bun run eval --live` completo; RESULT.md gerado; README ("Último resultado ao vivo", leitura do resultado e "O que faria com mais tempo") atualizado; `eval/result.test.ts` prova a meta a partir do RESULT.md; `scripts/docs.test.ts` confere as regras abaixo de 100% no README.
@@ -257,6 +276,9 @@ Proof: `bun test packages/agent/src/engine.create.test.ts -t "workaround counts 
 **C14** - O prompt de entendimento pede `affected` só quando dito, com os dois exemplos (PRE-14, AC 2)
 Proof: `bun test packages/agent/src/understand-mastra.test.ts -t "understand prompt asks affected only when said"`
 
+**C22** - O prompt deixa `affected` nulo por padrão e diz que alternativa não diz quem é afetado (PRE-14, AC 2)
+Proof: `bun test packages/agent/src/understand-mastra.test.ts -t "understand prompt leaves affected null by default"`
+
 **C15** - O prompt pede `workaround` true e `blocksWork` false para "outro jeito de trabalhar" (PRE-15, AC 3)
 Proof: `bun test packages/agent/src/understand-mastra.test.ts -t "understand prompt reads a workaround as not blocking"`
 
@@ -282,7 +304,7 @@ Proof: `bun test packages/agent/eval/eval.test.ts -t "eval set"`
 
 ## Handoff
 
-**Settled mid-build:** none
+**Settled mid-build:** 2026-10-29, depois da rodada parcial 1: ajuste do `affected` - user escolheu "New prompt task (Recommended)" (T8: `affected` null por padrão, preenchido só quando a mensagem diz quem é afetado); rodada completa - user: "Yes, run it (Recommended)" (T7 roda logo depois da T8; abaixo de 90%, parar e mostrar os erros antes de uma segunda).
 **Dispatched:** none
 **Rodadas ao vivo:** parcial 1 (2026-10-29, depois da T6, 11 conversas, ~25 chamadas): 38/40 = 95%. Prioridade 15/15, duplicidade 9/9, central 7/7, transferir 1/1, saudação 2/2, uma pergunta por vez 4/6. Erros: `afetados-nao-sei` passo 1 (`rascunho_chamado` em vez de `perguntar`) e passo 2 em cascata (`descartar`). Saída crua: o modelo devolve `affected: "Só eu"` para "O Outlook parou de enviar e-mails, mas consigo mandar pelo webmail." mesmo com o exemplo no prompt. Rodadas completas: 0.
 **Walked:** N/A - sem tela nova; o efeito é medido pelas rodadas ao vivo
@@ -296,7 +318,7 @@ Phase 1 → Phase 2 → Phase 3 → Phase 4
 
 Phase 1:  T1
 Phase 2:  T2 ------→ T3 ------→ T4
-Phase 3:  T5 ------→ T6   (+ rodada parcial)
+Phase 3:  T5 ------→ T6 ------→ T8   (+ rodada parcial)
 Phase 4:  T7   (rodada completa avisada)
 ```
 
