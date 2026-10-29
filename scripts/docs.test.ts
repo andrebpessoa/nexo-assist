@@ -105,7 +105,9 @@ describe("README", () => {
 			.filter((l) => l.startsWith("## "))
 			.map((l) => l.slice(3).trim());
 		expect(headings).toContain("Deploy");
-		const deploy = readme.slice(readme.indexOf("## Deploy"));
+		const start = readme.indexOf("## Deploy");
+		const end = readme.indexOf("\n## ", start + 1);
+		const deploy = readme.slice(start, end === -1 ? undefined : end);
 		expect(deploy).toMatch(
 			/https:\/\/nexo-assist-web-[a-z0-9-]+\.[a-z0-9-]+\.workers\.dev/,
 		);
