@@ -14,6 +14,9 @@ export const server = Cloudflare.Worker("server", {
 	compatibility: {
 		flags: ["nodejs_compat"],
 	},
+	// Runs the Worker near D1 instead of near the user: D1 has no South American region, and each
+	// request makes several queries, so one long hop beats one per query.
+	placement: { mode: "smart" },
 	env: {
 		DB: db,
 		CORS_ORIGIN: Config.String("CORS_ORIGIN"),

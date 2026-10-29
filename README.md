@@ -126,6 +126,8 @@ SERVER_URL=<url do server> SEED_TOKEN=<o mesmo token> bun run db:seed
 
 O primeiro deploy cria as URLs; o `CORS_ORIGIN` recebe a do web e o segundo deploy aplica.
 
+**Latência.** O D1 não tem região na América do Sul, e cada consulta a partir do Brasil custava ~140 ms. O Worker do servidor usa Smart Placement (roda perto do banco, então só a ida do usuário ao Worker cruza o oceano) e a sessão fica num cookie assinado por 5 minutos (cookieCache do Better Auth), o que poupa a consulta da sessão na maioria das requisições.
+
 **Como as chaves ficam protegidas.**
 
 - A chave do Gemini, o `BETTER_AUTH_SECRET` e o `SEED_TOKEN` vão para o Worker como secret: o `alchemy.run.ts` os declara com `Config.Redacted`, e o Alchemy os grava cifrados no estado e como binding de secret, não como variável de texto. Os valores ficam em `apps/server/.env.production.local` e `packages/infra/.env.local`, que o git ignora; o teste `scripts/secrets.test.ts` procura chaves no repositório e no bundle do navegador.
