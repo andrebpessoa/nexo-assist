@@ -35,6 +35,10 @@ describe("deploy seed behind a token (DLV-12)", () => {
 		expect((await seed()).status).toBe(401);
 		expect((await seed("Bearer wrong")).status).toBe(401);
 		expect((await seed("s3cret-token-0123456789")).status).toBe(401);
+		// Longer and shorter than the real token, sharing its start.
+		expect((await seed("Bearer s3cret-token-0123456789x")).status).toBe(401);
+		expect((await seed("Bearer s3cret-token-012345678")).status).toBe(401);
+		expect((await seed("Bearer s3cret")).status).toBe(401);
 		expect(await users()).toBe(0);
 	});
 
