@@ -1,0 +1,23 @@
+[
+	{
+		"file": "packages/agent/src/console.ts",
+		"old": "(m) => m.role === \"employee\" && m.seq > conv.readSeq,",
+		"new": "(m) => m.role === \"employee\" && m.seq >= conv.readSeq,",
+		"proof": "bun test packages/agent/src/console.test.ts -t \"opening up to the employee's last message leaves nothing unread\"",
+		"label": "CON-15: the message at read_seq still counts as unread"
+	},
+	{
+		"file": "packages/agent/src/console.ts",
+		"old": "(last?.role === \"agent\" || last?.role === \"analyst\") &&",
+		"new": "last !== null &&",
+		"proof": "bun test packages/agent/src/console.test.ts -t \"24 h of silence after the central's answer, agent or analyst, not after the employee's\"",
+		"label": "CON-02: an employee left unanswered for 24 h shows Resolvida pelo agent"
+	},
+	{
+		"file": "apps/web/src/features/console/conversation-view.tsx",
+		"old": "const canAssume = waiting || c.state === \"agent\";",
+		"new": "const canAssume = !closed;",
+		"proof": "bun --cwd apps/web test src/features/console/conversation-view.test.tsx -t \"⋮ assume follows the state: on with the agent, off once mine\"",
+		"label": "CON-21: Assumir atendimento enabled on a conversation another analyst holds"
+	}
+]
