@@ -235,7 +235,6 @@ export function ConversationList({
 	);
 }
 
-/** The left rail: logo, Conversas with the "Para você" badge, and the analyst (CON-11, CON-12). */
 /** The analyst's initials; clicking them opens "Sair" (the capture draws only the initials). */
 function RailAccount({
 	initials,
@@ -282,6 +281,7 @@ function RailAccount({
 	);
 }
 
+/** The left rail: logo, Conversas with the "Para você" badge, and the analyst (CON-11, CON-12). */
 export function Rail({
 	badge,
 	available,
