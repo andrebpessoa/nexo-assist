@@ -2,7 +2,10 @@ import { describe, expect, test } from "bun:test";
 import { MockLanguageModelV4 } from "ai/test";
 
 import { emptyUnderstanding } from "./understand";
-import { createMastraUnderstander } from "./understand-mastra";
+import {
+	createMastraUnderstander,
+	JUDGE_INSTRUCTIONS,
+} from "./understand-mastra";
 
 const reply = (value: unknown) =>
 	new MockLanguageModelV4({
@@ -59,6 +62,8 @@ describe("mastra understander", () => {
 				articleSlug: "vpn-erro-809",
 				articleFits: false,
 				articleMisfitReason: "Windows 11",
+				articleResolves: true,
+				articleTried: false,
 				sameProblemNumber: null,
 				sameProblemConfidence: 0,
 			}) as never,
@@ -76,5 +81,94 @@ describe("mastra understander", () => {
 			modelId: "x",
 		});
 		await expect(bad.understand(input)).rejects.toThrow();
+	});
+
+	test("judge returns whether the article resolves and was tried", async () => {
+		const judged = await createMastraUnderstander({
+			model: reply({
+				articleSlug: "senha-bloqueada",
+				articleFits: true,
+				articleMisfitReason: null,
+				articleResolves: true,
+				articleTried: true,
+				sameProblemNumber: "INC-20150",
+				sameProblemConfidence: 95,
+			}) as never,
+			modelId: "google/gemini-3.5-flash-lite",
+		}).judge({
+			message: "x",
+			profile: input.profile,
+			articles: [],
+			tickets: [],
+		});
+		expect(judged.judgement).toMatchObject({
+			articleResolves: true,
+			articleTried: true,
+		});
+
+		const old = createMastraUnderstander({
+			model: reply({
+				articleSlug: null,
+				articleFits: null,
+				articleMisfitReason: null,
+				sameProblemNumber: null,
+				sameProblemConfidence: 0,
+			}) as never,
+			modelId: "google/gemini-3.5-flash-lite",
+		});
+		await expect(
+			old.judge({
+				message: "x",
+				profile: input.profile,
+				articles: [],
+				tickets: [],
+			}),
+		).rejects.toThrow();
+	});
+
+	test("judge prompt defines resolves without a ticket", async () => {
+		const model = reply({
+			articleSlug: null,
+			articleFits: null,
+			articleMisfitReason: null,
+			articleResolves: null,
+			articleTried: null,
+			sameProblemNumber: null,
+			sameProblemConfidence: 0,
+		});
+		await createMastraUnderstander({
+			model: model as never,
+			modelId: "google/gemini-3.5-flash-lite",
+		}).judge({
+			message:
+				"Minha senha do SAP bloqueou de novo e o autoatendimento não libera.",
+			profile: input.profile,
+			articles: [
+				{
+					slug: "senha-bloqueada",
+					title: "Senha bloqueada",
+					body: "Use o autoatendimento em senha.nexo.local para desbloquear.",
+					appliesWhen: "Contas do SAP e da rede corporativa.",
+					keywords: ["senha"],
+				} as never,
+			],
+			tickets: [],
+		});
+		const sent = JSON.stringify(model.doGenerateCalls[0]?.prompt);
+		// The judge reads the article's steps, or it cannot tell they were already tried.
+		expect(sent).toContain("Use o autoatendimento em senha.nexo.local");
+		expect(sent).toContain(JSON.stringify(JUDGE_INSTRUCTIONS).slice(1, 60));
+		const rules = JUDGE_INSTRUCTIONS;
+		expect(rules).toContain("articleResolves");
+		expect(rules).toContain("sem chamado");
+		// outro sintoma do mesmo programa
+		expect(rules).toContain("Outlook não envia");
+		expect(rules).toContain("sincronizar");
+		// só diz como pedir um equipamento
+		expect(rules).toContain("monitor");
+		expect(rules).toContain("como pedir");
+		// passo já feito
+		expect(rules).toContain("articleTried");
+		expect(rules).toContain("o autoatendimento não libera");
 	});
 });

@@ -182,7 +182,7 @@ A avaliação ao vivo com `google/gemini-3.5-flash-lite` acerta 72% dos campos (
 | PRE-07 | P1: Artigo só quando resolve | Design | Pending |
 | PRE-08 | P1: Artigo só quando resolve | Design | Pending |
 | PRE-10 | P1: Artigo só quando resolve | Design | Pending |
-| PRE-11 | P1: Artigo só quando resolve | Design | Pending |
+| PRE-11 | P1: Artigo só quando resolve | T2 | Done |
 | PRE-12 | P1: Artigo só quando resolve | Design | Pending |
 | PRE-13 | P1: Dados de impacto | Design | Pending |
 | PRE-14 | P1: Dados de impacto | Design | Pending |

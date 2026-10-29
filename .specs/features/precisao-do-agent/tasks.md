@@ -92,9 +92,9 @@ T7
 
 ---
 
-### T2: Juiz devolve se o artigo resolve e se já foi tentado
+### T2: Juiz devolve se o artigo resolve e se já foi tentado ✅
 
-**What**: `JudgementSchema` ganha `articleResolves` e `articleTried` (nulos em `emptyJudgement`); o juiz recebe o corpo do artigo e a definição de "resolve sem chamado" com os três exemplos da PRE-11; `describeModel` mostra os sinais.
+**What**: `JudgementSchema` ganha `articleResolves` e `articleTried` (nulos em `emptyJudgement`); o juiz recebe o corpo do artigo e a definição de "resolve sem chamado" com os três exemplos da PRE-11.
 **Where**: `packages/agent/src/understand.ts`, `packages/agent/src/understand-mastra.ts`
 **Depends on**: None (Phase 1 antes)
 **Reuses**: `MockLanguageModelV4` em `understand-mastra.test.ts`
@@ -102,9 +102,9 @@ T7
 
 **Done when**:
 
-- [ ] Teste: o prompt enviado ao juiz traz `body` de cada artigo; as instruções trazem a definição e os exemplos (outro sintoma do mesmo programa, só como pedir equipamento, passo já feito)
-- [ ] Teste: a resposta com os dois campos é aceita; sem eles o parse falha como hoje para campo obrigatório
-- [ ] Gate build passa (o roteirizado continua em 100%)
+- [x] Teste: o prompt enviado ao juiz traz `body` de cada artigo; as instruções trazem a definição e os exemplos (outro sintoma do mesmo programa, só como pedir equipamento, passo já feito)
+- [x] Teste: a resposta com os dois campos é aceita; sem eles o parse falha como hoje para campo obrigatório
+- [x] Gate build passa (o roteirizado continua em 100%)
 
 **Tests**: unit
 **Gate**: build
@@ -133,7 +133,7 @@ T7
 
 ### T4: Duplicidade antes do artigo em `startTicket`
 
-**What**: `startTicket` aplica `duplicateAction` antes do artigo e decide o artigo por `articleForTicket`; a frase "não serve no seu caso" só sai em `misfit`; `helpCenter` (dúvida) não muda.
+**What**: `startTicket` aplica `duplicateAction` antes do artigo e decide o artigo por `articleForTicket`; a frase "não serve no seu caso" só sai em `misfit`; `helpCenter` (dúvida) não muda; `describeModel` mostra "não resolve" e "já tentou" no resultado de `modelo.comparar`.
 **Where**: `packages/agent/src/engine.ts`
 **Depends on**: T3
 **Reuses**: `duplicateAction`, `answerWithArticle`, `continueDraft`
@@ -142,6 +142,7 @@ T7
 **Done when**:
 
 - [ ] `engine.ticket-article.test.ts`: chamado aberto, resolvido há ≤ 7 dias e há mais, cada um com o juiz dizendo que o artigo resolve, dão complementar, reabrir e rascunho que cita (sem bloco de artigo); sem duplicado, artigo que resolve responde com oferta; que não resolve ou sem sinal vai ao rascunho sem "não serve"; já tentado vai ao rascunho; resolve mas não serve diz por quê; chamado apontado fora da lista segue para o artigo
+- [ ] O resultado de `modelo.comparar` no registro de decisão mostra "não resolve" e "já tentou"
 - [ ] Teste em `engine.kb.test.ts`: dúvida com `articleResolves: false` ainda responde com o artigo (PRE-12)
 - [ ] `bun run eval` roteirizado em 100%, `conversations.ts` sem mudança
 - [ ] Gate full e build passam

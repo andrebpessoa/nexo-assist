@@ -23,8 +23,10 @@ answer: "sim" ou "nao" quando a mensagem responde a uma oferta pendente.
 noteText: o texto a anexar quando a pessoa quer complementar um chamado.
 Use a conversa inteira para resolver referências como "ele", "esse chamado", "a reunião".`;
 
-const JUDGE_INSTRUCTIONS = `Você compara a mensagem de um funcionário com artigos da central de ajuda e com os chamados dele e devolve só o JSON pedido.
+export const JUDGE_INSTRUCTIONS = `Você compara a mensagem de um funcionário com artigos da central de ajuda e com os chamados dele e devolve só o JSON pedido.
 articleSlug: o artigo que responde a mensagem, ou null. articleFits: false quando a condição do artigo (campo appliesWhen) não vale para esta pessoa (ex.: sistema operacional do perfil); articleMisfitReason diz por quê em uma frase curta.
+articleResolves: true só quando seguir os passos do artigo (campo body) resolve este mesmo sintoma sem chamado. false quando o artigo trata outro sintoma, mesmo do mesmo programa (ex.: artigo de sincronizar o Outlook para quem diz que o Outlook não envia), ou quando só explica como pedir ou abrir um chamado (ex.: artigo que diz que monitor se pede por chamado não resolve um pedido de monitor).
+articleTried: true quando a pessoa diz que já fez o passo do artigo ou que ele não funcionou (ex.: "o autoatendimento não libera" para o artigo que manda usar o autoatendimento); senão false.
 sameProblemNumber: o chamado da pessoa com o mesmo sintoma, ou null; sameProblemConfidence de 0 a 100.`;
 
 /** The model is a Mastra agent with structured output; tests hand in a fake model (D-03). */
@@ -85,6 +87,7 @@ export function createMastraUnderstander({
 				artigos: input.articles.map((a) => ({
 					slug: a.slug,
 					title: a.title,
+					body: a.body,
 					appliesWhen: a.appliesWhen,
 				})),
 				chamados: input.tickets.map((t) => ({

@@ -47,6 +47,10 @@ export const JudgementSchema = z.object({
 	articleSlug: z.string().nullable(),
 	articleFits: z.boolean().nullable(),
 	articleMisfitReason: z.string().nullable(),
+	/** Following the article fixes this symptom with no ticket (not just how to ask for one). */
+	articleResolves: z.boolean().nullable(),
+	/** The person says they already did the article's step. */
+	articleTried: z.boolean().nullable(),
 	sameProblemNumber: z.string().nullable(),
 	sameProblemConfidence: score,
 });
@@ -111,6 +115,8 @@ export function emptyJudgement(): Judgement {
 		articleSlug: null,
 		articleFits: null,
 		articleMisfitReason: null,
+		articleResolves: null,
+		articleTried: null,
 		sameProblemNumber: null,
 		sameProblemConfidence: 0,
 	};
