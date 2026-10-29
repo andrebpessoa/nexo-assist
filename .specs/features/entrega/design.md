@@ -50,7 +50,7 @@ Os três comandos depois do clone são `bun install`, `bun run setup` e `bun run
 
 ### Modelo por env
 
-- **Purpose**: o servidor usa `LLM_MODEL` (padrão `google/gemini-2.5-flash-lite`), como o AD-008 pede.
+- **Purpose**: o servidor usa `LLM_MODEL` (padrão `google/gemini-3.5-flash-lite`), como o AD-008 pede.
 - **Location**: `apps/server/src/chat-agent.ts`, `apps/server/.env.schema`, `packages/infra/.env.schema`, `packages/infra/alchemy.run.ts`
 - **Interfaces**: `chooseUnderstander(env)` devolve `modelId = env.LLM_MODEL ?? DEFAULT_MODEL` e monta o Mastra com ele.
 - **Reuses**: `createMastraUnderstander({ modelId, apiKey })`, que já aceita o modelo.

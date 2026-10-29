@@ -1,4 +1,7 @@
-import { createMastraUnderstander } from "../src/understand-mastra";
+import {
+	createMastraUnderstander,
+	DEFAULT_MODEL,
+} from "../src/understand-mastra";
 import { runEval } from "./run";
 
 const live = process.argv.includes("--live");
@@ -7,7 +10,7 @@ if (live && !apiKey) {
 	console.error("--live precisa de GOOGLE_GENERATIVE_AI_API_KEY no ambiente.");
 	process.exit(1);
 }
-const modelId = process.env.LLM_MODEL ?? "google/gemini-2.5-flash-lite";
+const modelId = process.env.LLM_MODEL?.trim() || DEFAULT_MODEL;
 const report = await runEval(
 	live ? () => createMastraUnderstander({ modelId, apiKey }) : undefined,
 );

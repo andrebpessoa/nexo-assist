@@ -18,11 +18,25 @@ describe("chat agent", () => {
 	test("model choice", () => {
 		expect(
 			chooseUnderstander({ GOOGLE_GENERATIVE_AI_API_KEY: "k" }).modelId,
-		).toBe("google/gemini-2.5-flash-lite");
+		).toBe("google/gemini-3.5-flash-lite");
 		expect(chooseUnderstander({ DEV_SEED_ENABLED: "true" }).modelId).toBe(
 			"dev-keywords",
 		);
 		expect(chooseUnderstander({}).modelId).toBeUndefined();
+	});
+
+	test("LLM_MODEL picks the model", () => {
+		const key = { GOOGLE_GENERATIVE_AI_API_KEY: "k" };
+		expect(
+			chooseUnderstander({ ...key, LLM_MODEL: "google/gemini-2.5-flash" })
+				.modelId,
+		).toBe("google/gemini-2.5-flash");
+		expect(chooseUnderstander({ ...key, LLM_MODEL: " " }).modelId).toBe(
+			"google/gemini-3.5-flash-lite",
+		);
+		expect(
+			chooseUnderstander({ LLM_MODEL: "google/gemini-2.5-flash" }).modelId,
+		).toBeUndefined();
 	});
 
 	test("no key and no dev: the model is down", async () => {

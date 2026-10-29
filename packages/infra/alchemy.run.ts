@@ -32,6 +32,9 @@ export const server = Cloudflare.Worker("server", {
 		GOOGLE_GENERATIVE_AI_API_KEY: Config.Redacted(
 			"GOOGLE_GENERATIVE_AI_API_KEY",
 		).pipe(Config.withDefault(Redacted.make(""))),
+		LLM_MODEL: Config.String("LLM_MODEL").pipe(
+			Config.withDefault("google/gemini-3.5-flash-lite"),
+		),
 	},
 	dev: {
 		port: 3000,

@@ -61,9 +61,9 @@ T1 → T2 → T3 → T4 → T5 → T6
 
 **Done when**:
 
-- [ ] Com chave e `LLM_MODEL`, o servidor monta o Mastra com esse modelo
-- [ ] Sem `LLM_MODEL`, o modelo é `google/gemini-2.5-flash-lite`
-- [ ] No dev local, a chave de `apps/server/.env` chega ao Worker (o modelo informado deixa de ser `dev-keywords`)
+- [x] Com chave e `LLM_MODEL`, o servidor monta o Mastra com esse modelo
+- [x] Sem `LLM_MODEL`, o modelo é `google/gemini-3.5-flash-lite`
+- [x] No dev local, a chave de `apps/server/.env` chega ao Worker (o modelo informado deixa de ser `dev-keywords`)
 
 **Tests**: unit
 **Gate**: quick
@@ -82,7 +82,7 @@ T1 → T2 → T3 → T4 → T5 → T6
 **Done when**:
 
 - [ ] Cada variável do `.env.schema` do servidor e do web aparece no `.env.example` do app
-- [ ] `GOOGLE_GENERATIVE_AI_API_KEY` vazia e `LLM_MODEL=google/gemini-2.5-flash-lite`
+- [ ] `GOOGLE_GENERATIVE_AI_API_KEY` vazia e `LLM_MODEL=google/gemini-3.5-flash-lite`
 - [ ] `setup` cria o `.env` que falta, mantém o que existe e gera um segredo de 48 caracteres diferente a cada execução
 - [ ] Nenhum arquivo rastreado tem padrão de chave do Google (`AIza…`)
 

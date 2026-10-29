@@ -9,7 +9,8 @@ import {
 } from "./understand";
 import { estimateCost } from "./window";
 
-export const DEFAULT_MODEL = "google/gemini-2.5-flash-lite";
+// gemini-2.5-flash-lite answers 404 to new keys since 10/2026 (AD-023).
+export const DEFAULT_MODEL = "google/gemini-3.5-flash-lite";
 
 const UNDERSTAND_INSTRUCTIONS = `Você lê mensagens de funcionários da Nexo para o service desk de TI e devolve só o JSON pedido.
 Intenções: duvida (pergunta que a central de ajuda pode responder), consultar_chamado (status de um chamado, inclusive só o número, como "INC-20311"), complementar_chamado (acrescentar informação a um chamado), abrir_chamado (algo parou, não funciona, ou pedido de acesso, equipamento ou software), falar_com_analista (pede uma pessoa), fora_de_escopo (RH, financeiro, facilities), outro (saudação, agradecimento, mensagem vaga).
@@ -32,7 +33,7 @@ export function createMastraUnderstander({
 	modelId = DEFAULT_MODEL,
 	apiKey,
 }: {
-	/** A model router id like `google/gemini-2.5-flash-lite`, or a model instance (tests). */
+	/** A model router id like `google/gemini-3.5-flash-lite`, or a model instance (tests). */
 	model?: unknown;
 	modelId?: string;
 	apiKey?: string;

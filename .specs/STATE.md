@@ -153,7 +153,7 @@
 - **Trade-off**: Flash-Lite é menos capaz que Flash; a avaliação AGT-45 mede se basta. `LLM_MODEL` permite trocar.
 - **Scope**: agent, entrega.
 - **Date**: 2026-10-28
-- **Status**: active (AD-017)
+- **Status**: superseded by AD-023
 
 ### AD-018
 
@@ -199,6 +199,15 @@
 - **Scope**: entrega, todas as features (lint).
 - **Date**: 2026-10-28
 - **Status**: active (AD-022)
+
+### AD-023
+
+- **Decision**: O modelo padrão do agent passa a ser `google/gemini-3.5-flash-lite` (ainda Flash-Lite, com free tier); `LLM_MODEL` troca. Supera o ID de AD-017.
+- **Reason**: Em 2026-10-28, com a chave do André, o Google respondeu 404 a `gemini-2.5-flash-lite`: "This model models/gemini-2.5-flash-lite is no longer available to new users. Please update your code to use models/gemini-3.5-flash-lite". Uma chamada de prova pelo Mastra com `gemini-3.5-flash-lite` devolveu intenção, categoria e tipo certos. Preço pago em https://ai.google.dev/gemini-api/docs/pricing: US$ 0,30 por 1M de entrada e US$ 2,50 por 1M de saída; free tier sem custo.
+- **Trade-off**: No pago, 3x a entrada e 6x a saída do 2.5 Flash-Lite. Os limites do free tier deste modelo não foram medidos.
+- **Scope**: agent, entrega.
+- **Date**: 2026-10-28
+- **Status**: active (AD-023)
 
 ## Handoff
 

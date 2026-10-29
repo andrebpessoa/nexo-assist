@@ -15,6 +15,8 @@ import { createTicketService, type TicketsEnv } from "./tickets";
 
 export interface ChatEnv extends TicketsEnv {
 	GOOGLE_GENERATIVE_AI_API_KEY?: string;
+	/** `provider/model` for the Mastra model router; Flash-Lite when empty (AD-008, AD-017). */
+	LLM_MODEL?: string;
 	DEV_SEED_ENABLED?: string;
 }
 
@@ -29,10 +31,11 @@ export function chooseUnderstander(env: ChatEnv): {
 	modelId: string | undefined;
 } {
 	const apiKey = env.GOOGLE_GENERATIVE_AI_API_KEY?.trim();
+	const modelId = env.LLM_MODEL?.trim() || DEFAULT_MODEL;
 	if (apiKey)
 		return {
-			understander: createMastraUnderstander({ apiKey }),
-			modelId: DEFAULT_MODEL,
+			understander: createMastraUnderstander({ apiKey, modelId }),
+			modelId,
 		};
 	if (env.DEV_SEED_ENABLED === "true")
 		return { understander: createDevUnderstander(), modelId: "dev-keywords" };

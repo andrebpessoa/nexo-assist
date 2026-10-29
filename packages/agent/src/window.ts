@@ -30,6 +30,7 @@ export function buildWindow(
 
 /** US$ per million tokens on the paid tier; the free tier costs 0 but the log keeps the equivalent. */
 const PRICES: Record<string, { input: number; output: number }> = {
+	"google/gemini-3.5-flash-lite": { input: 0.3, output: 2.5 },
 	"google/gemini-2.5-flash-lite": { input: 0.1, output: 0.4 },
 	"google/gemini-2.5-flash": { input: 0.3, output: 2.5 },
 };

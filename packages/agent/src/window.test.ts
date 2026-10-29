@@ -49,6 +49,12 @@ describe("window", () => {
 			costUsd: 0.5,
 		});
 		expect(
+			estimateCost(
+				{ inputTokens: 1_000_000, outputTokens: 1_000_000 },
+				"google/gemini-3.5-flash-lite",
+			).costUsd,
+		).toBe(2.8);
+		expect(
 			estimateCost({ inputTokens: 10, outputTokens: 10 }, "outro/modelo")
 				.costUsd,
 		).toBe(0);
