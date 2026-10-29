@@ -3,7 +3,7 @@
   "promote_threshold": 2,
   "window_days": 45,
   "quarantine_threshold": 2,
-  "next_id": 22,
+  "next_id": 27,
   "lessons": [
     {
       "id": "L-001",
@@ -382,6 +382,96 @@
       ],
       "created": "2026-10-29T04:10:18Z",
       "last_seen": "2026-10-29T04:10:18Z"
+    },
+    {
+      "id": "L-022",
+      "key": "surviving_mutant::test a secret comparison with the real token plus a suffix and a prefix not only shorter wrong tokens",
+      "text": "Test a secret comparison with the real token plus a suffix and a prefix, not only shorter wrong tokens",
+      "signal": "surviving_mutant",
+      "scope": "server",
+      "status": "candidate",
+      "features": [
+        "entrega"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "apps/server/src/admin-seed.ts:10 (server)"
+      ],
+      "created": "2026-10-29T04:56:36Z",
+      "last_seen": "2026-10-29T04:56:36Z"
+    },
+    {
+      "id": "L-023",
+      "key": "surviving_mutant::prove a limit through the wiring the server uses not through a function the test injects",
+      "text": "Prove a limit through the wiring the server uses, not through a function the test injects",
+      "signal": "surviving_mutant",
+      "scope": "server",
+      "status": "candidate",
+      "features": [
+        "entrega"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "apps/server/src/chat-app.ts:27 (server)"
+      ],
+      "created": "2026-10-29T04:56:36Z",
+      "last_seen": "2026-10-29T04:56:36Z"
+    },
+    {
+      "id": "L-024",
+      "key": "ac_gap::test a per minute limit across a clock minute boundary a fixed window lets twice the limit through",
+      "text": "Test a per-minute limit across a clock-minute boundary; a fixed window lets twice the limit through",
+      "signal": "ac_gap",
+      "scope": "server",
+      "status": "candidate",
+      "features": [
+        "entrega"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "apps/server/src/usage.ts:75 (server)"
+      ],
+      "created": "2026-10-29T04:56:36Z",
+      "last_seen": "2026-10-29T04:56:36Z"
+    },
+    {
+      "id": "L-025",
+      "key": "ac_gap::enforce a cap on calls at each call not once per request that makes several",
+      "text": "Enforce a cap on calls at each call, not once per request that makes several",
+      "signal": "ac_gap",
+      "scope": "server",
+      "status": "candidate",
+      "features": [
+        "entrega"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "apps/server/src/usage.ts:74 (server)"
+      ],
+      "created": "2026-10-29T04:56:36Z",
+      "last_seen": "2026-10-29T04:56:36Z"
+    },
+    {
+      "id": "L-026",
+      "key": "spec_precision_gap::cut a readme section at the next heading before asserting its content",
+      "text": "Cut a README section at the next heading before asserting its content",
+      "signal": "spec_precision_gap",
+      "scope": "docs",
+      "status": "candidate",
+      "features": [
+        "entrega"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "scripts/docs.test.ts:108 (docs)"
+      ],
+      "created": "2026-10-29T04:56:36Z",
+      "last_seen": "2026-10-29T04:56:36Z"
     }
   ]
 }

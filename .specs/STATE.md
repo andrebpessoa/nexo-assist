@@ -211,9 +211,9 @@
 
 ## Handoff
 
-- **Fase**: as 7 features do ROADMAP e `precisao-do-agent` concluídas. `precisao-do-agent` validada em 2026-10-29: `validate_verification.py` com 0 (27 provas, 3 mutações mortas na rodada 2, 2 achados fechados).
-- **Concluído**: precisao-do-agent T1 a T8 em master, local, sem push. Avaliação ao vivo completa com `gemini-3.5-flash-lite`: 100% (68/68), US$ 0.00073 por conversa; 1 das 2 rodadas completas permitidas usada.
-- **Pendente do André**: deploy (DLV-12 a DLV-14) só com o aval dele (AD-010).
+- **Fase**: as 7 features do ROADMAP e `precisao-do-agent` concluídas. `entrega` fase 2 (deploy, T7 a T10) validada em 2026-10-29: `validate_verification.py entrega` com 0 (22 provas, 3 mutações mortas na rodada 2, 8 achados fechados).
+- **Deploy**: publicado em 2026-10-29 na conta Cloudflare do André (stage `live_andre`). Web https://nexo-assist-web-live-andre-kos6yhp3we5xxb6c.andrebpessoa09.workers.dev, server https://nexo-assist-server-live-andre-f4pp7jzy5m7i2v43.andrebpessoa09.workers.dev. Secrets conferidos no painel pelo André.
+- **Pendente**: novo deploy com as correções do verificador e as melhorias de latência (Smart Placement, cookieCache), commits 66cc60b..3057a29; o auto mode recusa `deploy --yes` para o agente, então o André roda. Limpeza de comentários e código morto em outro chat; depois `git branch -m master main` e push para `andrebpessoa/nexo-assist` (público, vazio), só com o aval dele.
 - **Bloqueios**: nenhum.
-- **Não commitado**: `features/*/proofs.md` (gerados no HEAD, fora do git de propósito). `.claude/` está em `.git/info/exclude` (local).
+- **Não commitado**: `features/*/proofs.md` (gerados no HEAD, fora do git de propósito). Segredos de produção em `apps/server/.env.production.local` e `packages/infra/.env.local`, ignorados pelo git.
 - **Branch**: master.

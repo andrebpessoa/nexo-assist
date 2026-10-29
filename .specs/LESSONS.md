@@ -140,6 +140,36 @@ Seen once or not yet corroborated. Tracked, not trusted.
 - evidence: packages/agent/eval/run.ts:113 (eval)
 - last seen: 2026-10-29T04:10:18Z
 
+### L-022 - Test a secret comparison with the real token plus a suffix and a prefix, not only shorter wrong tokens
+- signal: `surviving_mutant` · recurrence: 1 feature(s) · scope: `server` · harmful: 0
+- features: entrega
+- evidence: apps/server/src/admin-seed.ts:10 (server)
+- last seen: 2026-10-29T04:56:36Z
+
+### L-023 - Prove a limit through the wiring the server uses, not through a function the test injects
+- signal: `surviving_mutant` · recurrence: 1 feature(s) · scope: `server` · harmful: 0
+- features: entrega
+- evidence: apps/server/src/chat-app.ts:27 (server)
+- last seen: 2026-10-29T04:56:36Z
+
+### L-024 - Test a per-minute limit across a clock-minute boundary; a fixed window lets twice the limit through
+- signal: `ac_gap` · recurrence: 1 feature(s) · scope: `server` · harmful: 0
+- features: entrega
+- evidence: apps/server/src/usage.ts:75 (server)
+- last seen: 2026-10-29T04:56:36Z
+
+### L-025 - Enforce a cap on calls at each call, not once per request that makes several
+- signal: `ac_gap` · recurrence: 1 feature(s) · scope: `server` · harmful: 0
+- features: entrega
+- evidence: apps/server/src/usage.ts:74 (server)
+- last seen: 2026-10-29T04:56:36Z
+
+### L-026 - Cut a README section at the next heading before asserting its content
+- signal: `spec_precision_gap` · recurrence: 1 feature(s) · scope: `docs` · harmful: 0
+- features: entrega
+- evidence: scripts/docs.test.ts:108 (docs)
+- last seen: 2026-10-29T04:56:36Z
+
 ## Quarantined (failed when applied - ignore)
 
 A confirmed lesson that recurred alongside failure. Kept for the maintainer to review.
