@@ -209,9 +209,9 @@ T6 → T7 → T8 → T9 → T10
 
 **Done when**:
 
-- [ ] Sem `SEED_TOKEN` no servidor, `/admin/seed` dá 404
-- [ ] Token ausente ou errado dá 401 e não grava nada; token certo aplica o seed e devolve as contagens
-- [ ] `db:seed` com `SERVER_URL` e `SEED_TOKEN` chama `/admin/seed` com o token
+- [x] Sem `SEED_TOKEN` no servidor, `/admin/seed` dá 404
+- [x] Token ausente ou errado dá 401 e não grava nada; token certo aplica o seed e devolve as contagens
+- [x] `db:seed` com `SERVER_URL` e `SEED_TOKEN` chama `/admin/seed` com o token
 
 **Tests**: integration
 **Gate**: quick
@@ -305,6 +305,9 @@ Proof: `bun test scripts/docs.test.ts -t "README explains the deploy and how key
 
 **C17** - O seed do deploy só roda com o token (DLV-12)
 Proof: `bun --cwd apps/server test src/admin-seed.test.ts`
+
+**C18** - `db:seed` usa a rota protegida com `SERVER_URL` e `SEED_TOKEN` (DLV-12)
+Proof: `bun test scripts/db-seed.test.ts`
 
 **C15** - `.env.example` com a chave vazia e `LLM_MODEL`; README explica a chave, o free tier e o uso dos dados (DLV-15)
 Proof: `bun test scripts/docs.test.ts -t "README explains the AI Studio key and the free tier"`

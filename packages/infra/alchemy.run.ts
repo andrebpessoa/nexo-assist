@@ -35,6 +35,10 @@ export const server = Cloudflare.Worker("server", {
 		LLM_MODEL: Config.String("LLM_MODEL").pipe(
 			Config.withDefault("google/gemini-3.5-flash-lite"),
 		),
+		// Deploy seed: /admin/seed exists only with it, as a Bearer token (DLV-12).
+		SEED_TOKEN: Config.Redacted("SEED_TOKEN").pipe(
+			Config.withDefault(Redacted.make("")),
+		),
 		// Usage limits (DLV-13): messages per user per minute and model calls per UTC day.
 		RATE_LIMIT_PER_MINUTE: Config.String("RATE_LIMIT_PER_MINUTE").pipe(
 			Config.withDefault("10"),

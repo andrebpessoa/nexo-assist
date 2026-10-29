@@ -4,6 +4,7 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 
+import { createAdminRoutes } from "./admin-seed";
 import { createChatRoutes } from "./chat";
 import { createChatResolver } from "./chat-agent";
 import { createConsoleRoutes } from "./console";
@@ -79,6 +80,9 @@ app.route(
 		env: ENV,
 	}),
 );
+
+// Deploy only: 404 unless the Worker has SEED_TOKEN; needs it as a Bearer token (DLV-12).
+app.route("/", createAdminRoutes({ token: ENV.SEED_TOKEN, getDb }));
 
 app.get("/", (c) => {
 	return c.text("OK");
