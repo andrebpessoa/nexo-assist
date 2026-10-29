@@ -112,7 +112,7 @@ T7
 
 ---
 
-### T3: Regra do artigo ao abrir chamado
+### T3: Regra do artigo ao abrir chamado ✅
 
 **What**: `articleForTicket(signals, articles)` devolve `answer`, `misfit` ou `skip` pela tabela do design.
 **Where**: `packages/agent/src/rules/article.ts`
@@ -122,8 +122,8 @@ T7
 
 **Done when**:
 
-- [ ] `rules/article.test.ts` com um teste por linha da tabela: fora da busca, não resolve, sinal nulo, já tentado, não serve, responde
-- [ ] Gate quick e build passam
+- [x] `rules/article.test.ts` com um teste por linha da tabela: fora da busca, não resolve, sinal nulo, já tentado, não serve, responde
+- [x] Gate quick e build passam
 
 **Tests**: unit
 **Gate**: build
