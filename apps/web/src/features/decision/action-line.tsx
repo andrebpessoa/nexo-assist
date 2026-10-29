@@ -1,5 +1,6 @@
 import { actionLine, progressLabel } from "@nexo-assist/agent/transparency";
 import type { DecisionRecord } from "@nexo-assist/agent/types";
+import type { ReactNode } from "react";
 
 export type StepProgress = {
 	name: string;
@@ -18,12 +19,20 @@ export function ActionLine({
 	decision,
 	progress = [],
 	onOpen,
+	badge,
 }: {
 	decision: DecisionRecord | null;
 	progress?: StepProgress[];
 	onOpen?: () => void;
+	/** Shown right after "Nexo Assist", like the console's "IA" chip. */
+	badge?: ReactNode;
 }) {
-	const brand = <span className="text-ink font-semibold">Nexo Assist</span>;
+	const brand = (
+		<span className="text-ink inline-flex items-center gap-1.5 font-semibold">
+			Nexo Assist
+			{badge}
+		</span>
+	);
 	if (!decision) {
 		const done = actionLine({
 			intent: "outro",

@@ -1,4 +1,11 @@
-import { ChevronDown, ChevronRight, X } from "lucide-react";
+import {
+	ArrowLeftRight,
+	ChevronDown,
+	ChevronRight,
+	Clock,
+	Headset,
+	X,
+} from "lucide-react";
 import { useState } from "react";
 
 import { statusTone } from "@/features/chat/blocks";
@@ -27,19 +34,26 @@ function eventText(e: TicketDetailJson["events"][number]): string {
 	}
 }
 
+// Literal class names, so Tailwind generates them.
+const DOT: Record<string, string> = {
+	"text-amber-700": "bg-amber-500",
+	"text-sky-700": "bg-sky-500",
+	"text-emerald-700": "bg-emerald-500",
+};
+const dotOf = (status: string) => DOT[statusTone(status)] ?? "bg-slate-400";
+
 function Status({ status }: { status: string }) {
-	const tone = statusTone(status);
 	return (
 		<span
-			className={`inline-flex items-center gap-1 text-[11px] font-medium ${tone}`}
+			className={`inline-flex items-center gap-1 text-[11px] font-medium ${statusTone(status)}`}
 		>
-			<span
-				className={`size-1.5 rounded-full ${tone.replace("text-", "bg-").replace("-700", "-500")}`}
-			/>
+			<span className={`size-1.5 rounded-full ${dotOf(status)}`} />
 			{status}
 		</span>
 	);
 }
+
+const EVENT_ICON = { assumido: Headset, transferido: ArrowLeftRight } as const;
 
 function Detail({ t }: { t: TicketDetailJson }) {
 	return (
@@ -71,6 +85,24 @@ function Detail({ t }: { t: TicketDetailJson }) {
 	);
 }
 
+/** "Assumido por Rafael Lima" with its icon, the time on the right (capture 05). */
+function LastEvent({ e }: { e: TicketDetailJson["events"][number] }) {
+	const Icon = EVENT_ICON[e.kind as keyof typeof EVENT_ICON] ?? Clock;
+	const text = eventText(e);
+	return (
+		<p className="border-rule text-ink-2 mt-1 flex items-center gap-2 border-t pt-3 text-[13px]">
+			<span className="sr-only">{`${text} · ${hhmm(e.at)}`}</span>
+			<Icon aria-hidden className="text-ink-3 size-4" />
+			<span aria-hidden className="flex-1">
+				{text}
+			</span>
+			<span aria-hidden className="text-ink-3 text-[12px]">
+				{hhmm(e.at)}
+			</span>
+		</p>
+	);
+}
+
 function Row({
 	t,
 	now,
@@ -96,24 +128,20 @@ function Row({
 	};
 	const Icon = open ? ChevronDown : ChevronRight;
 	return (
-		<li className="border-rule grid gap-1 border-b py-2.5 last:border-b-0">
+		<li className="border-rule grid gap-1 border-b py-3 last:border-b-0">
 			<button
 				type="button"
 				aria-label={`Detalhes de ${t.number}`}
 				aria-expanded={open}
 				onClick={() => void toggle()}
-				className="flex w-full items-center gap-2 text-left"
+				title={`atualizado ${listTime(t.updatedAt, now)}`}
+				className="flex w-full items-center gap-3 text-left"
 			>
+				<span className={`size-2 shrink-0 rounded-full ${dotOf(t.status)}`} />
 				<span className="grid min-w-0 flex-1 gap-0.5">
-					<span className="flex items-center gap-2">
-						<span className="text-ink text-[12px] font-semibold">
-							{t.number}
-						</span>
-						<Status status={t.status} />
-					</span>
-					<span className="text-ink-2 truncate text-[12px]">{t.title}</span>
-					<span className="text-ink-3 text-[11px]">
-						atualizado {listTime(t.updatedAt, now)}
+					<span className="text-ink truncate text-[13px]">{t.title}</span>
+					<span className="text-ink-3 text-[12px]">
+						{t.number} · {t.status}
 					</span>
 				</span>
 				<Icon className="text-ink-3 size-4 shrink-0" />
@@ -203,35 +231,30 @@ export function TicketsPanel({
 				) : (
 					<div className="grid gap-4">
 						<section aria-label="Desta conversa" className="grid gap-2">
-							<h3 className="text-ink-3 text-[11px] font-semibold uppercase">
+							<h3 className="text-ink-2 text-[12px] font-medium">
 								Desta conversa
 							</h3>
 							{c ? (
-								<div className="border-rule bg-desk/50 grid gap-1.5 rounded-[10px] border p-3">
-									<div className="flex items-center justify-between gap-2">
-										<span className="text-ink text-[13px] font-semibold">
-											{c.number}
-										</span>
-										<Status status={c.status} />
-									</div>
-									<p className="text-ink text-[13px]">{c.title}</p>
-									<p className="text-ink-3 text-[12px]">
-										{c.category} · prioridade {c.priority.toLowerCase()}
-									</p>
-									{last && (
-										<p className="text-ink-2 text-[12px]">
-											{eventText(last)} · {hhmm(last.at)}
-										</p>
-									)}
+								<div className="bg-desk grid gap-1.5 rounded-[12px] p-4">
 									<button
 										type="button"
 										aria-label={`Detalhes de ${c.number}`}
 										aria-expanded={currentOpen}
 										onClick={() => setCurrentOpen(!currentOpen)}
-										className="text-cta justify-self-start text-[12px] font-medium"
+										className="grid gap-1 text-left"
 									>
-										{currentOpen ? "Ocultar detalhes" : "Ver detalhes ›"}
+										<span className="flex items-center justify-between gap-2">
+											<span className="text-ink-3 text-[12px]">{c.number}</span>
+											<Status status={c.status} />
+										</span>
+										<span className="text-ink text-[15px] font-semibold">
+											{c.title}
+										</span>
+										<span className="text-ink-3 text-[12px]">
+											{c.category} · prioridade {c.priority.toLowerCase()}
+										</span>
 									</button>
+									{last && <LastEvent e={last} />}
 									{currentOpen && <Detail t={c} />}
 								</div>
 							) : (
@@ -241,7 +264,7 @@ export function TicketsPanel({
 							)}
 						</section>
 						<section aria-label="Outros chamados" className="grid gap-1">
-							<h3 className="text-ink-3 text-[11px] font-semibold uppercase">
+							<h3 className="text-ink-2 text-[12px] font-medium">
 								Outros chamados
 							</h3>
 							{others.length === 0 ? (
@@ -259,20 +282,20 @@ export function TicketsPanel({
 								</ul>
 							)}
 						</section>
-						{others.length > OTHERS && (
-							<button
-								type="button"
-								onClick={() => setAll(!all)}
-								className="border-rule text-ink rounded-[8px] border px-3 py-2 text-[12px] font-medium"
-							>
-								{all
-									? "Mostrar menos"
-									: `Ver todos os chamados ${ofName(name)} ↗`}
-							</button>
-						)}
 					</div>
 				)}
 			</div>
+			{data && !failed && others.length > 0 && (
+				<div className="px-4 py-3">
+					<button
+						type="button"
+						onClick={() => setAll(!all)}
+						className="border-rule text-ink hover:bg-desk w-full rounded-[10px] border px-3 py-2.5 text-[13px] font-medium"
+					>
+						{all ? "Mostrar menos" : `Ver todos os chamados ${ofName(name)} ↗`}
+					</button>
+				</div>
+			)}
 		</aside>
 	);
 }

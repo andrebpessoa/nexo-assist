@@ -1,6 +1,25 @@
 import type { Block, DecisionRecord } from "@nexo-assist/agent/types";
-import { MoreVertical, PanelRightOpen, Search, Send, X } from "lucide-react";
-import { Fragment, type ReactNode, useState } from "react";
+import {
+	ArrowLeftRight,
+	Bot,
+	CircleX,
+	Hand,
+	Headset,
+	type LucideIcon,
+	MoreVertical,
+	PanelRightOpen,
+	Search,
+	Send,
+	X,
+} from "lucide-react";
+import {
+	Fragment,
+	type ReactNode,
+	useEffect,
+	useLayoutEffect,
+	useRef,
+	useState,
+} from "react";
 
 import { ActionLine } from "@/features/decision/action-line";
 
@@ -120,6 +139,14 @@ function titleOf(number: string, all: ConsoleMessage[]): string | null {
 	return null;
 }
 
+function systemIcon(text: string): LucideIcon | null {
+	if (text.startsWith("Transferida")) return ArrowLeftRight;
+	if (text.includes("assumiu")) return Headset;
+	if (text.startsWith("Voltei")) return Bot;
+	return null;
+}
+
+/** "⇄ Transferida para Suporte N2 · 10:05" between two rules (captures 04 and 05). */
 function SystemLine({
 	text,
 	at,
@@ -129,11 +156,15 @@ function SystemLine({
 	at: string;
 	query: string;
 }) {
+	const Icon = systemIcon(text);
 	return (
-		<p className="text-ink-3 my-1 text-center text-[11px]">
-			<span className="bg-desk rounded-full px-3 py-1">
+		<p className="text-ink-3 my-1 flex items-center gap-3 text-[12px]">
+			<span aria-hidden className="bg-rule h-px flex-1" />
+			<span className="inline-flex items-center gap-1.5">
+				{Icon && <Icon aria-hidden className="size-3.5" />}
 				<Highlight text={`${text} · ${hhmm(at)}`} query={query} />
 			</span>
+			<span aria-hidden className="bg-rule h-px flex-1" />
 		</p>
 	);
 }
@@ -170,79 +201,96 @@ function MessageBubble({
 	query: string;
 	onDecision: (d: DecisionRecord) => void;
 }) {
-	const time = (
-		<span className="text-ink-3 text-[10px]">{hhmm(m.createdAt)}</span>
-	);
 	if (m.role === "system")
 		return <SystemLine text={m.text} at={m.createdAt} query={query} />;
 	const text = lines(m, all);
 	const list = m.blocks.find((b) => b.kind === "ticket_list");
 	const body = (
-		<div className="grid gap-1 text-[13px] leading-snug">
-			{text.map((t) => (
-				<p key={t} className="whitespace-pre-wrap">
-					<Highlight text={t} query={query} />
-				</p>
-			))}
-			{list?.kind === "ticket_list" && (
-				<ul className="grid gap-1 pt-1">
-					{list.tickets.map((t) => (
-						<li
-							key={t.number}
-							className="border-rule bg-paper text-ink flex gap-2 rounded-[8px] border px-2 py-1 text-[12px]"
-						>
-							<span className="font-semibold">{t.number}</span>
-							<span className="truncate">{t.title}</span>
-						</li>
-					))}
-				</ul>
-			)}
+		<div className="flex flex-wrap items-end justify-end gap-x-3 gap-y-1">
+			<div className="grid min-w-0 flex-1 gap-1 text-[14px] leading-snug">
+				{text.map((t) => (
+					<p key={t} className="whitespace-pre-wrap">
+						<Highlight text={t} query={query} />
+					</p>
+				))}
+				{list?.kind === "ticket_list" && (
+					<ul className="grid gap-1 pt-1">
+						{list.tickets.map((t) => (
+							<li
+								key={t.number}
+								className="border-rule bg-paper text-ink flex gap-2 rounded-[8px] border px-2 py-1 text-[12px]"
+							>
+								<span className="font-semibold">{t.number}</span>
+								<span className="truncate">{t.title}</span>
+							</li>
+						))}
+					</ul>
+				)}
+			</div>
+			<span className="text-ink-3 shrink-0 text-[11px]">
+				{hhmm(m.createdAt)}
+			</span>
 		</div>
 	);
 	if (m.role === "employee")
 		return (
-			<div className="flex max-w-[70%] flex-col items-start gap-1">
-				<div className="border-rule bg-paper text-ink rounded-[14px] rounded-tl-[4px] border px-3 py-2 shadow-sm">
+			<div className="max-w-[70%] self-start">
+				<div className="border-rule bg-paper text-ink rounded-[12px] border px-3 py-2 shadow-sm">
 					{body}
 				</div>
-				{time}
 			</div>
 		);
 	const author = m.blocks.find((b) => b.kind === "author");
+	const ia = (
+		<span className="bg-cta-soft text-cta rounded-[4px] px-1 text-[10px] font-semibold">
+			IA
+		</span>
+	);
 	return (
-		<div className="ml-auto flex max-w-[70%] flex-col items-end gap-1">
+		<div className="flex max-w-[70%] flex-col items-end gap-1 self-end">
 			{m.role === "agent" ? (
-				<div className="flex items-center gap-1.5">
-					{m.decision ? (
-						<ActionLine
-							decision={m.decision}
-							onOpen={() => m.decision && onDecision(m.decision)}
-						/>
-					) : (
-						<span className="text-ink text-[11px] font-semibold">
-							Nexo Assist
-						</span>
-					)}
-					<span className="bg-cta-soft text-cta rounded-[4px] px-1 text-[9px] font-semibold">
-						IA
+				m.decision ? (
+					<ActionLine
+						decision={m.decision}
+						badge={ia}
+						onOpen={() => m.decision && onDecision(m.decision)}
+					/>
+				) : (
+					<span className="text-ink inline-flex items-center gap-1.5 text-[11px] font-semibold">
+						Nexo Assist
+						{ia}
 					</span>
-				</div>
-			) : (
-				<span className="text-[11px] font-semibold text-emerald-700">
-					{author?.kind === "author"
-						? `${author.name} · ${author.team}`
-						: "Analista"}
+				)
+			) : author?.kind === "author" ? (
+				<span className="inline-flex items-center gap-1.5 text-[11px]">
+					<span className="sr-only">{`${author.name} · ${author.team}`}</span>
+					<span aria-hidden className="text-ink font-semibold">
+						{author.name}
+					</span>
+					<span
+						aria-hidden
+						className="rounded-[4px] bg-emerald-50 px-1.5 font-medium text-emerald-700"
+					>
+						{author.team}
+					</span>
 				</span>
+			) : (
+				<span className="text-ink text-[11px] font-semibold">Analista</span>
 			)}
 			<div
-				className={`rounded-[14px] rounded-tr-[4px] px-3 py-2 ${m.role === "agent" ? "bg-cta text-white" : "bg-emerald-600 text-white"}`}
+				className={`text-ink rounded-[12px] px-3 py-2 ${m.role === "agent" ? "bg-cta-soft" : "bg-emerald-50"}`}
 			>
 				{body}
 			</div>
-			{time}
 		</div>
 	);
 }
+
+const BADGE_ICON: Record<string, LucideIcon> = {
+	aguardando_analista: Bot,
+	com_analista: Headset,
+	agent: Bot,
+};
 
 const BADGE: Record<string, { text: string; cls: string }> = {
 	aguardando_analista: {
@@ -265,6 +313,7 @@ const btn =
 const ghost = `${btn} border-rule bg-paper text-ink border`;
 const primary = `${btn} bg-cta text-white`;
 const danger = `${btn} bg-red-600 text-white`;
+const softDanger = `${btn} bg-red-50 text-red-700`;
 
 export function ConversationView({
 	data,
@@ -292,6 +341,29 @@ export function ConversationView({
 	const [menu, setMenu] = useState(false);
 	const [searching, setSearching] = useState(false);
 	const [query, setQuery] = useState("");
+	const logRef = useRef<HTMLDivElement>(null);
+	const nearBottom = useRef(true);
+	const toggleSearch = () => {
+		setSearching(!searching);
+		setQuery("");
+	};
+	const id = data?.conversation.id;
+	const count = data?.messages.length ?? 0;
+
+	// A conversation opens at its latest message (captures 04 and 05).
+	// biome-ignore lint/correctness/useExhaustiveDependencies: scroll again when another conversation opens
+	useLayoutEffect(() => {
+		const log = logRef.current;
+		if (log) log.scrollTop = log.scrollHeight;
+		nearBottom.current = true;
+	}, [id]);
+
+	// New messages keep the view at the end unless the analyst scrolled up to read.
+	// biome-ignore lint/correctness/useExhaustiveDependencies: runs when messages arrive
+	useEffect(() => {
+		const log = logRef.current;
+		if (log && nearBottom.current) log.scrollTop = log.scrollHeight;
+	}, [count]);
 
 	if (!data)
 		return (
@@ -361,14 +433,20 @@ export function ConversationView({
 				<div className="min-w-0">
 					<p className="text-ink text-[15px] font-semibold">{c.name}</p>
 					<p className="text-ink-3 text-[12px]">
-						{[c.department, c.ticket].filter(Boolean).join(" · ")}
+						{[c.department, waiting ? c.ticket : null]
+							.filter(Boolean)
+							.join(" · ")}
 					</p>
 				</div>
 				<div className="ml-auto flex items-center gap-2">
 					{badge && (
 						<span
-							className={`rounded-full border px-2.5 py-0.5 text-[12px] font-medium ${badge.cls}`}
+							className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[12px] font-medium ${badge.cls}`}
 						>
+							{(() => {
+								const Icon = BADGE_ICON[c.state];
+								return Icon ? <Icon aria-hidden className="size-3.5" /> : null;
+							})()}
 							{badge.text}
 						</span>
 					)}
@@ -380,29 +458,30 @@ export function ConversationView({
 								disabled={busy}
 								onClick={() => void run("return")}
 							>
+								<Bot aria-hidden className="size-4" />
 								Devolver ao agent
 							</button>
 							<button
 								type="button"
-								className={danger}
+								className={softDanger}
 								disabled={busy}
 								onClick={() => setConfirming(true)}
 							>
+								<CircleX aria-hidden className="size-4" />
 								Encerrar atendimento
 							</button>
 						</>
 					)}
-					<button
-						type="button"
-						aria-label="Buscar na conversa"
-						onClick={() => {
-							setSearching(!searching);
-							setQuery("");
-						}}
-						className="text-ink-2 hover:bg-desk rounded-[8px] p-1.5"
-					>
-						<Search className="size-4" />
-					</button>
+					{!mine && (
+						<button
+							type="button"
+							aria-label="Buscar na conversa"
+							onClick={toggleSearch}
+							className="text-ink-2 hover:bg-desk rounded-[8px] p-1.5"
+						>
+							<Search className="size-4" />
+						</button>
+					)}
 					<div className="relative">
 						<button
 							type="button"
@@ -419,6 +498,18 @@ export function ConversationView({
 								className="border-rule bg-paper absolute top-9 right-0 z-10 grid w-[220px] rounded-[10px] border p-1 shadow-lg"
 							>
 								{[
+									...(mine
+										? [
+												{
+													label: "Buscar na conversa",
+													disabled: false,
+													onClick: () => {
+														setMenu(false);
+														toggleSearch();
+													},
+												},
+											]
+										: []),
 									{
 										label: "Ver decisões do agent",
 										disabled: decisions.length === 0,
@@ -497,6 +588,12 @@ export function ConversationView({
 				</div>
 			)}
 			<div
+				ref={logRef}
+				onScroll={(e) => {
+					const el = e.currentTarget;
+					nearBottom.current =
+						el.scrollHeight - el.scrollTop - el.clientHeight < 80;
+				}}
 				role="log"
 				aria-label={`Conversa com ${c.name}`}
 				className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-6 py-4"
@@ -506,8 +603,10 @@ export function ConversationView({
 					return (
 						<Fragment key={m.seq}>
 							{(!prev || !sameDay(prev.createdAt, m.createdAt)) && (
-								<p className="text-ink-3 my-1 text-center text-[11px] font-medium">
-									{dayLabel(m.createdAt, now)}
+								<p className="my-1 text-center">
+									<span className="border-rule bg-paper text-ink-2 rounded-full border px-3 py-1 text-[12px]">
+										{dayLabel(m.createdAt, now)}
+									</span>
 								</p>
 							)}
 							<Bubble
@@ -530,7 +629,10 @@ export function ConversationView({
 			)}
 			<footer className="border-rule bg-paper grid gap-3 border-t px-5 py-3">
 				{waiting && (
-					<div className="flex items-center gap-3 rounded-[10px] bg-amber-50 px-4 py-3">
+					<div className="flex items-center gap-3">
+						<span className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-amber-50 text-amber-600">
+							<Hand aria-hidden className="size-4" />
+						</span>
 						<div className="min-w-0 flex-1">
 							<p className="text-ink text-[13px] font-semibold">
 								{first} espera um atendente
@@ -547,6 +649,7 @@ export function ConversationView({
 							disabled={busy}
 							onClick={() => void run("return")}
 						>
+							<Bot aria-hidden className="size-4" />
 							Devolver ao agent
 						</button>
 						<button
@@ -555,6 +658,7 @@ export function ConversationView({
 							disabled={busy}
 							onClick={() => void run("assume")}
 						>
+							<Headset aria-hidden className="size-4" />
 							Assumir atendimento
 						</button>
 					</div>

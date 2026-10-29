@@ -137,4 +137,13 @@ describe("Rail", () => {
 		expect(screen.queryByLabelText("3 conversas para você")).toBeNull();
 		expect(screen.getByText("RL")).toBeTruthy();
 	});
+
+	test("the initials open Sair, which signs out", async () => {
+		const onSignOut = mock(() => {});
+		render(<Rail badge={0} available initials="RL" onSignOut={onSignOut} />);
+		expect(screen.queryByRole("menuitem", { name: "Sair" })).toBeNull();
+		await userEvent.click(screen.getByRole("button", { name: "Minha conta" }));
+		await userEvent.click(screen.getByRole("menuitem", { name: "Sair" }));
+		expect(onSignOut).toHaveBeenCalledTimes(1);
+	});
 });

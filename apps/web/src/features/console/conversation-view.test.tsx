@@ -77,6 +77,15 @@ describe("ConversationView", () => {
 		).toBeTruthy();
 	});
 
+	test("system lines sit between rules, never as a speech bubble", () => {
+		setup(mine());
+		const log = screen.getByRole("log");
+		expect(
+			within(log).getByText("Rafael Lima assumiu · agent pausado · 10:12"),
+		).toBeTruthy();
+		expect(within(log).queryByText("Analista")).toBeNull();
+	});
+
 	test("header: name, department, ticket and state badge", () => {
 		setup();
 		const header = screen.getByRole("banner");

@@ -86,7 +86,7 @@ Os analistas do Suporte N1 e N2 precisam ver as conversas que dependem deles, in
 **Acceptance Criteria**:
 
 1. WHEN o analista abre uma conversa THEN o sistema SHALL mostrar o histórico completo com hora de cada mensagem, separador de dia ("Hoje"), o selo "IA" nas mensagens do agent, nome e equipe nas do analista e as linhas de sistema ("Transferida para Suporte N2 · 10:05"). [Protótipo] `CON-13`
-2. The cabeçalho SHALL mostrar o nome, o setor, o chamado da conversa e o selo do estado ("Aguardando atendente", "Em atendimento"). [Protótipo] `CON-14`
+2. The cabeçalho SHALL mostrar o nome, o setor, o chamado da conversa e o selo do estado ("Aguardando atendente", "Em atendimento"); o chamado aparece no cabeçalho só enquanto a conversa aguarda atendente, como nas capturas 04 e 05 (André, 2026-10-28: "Seguir a captura (Recomendado)"). [Protótipo] `CON-14`
 3. WHEN o analista abre uma conversa THEN o sistema SHALL zerar as não lidas dela. [Proposta] `CON-15`
 4. The painel SHALL mostrar "Chamados da <nome>", "N abertos · M encerrados", o bloco "Desta conversa" com status, título, categoria, prioridade e último evento, e o bloco "Outros chamados". [Protótipo] `CON-16`
 5. WHEN o analista usa "Ver todos os chamados da <nome> ↗" THEN o sistema SHALL expandir no painel a lista de todos os chamados dela. [Proposta] `CON-17`
@@ -217,6 +217,8 @@ Os analistas do Suporte N1 e N2 precisam ver as conversas que dependem deles, in
 | "Agent pausado · até 12:05" e "contato em 25 min" | Os mesmos rótulos, calculados do prazo de contato de 2 horas úteis (Crítica: 1 hora corrida) | y - AD-004 |
 | Linha de ações do agent sem detalhe | Clique abre o painel lateral "Por que o Nexo fez isso" | y - AD-007 |
 | Tema claro | Tema claro, sem o alternador de tema da base | y - AD-011 |
+| "online" no cabeçalho e bolinhas verdes de presença nos avatares (04, 05) | Nada (sem presença em tempo real) | y - André, 2026-10-28: "Tirar (Recomendado)" |
+| Ana (contato até 12:05) acima de Carla ("contato em 25 min") na lista (04) | Aguardando pelo prazo de contato mais próximo, como CON-07 | y - André, 2026-10-28: "Prazo mais próximo (Recomendado)" |
 
 ## Success Criteria
 

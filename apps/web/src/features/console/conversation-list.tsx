@@ -95,10 +95,7 @@ function Row({
 				onClick={onSelect}
 				className={`border-rule flex w-full gap-3 border-b px-3 py-3 text-left ${selected ? "bg-desk rounded-[10px] border-transparent" : "hover:bg-desk/60"}`}
 			>
-				<span className="relative">
-					<Avatar name={item.name} />
-					<span className="absolute right-0 bottom-0 size-2.5 rounded-full border-2 border-white bg-emerald-500" />
-				</span>
+				<Avatar name={item.name} />
 				<span className="grid min-w-0 flex-1 grid-cols-[minmax(0,1fr)] gap-0.5">
 					<span className="flex items-baseline justify-between gap-2">
 						<span className="text-ink min-w-0 truncate text-[14px] font-semibold">
@@ -243,6 +240,52 @@ export function ConversationList({
 }
 
 /** The left rail: logo, Conversas with the "Para você" badge, and the analyst (CON-11, CON-12). */
+/** The analyst's initials; clicking them opens "Sair" (the capture draws only the initials). */
+function RailAccount({
+	initials,
+	available,
+	onSignOut,
+}: {
+	initials: string;
+	available: boolean;
+	onSignOut?: () => void;
+}) {
+	const [open, setOpen] = useState(false);
+	return (
+		<span className="relative mt-auto">
+			<button
+				type="button"
+				aria-label="Minha conta"
+				aria-expanded={open}
+				disabled={!onSignOut}
+				onClick={() => setOpen(!open)}
+				className="bg-cta-soft text-cta inline-flex size-8 items-center justify-center rounded-full text-[11px] font-semibold"
+			>
+				{initials}
+			</button>
+			{available && (
+				<span className="pointer-events-none absolute right-0 bottom-0 size-2 rounded-full border-2 border-white bg-emerald-500" />
+			)}
+			{open && onSignOut && (
+				<div
+					role="menu"
+					className="border-rule bg-paper absolute bottom-0 left-10 z-10 grid w-[140px] rounded-[10px] border p-1 shadow-lg"
+				>
+					<button
+						type="button"
+						role="menuitem"
+						onClick={onSignOut}
+						className="text-ink hover:bg-desk inline-flex items-center gap-2 rounded-[6px] px-3 py-2 text-left text-[13px]"
+					>
+						<LogOut aria-hidden className="size-4" />
+						Sair
+					</button>
+				</div>
+			)}
+		</span>
+	);
+}
+
 export function Rail({
 	badge,
 	available,
@@ -272,24 +315,7 @@ export function Rail({
 					</span>
 				)}
 			</span>
-			{onSignOut && (
-				<button
-					type="button"
-					aria-label="Sair"
-					onClick={onSignOut}
-					className="text-ink-3 hover:text-ink mt-auto rounded-[8px] p-1.5"
-				>
-					<LogOut className="size-4" />
-				</button>
-			)}
-			<span className={`relative ${onSignOut ? "" : "mt-auto"}`}>
-				<span className="bg-cta-soft text-cta inline-flex size-8 items-center justify-center rounded-full text-[11px] font-semibold">
-					{who}
-				</span>
-				{available && (
-					<span className="absolute right-0 bottom-0 size-2 rounded-full border-2 border-white bg-emerald-500" />
-				)}
-			</span>
+			<RailAccount initials={who} available={available} onSignOut={onSignOut} />
 		</nav>
 	);
 }
